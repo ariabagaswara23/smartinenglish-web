@@ -16,21 +16,19 @@ export default function Hero() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         <div className="pt-16 pb-24 md:pt-24 md:pb-32 lg:flex lg:items-center lg:gap-12">
           
-          {/* Left Content Area */}
+          {/* Left Content */}
           <div className="lg:w-[55%] flex flex-col items-start text-left">
-            {/* Top Badge */}
             <div className="inline-flex items-center space-x-2 px-4 py-1.5 rounded-full border border-gray-200 bg-white shadow-sm mb-6">
-              <div className="w-1.5 h-1.5 rounded-full bg-[#1e40af]"></div>
-              <span className="text-[11px] font-bold tracking-[0.15em] text-[#1e40af] uppercase">
+              <div className="w-1.5 h-1.5 rounded-full bg-primary"></div>
+              <span className="text-[11px] font-bold tracking-[0.15em] text-primary uppercase">
                 A Private English Course
               </span>
             </div>
             
-            {/* Main Heading */}
             <h1 className="text-5xl md:text-6xl lg:text-[4.5rem] font-bold text-[#0f172a] leading-[1.1] mb-6 tracking-tight">
               Belajar Bahasa<br />
               Inggris yang<br />
-              <span className="italic text-[#1e40af] font-serif pr-2">Bikin Senyum.</span>
+              <span className="italic text-primary font-serif pr-2">Bikin Senyum.</span>
             </h1>
             
             {/* Subheading */}

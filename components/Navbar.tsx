@@ -49,7 +49,7 @@ export default function Navbar() {
           <div className="hidden md:flex items-center">
             <Link
               href="/daftar"
-              className="bg-[#1e40af] hover:bg-blue-900 text-white font-bold py-2.5 px-6 rounded-full transition-colors duration-300 text-sm shadow-md hover:shadow-lg"
+              className="bg-primary hover:bg-blue-900 text-primary-foreground font-bold py-2.5 px-6 rounded-full transition-colors duration-300 text-sm shadow-md hover:shadow-lg"
             >
               Daftar Sekarang
             </Link>
@@ -98,7 +98,7 @@ export default function Navbar() {
           <div className="pt-4 pb-2 px-3">
             <Link
               href="/daftar"
-              className="flex justify-center w-full bg-[#1e40af] hover:bg-blue-900 text-white font-bold py-3 px-6 rounded-full transition-colors duration-300 shadow-md"
+              className="flex justify-center w-full bg-primary hover:bg-blue-900 text-primary-foreground font-bold py-3 px-6 rounded-full transition-colors duration-300 shadow-md"
               onClick={() => setIsMobileMenuOpen(false)}
             >
               Daftar Sekarang
