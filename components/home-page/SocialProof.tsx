@@ -1,0 +1,28 @@
+// components/SocialProof.tsx
+export default function SocialProof() {
+  const stats = [
+    { value: '2.000+', label: 'Alumni Sukses' },
+    { value: '12+', label: 'Tahun Pengalaman' },
+    { value: '100%', label: 'Tutor Tersertifikasi' },
+    { value: '98%', label: 'Tingkat Kepuasan' },
+  ];
+
+  return (
+    <section className="bg-gray-50 border-y border-gray-100 py-8">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-6 text-center">
+          {stats.map((stat, index) => (
+            <div key={index} className="flex flex-col justify-center">
+              <span className="text-2xl md:text-3xl font-extrabold text-[#1e3a8a]">
+                {stat.value}
+              </span>
+              <span className="text-xs md:text-sm font-medium text-gray-500 mt-1">
+                {stat.label}
+              </span>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}

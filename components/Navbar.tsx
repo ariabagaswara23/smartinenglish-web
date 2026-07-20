@@ -10,7 +10,7 @@ export default function Navbar() {
   const navLinks = [
     { name: 'Tentang Kami', href: '/tentang-kami' },
     { name: 'Program', href: '/program' },
-    { name: 'Keunggulan', href: '/keunggulan' },
+    { name: 'Galeri', href: '/galeri' },
     { name: 'Blog', href: '/blog' },
     { name: 'Kontak', href: '/kontak' },
   ];

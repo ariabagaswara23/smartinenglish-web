@@ -1,5 +1,6 @@
 import React from 'react';
 import Link from 'next/link';
+import TextType from '../ui/TextType';
 
 export default function Hero() {
   return (
@@ -14,26 +15,36 @@ export default function Hero() {
       />
       
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-        <div className="pt-16 pb-24 md:pt-24 md:pb-32 lg:flex lg:items-center lg:gap-12">
+        <div className="pt-8 pb-24 md:pt-12 md:pb-24 lg:flex lg:items-center lg:gap-12">
           
           {/* Left Content */}
           <div className="lg:w-[55%] flex flex-col items-start text-left">
-            <div className="inline-flex items-center space-x-2 px-4 py-1.5 rounded-full border border-gray-200 bg-white shadow-sm mb-6">
-              <div className="w-1.5 h-1.5 rounded-full bg-primary"></div>
-              <span className="text-[11px] font-bold tracking-[0.15em] text-primary uppercase">
-                A Private English Course
-              </span>
-            </div>
             
             <h1 className="text-5xl md:text-6xl lg:text-[4.5rem] font-bold text-[#0f172a] leading-[1.1] mb-6 tracking-tight">
-              Belajar Bahasa<br />
-              Inggris yang<br />
-              <span className="italic text-primary font-serif pr-2">Bikin Senyum.</span>
+              Tempat Belajar <br />
+              <span className="inline-block text-primary italic font-serif">
+                  <TextType
+                    text={[
+                    'Bahasa Inggris',
+                    'Matematika',
+                    'Calistung',
+                    'Mengaji',
+                    'Komputer'
+                    ]}
+                    typingSpeed={75}
+                    pauseDuration={1500}
+                    showCursor
+                    cursorCharacter="●"
+                    deletingSpeed={50}
+  cursorBlinkDuration={0.5}
+                  />
+              </span> <br /> yang
+              <span className="italic text-primary font-serif pr-2"> Asyik.</span>
             </h1>
             
             {/* Subheading */}
             <p className="text-lg md:text-xl text-gray-500 mb-10 max-w-[500px] leading-relaxed">
-              Kursus bahasa Inggris privat yang efektif dan menyenangkan — untuk pelajar, mahasiswa, hingga profesional yang ingin berbicara percaya diri kepada dunia.
+              Bimbingan belajar yang efektif dan menyenangkan untuk jenjang SD, SMP, SMA, dan Mahasiswa.
             </p>
             
             {/* Action Buttons */}
@@ -87,19 +98,6 @@ export default function Hero() {
                   <div className="bg-[#2546a1] text-white px-5 py-2.5 rounded-full shadow-lg text-[13px] sm:text-sm font-bold flex items-center space-x-1.5 border-[3px] border-[#fafafc]">
                     <span>✦</span>
                     <span>smArt in english</span>
-                  </div>
-                </div>
-
-                {/* Bottom Left Stats Card */}
-                <div className="absolute -bottom-10 -left-2 sm:-left-10 z-20">
-                  <div className="bg-white p-3 sm:p-4 rounded-[20px] shadow-xl flex items-center space-x-3 sm:space-x-4 pr-6 sm:pr-8 border border-gray-100">
-                    <div className="w-10 h-10 sm:w-12 sm:h-12 bg-[#ffe893] rounded-full flex items-center justify-center text-xl sm:text-2xl shadow-sm">
-                      😊
-                    </div>
-                    <div>
-                      <div className="font-bold text-[#0f172a] text-xs sm:text-sm">2.000+ Alumni Sukses</div>
-                      <div className="text-[10px] sm:text-[11px] text-gray-500 font-medium">Sejak 2012 - Bandung</div>
-                    </div>
                   </div>
                 </div>
 
