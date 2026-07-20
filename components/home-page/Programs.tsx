@@ -767,10 +767,9 @@ function ProgramModal({ sub, accentClass, badgeBg, borderAccent, programIcon, pr
             <h4 className="text-xs font-bold tracking-widest uppercase text-gray-400 mb-3">Biaya Program</h4>
             <div className="grid grid-cols-1 sm:grid-cols-[repeat(auto-fit,minmax(200px,1fr))] gap-3">
               {priceItems.map((item) => {
-                const Icon = item.icon; // Assign ke variabel kapital agar bisa dirender sebagai tag JSX
+                const Icon = item.icon;
                 return (
                   <div key={item.label} className="flex flex-col gap-1 p-4 rounded-2xl border border-gray-100 bg-gray-50">
-                    {/* Render sebagai komponen/tag JSX */}
                     <div className={`${accentClass} p-2 w-fit rounded-xl bg-blue-50`}>
                       <Icon className="w-5 h-5" />
                     </div>
@@ -879,7 +878,7 @@ export default function Programs() {
   const handleClose = useCallback(() => setSelectedSub(null), []);
 
   return (
-    <section className="py-20 md:py-28 bg-white relative overflow-hidden">
+    <section className="py-20 md:py-28 bg-white relative overflow-hidden" id='program'>
       {/* Subtle background decoration */}
       <div className="absolute top-0 right-0 w-[600px] h-[600px] bg-blue-50 rounded-full blur-[120px] opacity-40 pointer-events-none" />
       <div className="absolute bottom-0 left-0 w-[400px] h-[400px] bg-amber-50 rounded-full blur-[100px] opacity-50 pointer-events-none" />
