@@ -6,6 +6,7 @@ import Events from "../components/home-page/Events";
 import SocialProof from "@/components/home-page/SocialProof";
 import Testimonials from "@/components/home-page/Testimonials";
 import FAQ from "@/components/home-page/FAQ";
+import WhatsAppCTA from "@/components/home-page/WhatsAppCTA";
 
 export default function Home() {
   return (
@@ -18,6 +19,7 @@ export default function Home() {
       <Events />
       <Testimonials />
       <FAQ />
+      <WhatsAppCTA />
     </main>
   );
 }
