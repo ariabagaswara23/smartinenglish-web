@@ -8,7 +8,7 @@ export default function Navbar() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   const navLinks = [
-    { name: 'Tentang Kami', href: '/tentang-kami' },
+    { name: 'Tentang Kami', href: '/about' },
     { name: 'Program', href: '/#program' },
     { name: 'Blog', href: '/blog' },
     { name: 'Galeri', href: '/gallery' },

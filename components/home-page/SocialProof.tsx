@@ -8,7 +8,7 @@ export default function SocialProof() {
   ];
 
   return (
-    <section className="bg-gray-50 border-y border-gray-100 py-8">
+    <section className="bg-[#F5F3EF] py-8">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="grid grid-cols-2 md:grid-cols-4 gap-6 text-center">
           {stats.map((stat, index) => (

@@ -5,6 +5,18 @@ import TextType from '../ui/TextType';
 export default function Hero() {
   return (
     <section className="relative overflow-hidden bg-[#fafafc]">
+      {/* Background building image */}
+      <div className="absolute inset-0 z-0">
+        <img 
+          src="https://images.unsplash.com/photo-1562774053-701939374585?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80" 
+          alt="Background Gedung Lembaga" 
+          className="w-full h-full object-cover opacity-45"
+        />
+      </div>
+      {/* Gradient overlay to ensure text is readable */}
+      <div className="absolute inset-0 bg-gradient-to-r from-[#fafafc]/95 via-[#fafafc]/80 to-transparent z-0 md:block hidden"></div>
+      <div className="absolute inset-0 bg-[#fafafc]/90 z-0 md:hidden block"></div>
+
       {/* Background pattern (dots) */}
       <div 
         className="absolute inset-0 z-0 opacity-[0.25]" 
@@ -83,8 +95,8 @@ export default function Hero() {
                 {/* Front Card */}
                 <div className="absolute inset-0 bg-gray-200 rounded-[32px] shadow-2xl overflow-hidden transform -rotate-2 z-10 border-4 border-white bg-white">
                   <img 
-                    src="https://images.unsplash.com/photo-1522202176988-66273c2fd55f?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
-                    alt="Students learning English"
+                    src="https://images.unsplash.com/photo-1427504494785-3a9ca7044f45?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
+                    alt="Kegiatan Belajar Mengajar"
                     className="w-full h-full object-cover"
                   />
                   {/* Overlay shadow inside the card */}
@@ -97,7 +109,7 @@ export default function Hero() {
                 <div className="absolute -left-4 sm:-left-12 top-6 sm:top-10 z-20 transform -rotate-3">
                   <div className="bg-[#2546a1] text-white px-5 py-2.5 rounded-full shadow-lg text-[13px] sm:text-sm font-bold flex items-center space-x-1.5 border-[3px] border-[#fafafc]">
                     <span>✦</span>
-                    <span>smArt in english</span>
+                    <span>SMART in ENGLISH</span>
                   </div>
                 </div>
 
