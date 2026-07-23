@@ -16,7 +16,7 @@ export default function ContactHeader() {
         <div className="inline-flex items-center justify-center space-x-2 px-4 py-1.5 rounded-full border border-blue-100 bg-blue-50/50 mb-6 shadow-sm">
           <Headphones className="w-4 h-4 text-primary" />
           <span className="text-[12px] font-bold tracking-[0.15em] text-primary uppercase">
-            Pusat Bantuan
+            Kontak
           </span>
         </div>
 

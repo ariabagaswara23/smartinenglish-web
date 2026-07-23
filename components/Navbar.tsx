@@ -1,22 +1,45 @@
 "use client";
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import Image from "next/image";
+import { usePathname } from 'next/navigation';
 
 export default function Navbar() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [isScrolled, setIsScrolled] = useState(false);
+  const pathname = usePathname();
+  const isHomePage = pathname === '/';
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setIsScrolled(window.scrollY > 20);
+    };
+    // Cek inisial render (kalau di-refresh pas lagi di-scroll)
+    handleScroll();
+    
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
+  const navClasses = `top-0 z-50 transition-all duration-300 w-full ${
+    isHomePage ? 'fixed' : 'sticky'
+  } ${
+    isHomePage && !isScrolled
+      ? 'bg-transparent border-transparent'
+      : 'bg-white border-b border-gray-100 shadow-sm'
+  }`;
 
   const navLinks = [
     { name: 'Tentang Kami', href: '/about' },
     { name: 'Program', href: '/#program' },
     { name: 'Blog', href: '/blog' },
     { name: 'Galeri', href: '/gallery' },
-    { name: 'Kontak', href: '/kontak' },
+    { name: 'Kontak', href: '/contact' },
   ];
 
   return (
-    <nav className="bg-white border-b border-gray-100 sticky top-0 z-50">
+    <nav className={navClasses}>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16 sm:h-20">
           

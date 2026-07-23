@@ -15,13 +15,13 @@ export default function About() {
               </span>
             </div>
             
-            <h2 className="text-4xl md:text-5xl font-bold text-[#0f172a] leading-[1.15] mb-6 tracking-tight">
+            <h2 className="text-4xl md:text-5xl font-bold text-primary leading-[1.15] mb-6 tracking-tight">
               Lebih Dari Sekadar<br />
               <span className="italic text-primary font-serif pr-2">Tempat Kursus.</span>
             </h2>
             
             <p className="text-lg text-gray-500 mb-10 leading-relaxed max-w-[540px]">
-              Didirikan sejak tahun 2012, smArt in english telah membantu ribuan siswa dari berbagai kalangan untuk menguasai bahasa Inggris dengan metode yang interaktif, personal, dan pastinya menyenangkan. Kami percaya setiap orang memiliki potensi untuk tampil percaya diri di kancah global.
+              Didirikan sejak tahun 2007 oleh Mrs. Nurhasanah, S.Pd, <b>SMART IN ENGLISH</b> didirikan dengan maksud untuk membantu warga sekitar dan para siswa sekolah dalam mempelajari Bahasa Inggris. Seiring dengan berjalannya waktu, <b>SMART IN ENGLISH</b> berkembang dan mulai membuka beberapa program lain seperti Calistung, Bimbel, Komputer dan Mengaji. Saat ini <b>SMART IN ENGLISH</b> sudah menjadi lembaga yang terakreditasi B.
             </p>
             
             <Link 

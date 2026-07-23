@@ -1,17 +1,22 @@
 import React from 'react';
 import Link from 'next/link';
 import TextType from '../ui/TextType';
+import Image from 'next/image';
 
 export default function Hero() {
   return (
     <section className="relative overflow-hidden bg-[#fafafc]">
       {/* Background building image */}
       <div className="absolute inset-0 z-0">
-        <img 
-          src="https://images.unsplash.com/photo-1562774053-701939374585?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80" 
-          alt="Background Gedung Lembaga" 
-          className="w-full h-full object-cover opacity-45"
-        />
+        <Image
+        src="/hero.jpg" // Next.js akan auto-convert ke AVIF/WebP di server/edge
+        alt="Background Hero"
+        fill
+        priority // Wajib untuk Hero agar LCP cepat!
+        sizes="100vw"
+        className="object-cover -z-10"
+        quality={80} // Quality 75-80 sudah sangat tajam namun hemat ukuran
+      />
       </div>
       {/* Gradient overlay to ensure text is readable */}
       <div className="absolute inset-0 bg-gradient-to-r from-[#fafafc]/95 via-[#fafafc]/80 to-transparent z-0 md:block hidden"></div>
@@ -27,7 +32,7 @@ export default function Hero() {
       />
       
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-        <div className="pt-8 pb-24 md:pt-12 md:pb-24 lg:flex lg:items-center lg:gap-12">
+        <div className="pt-24 pb-24 md:pt-32 md:pb-24 lg:flex lg:items-center lg:gap-12">
           
           {/* Left Content */}
           <div className="lg:w-[55%] flex flex-col items-start text-left">
@@ -68,7 +73,7 @@ export default function Hero() {
                 Daftar Kelas Sekarang
               </Link>
               <Link 
-                href="/program" 
+                href="/#program" 
                 className="inline-flex justify-center items-center px-8 py-3.5 rounded-full border border-[#2546a1]/30 bg-transparent text-[#2546a1] font-bold hover:bg-[#2546a1]/5 transition-all text-sm md:text-base"
               >
                 Lihat Program
@@ -79,10 +84,10 @@ export default function Hero() {
           {/* Right Image/Graphic Area */}
           <div className="lg:w-[45%] mt-20 lg:mt-0 relative flex justify-center lg:justify-end">
             {/* Central Graphic Container */}
-            <div className="relative w-full max-w-[340px] sm:max-w-[400px] md:max-w-[440px] lg:max-w-[480px] flex justify-center items-center pt-8">
+            <div className="relative w-full max-w-[400px] sm:max-w-[500px] md:max-w-[560px] lg:max-w-[600px] flex justify-center items-center pt-8">
               
               {/* Stacked Cards Effect */}
-              <div className="relative w-full aspect-[4/5] sm:aspect-[3/4]">
+              <div className="relative w-full aspect-[4/3]">
                 {/* Back Card */}
                 <div className="absolute inset-0 bg-[#2d436a] rounded-[32px] transform rotate-6 translate-x-4 sm:translate-x-8 shadow-xl overflow-hidden opacity-95">
                    <img 
@@ -116,7 +121,7 @@ export default function Hero() {
                 {/* Bottom Right Floating Badge */}
                 <div className="absolute -bottom-2 -right-2 sm:-right-6 z-20 transform rotate-[4deg]">
                   <div className="bg-[#facc15] text-[#78350f] px-4 sm:px-5 py-2 rounded-full shadow-lg font-bold text-xs sm:text-sm flex items-center space-x-1 border-[3px] border-[#fafafc]">
-                    <span>98% Puas</span>
+                    <span>4,9 Rating di GMaps</span>
                     <span>⭐</span>
                   </div>
                 </div>

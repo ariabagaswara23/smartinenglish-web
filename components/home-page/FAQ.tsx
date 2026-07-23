@@ -50,7 +50,7 @@ export default function FAQ() {
                 FAQ
               </span>
             </div>
-            <h2 className="text-4xl font-bold text-[#0f172a] leading-[1.1] tracking-tight mb-4">
+            <h2 className="text-4xl font-bold text-primary leading-[1.1] tracking-tight mb-4">
               Punya Pertanyaan<br />
               <span className="italic text-primary font-serif">Seputar Kursus?</span>
             </h2>
@@ -59,7 +59,7 @@ export default function FAQ() {
             </p>
 
             <a
-              href="https://wa.me/your-number"
+              href="https://wa.me/6282129183000"
               target="_blank"
               rel="noopener noreferrer"
               className="inline-flex items-center gap-2 bg-[#1e40af] hover:bg-[#25D366] text-white font-semibold text-sm px-5 py-3 rounded-xl transition-colors shadow-sm"

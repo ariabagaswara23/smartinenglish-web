@@ -2,9 +2,9 @@
 export default function SocialProof() {
   const stats = [
     { value: '2.000+', label: 'Alumni Sukses' },
-    { value: '12+', label: 'Tahun Pengalaman' },
+    { value: '19', label: 'Tahun Pengalaman' },
     { value: '100%', label: 'Tutor Tersertifikasi' },
-    { value: '98%', label: 'Tingkat Kepuasan' },
+    { value: 'B', label: 'Akreditasi' },
   ];
 
   return (

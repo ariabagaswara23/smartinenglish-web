@@ -49,7 +49,7 @@ export default function WhatsAppCTA() {
         {/* CTA Button — centered */}
         <div className="flex justify-center">
           <a
-            href="https://wa.me/your-number"
+            href="https://wa.me/6282129183000"
             target="_blank"
             rel="noopener noreferrer"
             id="cta-whatsapp-button"

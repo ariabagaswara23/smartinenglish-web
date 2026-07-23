@@ -23,7 +23,7 @@ export default function AboutHero() {
           </div>
           
           <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-[#0f172a] leading-tight mb-6 tracking-tight">
-            Membangun Generasi <span className="italic text-primary font-serif">Percaya Diri</span> Berbahasa Inggris
+            Lebih Dari Sekadar <span className="italic text-primary font-serif">Tempat Kursus</span>
           </h1>
           
           <p className="text-lg text-gray-500 max-w-2xl mx-auto leading-relaxed mb-10">

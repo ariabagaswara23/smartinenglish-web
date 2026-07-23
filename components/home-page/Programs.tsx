@@ -491,53 +491,53 @@ const programs: Program[] = [
       },
     ],
   },
-  {
-    id: 'computer',
-    icon: Computer,
-    title: 'Komputer',
-    color: 'bg-violet-600',
-    accentClass: 'text-violet-700',
-    badgeBg: 'bg-violet-50',
-    borderAccent: 'border-violet-200',
-    description: 'Penguasaan teknologi komputer dari dasar untuk pelajar dan umum — mempersiapkan generasi yang melek digital.',
-    subPrograms: [
-      {
-        name: 'Komputer Dasar',
-        description: 'Pengenalan perangkat komputer, sistem operasi, mengetik, dan penggunaan internet yang aman.',
-        badge: 'Dasar',
-        detail: {
-          hargaDaftar: 'Rp 150.000',
-          sppBulanan: 'Rp 220.000',
-          hargaModul: 'Rp 90.000',
-          jadwal: '2× seminggu, 60 menit per pertemuan',
-          materi: [
-            'Mengenal perangkat keras & lunak komputer',
-            'Sistem operasi Windows (navigasi & manajemen file)',
-            'Mengetik 10 jari (touch typing)',
-            'Penggunaan internet yang aman & produktif',
-            'Email & komunikasi digital dasar',
-          ],
-        },
-      },
-      {
-        name: 'Microsoft Office',
-        description: 'Pelatihan Word, Excel, dan PowerPoint untuk kebutuhan akademik maupun profesional.',
-        badge: 'Office',
-        detail: {
-          hargaDaftar: 'Rp 150.000',
-          sppBulanan: 'Rp 250.000',
-          hargaModul: 'Rp 100.000',
-          jadwal: '2× seminggu, 90 menit per pertemuan',
-          materi: [
-            'Microsoft Word (membuat dokumen, formatting, mail merge)',
-            'Microsoft Excel (rumus dasar, grafik, pivot table)',
-            'Microsoft PowerPoint (desain presentasi, animasi)',
-            'Praktik membuat laporan & dokumen nyata',
-          ],
-        },
-      },
-    ],
-  },
+  // {
+  //   id: 'computer',
+  //   icon: Computer,
+  //   title: 'Komputer',
+  //   color: 'bg-violet-600',
+  //   accentClass: 'text-violet-700',
+  //   badgeBg: 'bg-violet-50',
+  //   borderAccent: 'border-violet-200',
+  //   description: 'Penguasaan teknologi komputer dari dasar untuk pelajar dan umum — mempersiapkan generasi yang melek digital.',
+  //   subPrograms: [
+  //     {
+  //       name: 'Komputer Dasar',
+  //       description: 'Pengenalan perangkat komputer, sistem operasi, mengetik, dan penggunaan internet yang aman.',
+  //       badge: 'Dasar',
+  //       detail: {
+  //         hargaDaftar: 'Rp 150.000',
+  //         sppBulanan: 'Rp 220.000',
+  //         hargaModul: 'Rp 90.000',
+  //         jadwal: '2× seminggu, 60 menit per pertemuan',
+  //         materi: [
+  //           'Mengenal perangkat keras & lunak komputer',
+  //           'Sistem operasi Windows (navigasi & manajemen file)',
+  //           'Mengetik 10 jari (touch typing)',
+  //           'Penggunaan internet yang aman & produktif',
+  //           'Email & komunikasi digital dasar',
+  //         ],
+  //       },
+  //     },
+  //     {
+  //       name: 'Microsoft Office',
+  //       description: 'Pelatihan Word, Excel, dan PowerPoint untuk kebutuhan akademik maupun profesional.',
+  //       badge: 'Office',
+  //       detail: {
+  //         hargaDaftar: 'Rp 150.000',
+  //         sppBulanan: 'Rp 250.000',
+  //         hargaModul: 'Rp 100.000',
+  //         jadwal: '2× seminggu, 90 menit per pertemuan',
+  //         materi: [
+  //           'Microsoft Word (membuat dokumen, formatting, mail merge)',
+  //           'Microsoft Excel (rumus dasar, grafik, pivot table)',
+  //           'Microsoft PowerPoint (desain presentasi, animasi)',
+  //           'Praktik membuat laporan & dokumen nyata',
+  //         ],
+  //       },
+  //     },
+  //   ],
+  // },
   {
     id: 'persiapan-tka',
     icon: Target,
@@ -718,7 +718,7 @@ function ProgramModal({ sub, accentClass, badgeBg, borderAccent, programIcon, pr
 
       {/* Modal Panel */}
       <div
-        className="relative bg-white rounded-3xl shadow-2xl w-full max-w-2xl max-h-[90vh] overflow-y-auto"
+        className="relative bg-white rounded-3xl shadow-2xl w-full max-w-3xl max-h-[90vh] overflow-y-auto"
         onClick={(e) => e.stopPropagation()}
       >
         {/* Header */}
@@ -844,7 +844,7 @@ function SubProgramCard({ sub, accentClass, badgeBg, onClick }: SubProgramCardPr
     >
       <div className="flex items-start justify-between gap-2">
         {sub.badge && (
-          <span className={`self-start text-[10px] font-bold tracking-widest uppercase px-2.5 py-1 rounded-full ${badgeBg} ${accentClass}`}>
+          <span className={`self-start text-[10px] font-medium tracking-widest uppercase px-2.5 py-1 rounded-full ${badgeBg} ${accentClass}`}>
             {sub.badge}
           </span>
         )}
@@ -892,12 +892,12 @@ export default function Programs() {
               Program Unggulan
             </span>
           </div>
-          <h2 className="text-4xl md:text-5xl font-bold text-[#0f172a] leading-[1.1] tracking-tight">
+          <h2 className="text-4xl md:text-5xl font-bold text-primary leading-[1.1] tracking-tight">
             Semua yang Kamu Butuhkan,<br />
             <span className="italic text-primary font-serif">Ada di Sini.</span>
           </h2>
           <p className="mt-5 text-gray-500 text-lg max-w-xl mx-auto leading-relaxed">
-            Dari Bahasa Inggris hingga Komputer — kami siapkan program belajar terbaik untuk setiap kebutuhan dan usia.
+            Dari Bahasa Inggris hingga Calistung — kami siapkan program belajar terbaik untuk setiap kebutuhan dan usia.
           </p>
         </div>
 
@@ -939,7 +939,7 @@ export default function Programs() {
                   <p className="text-gray-500 text-sm mt-0.5 max-w-md">{active.description}</p>
                 </div>
               </div>
-              <Link
+              {/* <Link
                 href={`/program#${active.id}`}
                 className="self-start sm:self-center inline-flex items-center gap-1.5 text-sm font-bold text-primary hover:underline underline-offset-4 whitespace-nowrap"
               >
@@ -947,7 +947,7 @@ export default function Programs() {
                 <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M9 5l7 7-7 7" />
                 </svg>
-              </Link>
+              </Link> */}
             </div>
 
             {/* Click hint */}
@@ -976,8 +976,8 @@ export default function Programs() {
           <div className="border-t border-gray-200 bg-white px-6 md:px-10 py-5 flex flex-col sm:flex-row items-center justify-between gap-4">
             <p className="text-sm text-gray-500">
               Tidak yakin program mana yang cocok?{' '}
-              <Link href="/konsultasi" className="font-semibold text-primary hover:underline underline-offset-2">
-                Konsultasi gratis bersama kami
+              <Link href="/contact" className="font-semibold text-primary hover:underline underline-offset-2">
+                Hubungi kami
               </Link>
             </p>
             <Link

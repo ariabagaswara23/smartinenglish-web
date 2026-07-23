@@ -14,11 +14,11 @@ export default function Footer() {
           <div className="lg:col-span-4">
             <div className="flex items-center space-x-2 mb-6">
               <span className="text-2xl font-bold text-white tracking-tight">
-                smArt in english
+                SMART in ENGLISH
               </span>
             </div>
             <p className="text-gray-400 mb-8 leading-relaxed pr-4">
-              Lembaga pendidikan bahasa Inggris yang mengutamakan kualitas pengajaran dan pengalaman belajar yang efektif serta menyenangkan.
+              Tempat kursus bahasa Inggris, matematika, Calistung & mengaji dengan metode belajar menyenangkan & berkualitas.
             </p>
             <div className="flex space-x-4">
               <a href="#" className="w-10 h-10 rounded-full bg-slate-800 flex items-center justify-center text-gray-400 hover:bg-primary hover:text-white transition-colors" aria-label="Facebook">
@@ -44,10 +44,11 @@ export default function Footer() {
             <h4 className="text-white font-bold mb-6 uppercase tracking-wider text-sm">Tautan Cepat</h4>
             <ul className="space-y-3">
               <li><Link href="/" className="text-gray-400 hover:text-primary transition-colors">Beranda</Link></li>
-              <li><Link href="/tentang-kami" className="text-gray-400 hover:text-primary transition-colors">Tentang Kami</Link></li>
-              <li><Link href="/program" className="text-gray-400 hover:text-primary transition-colors">Program</Link></li>
+              <li><Link href="/about" className="text-gray-400 hover:text-primary transition-colors">Tentang Kami</Link></li>
+              <li><Link href="/#program" className="text-gray-400 hover:text-primary transition-colors">Program</Link></li>
               <li><Link href="/blog" className="text-gray-400 hover:text-primary transition-colors">Blog</Link></li>
-              <li><Link href="/kontak" className="text-gray-400 hover:text-primary transition-colors">Kontak</Link></li>
+              <li><Link href="/gallery" className="text-gray-400 hover:text-primary transition-colors">Galeri</Link></li>
+              <li><Link href="/contact" className="text-gray-400 hover:text-primary transition-colors">Kontak</Link></li>
             </ul>
           </div>
           
@@ -55,10 +56,11 @@ export default function Footer() {
           <div className="lg:col-span-2">
             <h4 className="text-white font-bold mb-6 uppercase tracking-wider text-sm">Program Kami</h4>
             <ul className="space-y-3">
-              <li><Link href="/program" className="text-gray-400 hover:text-primary transition-colors">English for Kids</Link></li>
-              <li><Link href="/program" className="text-gray-400 hover:text-primary transition-colors">English for Teens</Link></li>
-              <li><Link href="/program" className="text-gray-400 hover:text-primary transition-colors">English for Adults</Link></li>
-              <li><Link href="/program" className="text-gray-400 hover:text-primary transition-colors">TOEFL/IELTS</Link></li>
+              <li><Link href="/program" className="text-gray-400 hover:text-primary transition-colors">Bahasa Inggris</Link></li>
+              <li><Link href="/program" className="text-gray-400 hover:text-primary transition-colors">Matematika</Link></li>
+              <li><Link href="/program" className="text-gray-400 hover:text-primary transition-colors">Calistung</Link></li>
+              <li><Link href="/program" className="text-gray-400 hover:text-primary transition-colors">Mengaji</Link></li>
+              <li><Link href="/program" className="text-gray-400 hover:text-primary transition-colors">Persiapan TKA</Link></li>
               <li><Link href="/program" className="text-gray-400 hover:text-primary transition-colors">Private Class</Link></li>
             </ul>
           </div>
@@ -69,15 +71,15 @@ export default function Footer() {
             <ul className="space-y-4">
               <li className="flex items-start">
                 <svg className="w-5 h-5 text-primary mt-1 mr-3 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" /><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" /></svg>
-                <span className="text-gray-400">Jl. Setiabudi No. 123, Bandung, Jawa Barat, 40153</span>
+                <span className="text-gray-400">Belakang Klinik Budi Luhur, Jl. Kerkof Gg. Dwikarya No.56, Leuwigajah, Kec. Cimahi Sel., Kota Cimahi, Jawa Barat 40532</span>
               </li>
               <li className="flex items-center">
                 <svg className="w-5 h-5 text-primary mr-3 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" /></svg>
-                <span className="text-gray-400">+62 812-3456-7890</span>
+                <span className="text-gray-400">+62 831-3179-0155</span>
               </li>
               <li className="flex items-center">
                 <svg className="w-5 h-5 text-primary mr-3 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" /></svg>
-                <span className="text-gray-400">hello@smartinenglish.com</span>
+                <span className="text-gray-400">smartinenglish.smile56@gmail.com</span>
               </li>
             </ul>
           </div>

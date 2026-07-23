@@ -53,7 +53,7 @@ export default function Testimonials() {
                 Testimoni
                 </span>
             </div>
-            <h2 className="text-4xl md:text-5xl font-bold text-[#0f172a] leading-[1.1] tracking-tight">
+            <h2 className="text-4xl md:text-5xl font-bold text-primary leading-[1.1] tracking-tight">
                 Apa Kata<br />
                 <span className="italic text-primary font-serif">Mereka?</span>
             </h2>
