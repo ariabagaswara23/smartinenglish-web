@@ -1,13 +1,31 @@
 "use client";
 
-import React, { useState, useEffect, useCallback } from "react";
+import React, { useState, useEffect, useCallback, Suspense } from "react";
 import Image from "next/image";
+import { useSearchParams } from "next/navigation";
 import { galleryItems, galleryCategories, GalleryCategory } from "@/lib/data/galleryData";
 import { X, ChevronLeft, ChevronRight, ZoomIn } from "lucide-react";
 
-export default function GalleryGrid() {
-  const [activeFilter, setActiveFilter] = useState<GalleryCategory>("Semua");
+function GalleryGridContent() {
+  const searchParams = useSearchParams();
+  const categoryQuery = searchParams.get("category");
+  
+  // Set initial filter based on URL query if it's a valid category
+  const initialCategory: GalleryCategory = 
+    categoryQuery && galleryCategories.includes(categoryQuery as GalleryCategory)
+      ? (categoryQuery as GalleryCategory)
+      : "Semua";
+
+  const [activeFilter, setActiveFilter] = useState<GalleryCategory>(initialCategory);
   const [lightboxIndex, setLightboxIndex] = useState<number | null>(null);
+
+  // Update filter if URL changes
+  useEffect(() => {
+    if (categoryQuery && galleryCategories.includes(categoryQuery as GalleryCategory)) {
+      // eslint-disable-next-line react-hooks/set-state-in-effect
+      setActiveFilter(categoryQuery as GalleryCategory);
+    }
+  }, [categoryQuery]);
 
   // Filter items based on active category
   const filteredItems =
@@ -55,7 +73,7 @@ export default function GalleryGrid() {
   }, [lightboxIndex, closeLightbox, nextLightboxImage, prevLightboxImage]);
 
   return (
-    <section className="py-16 md:py-24 bg-[#fafafc]">
+    <section id="gallery-grid" className="py-16 md:py-24 bg-[#fafafc] scroll-mt-20">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         
         {/* Filter Tabs */}
@@ -105,7 +123,7 @@ export default function GalleryGrid() {
           ))}
         </div>
 
-        {/* Empty State (if needed in future, though dummy data always has something) */}
+        {/* Empty State */}
         {filteredItems.length === 0 && (
           <div className="text-center py-20">
             <p className="text-gray-500 text-lg">Tidak ada foto untuk kategori ini.</p>
@@ -172,5 +190,17 @@ export default function GalleryGrid() {
         </div>
       )}
     </section>
+  );
+}
+
+export default function GalleryGrid() {
+  return (
+    <Suspense fallback={
+      <div className="py-24 text-center text-gray-500">
+        Memuat galeri...
+      </div>
+    }>
+      <GalleryGridContent />
+    </Suspense>
   );
 }

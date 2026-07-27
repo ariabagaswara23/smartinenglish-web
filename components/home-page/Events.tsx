@@ -57,7 +57,7 @@ export default function EventHighlightSection() {
               </p>
               <div className="pt-3">
                 <Link 
-                  href="/events/aksi-sosial-2026"
+                  href="/gallery?category=SMILE+FEST#gallery-grid"
                   className="inline-flex justify-center items-center px-6 py-2.5 rounded-full border border-gray-200 bg-white text-gray-700 font-bold hover:bg-gray-50 hover:text-primary transition-all shadow-sm hover:shadow-md hover:-translate-y-0.5 text-sm group"
                 >
                   Lihat Dokumentasi
@@ -93,9 +93,36 @@ export default function EventHighlightSection() {
               <p className="text-gray-500 text-base leading-relaxed">
                 Smileversary adalah acara tahunan khusus yang diselenggarakan dalam rangka memperingati hari jadi Smart in English. Di tiap tahunnya, Smileversary mengadakan kursus bahasa Inggris gratis bagi masyarakat umum yang kurang mampu. Selain kursus bahasa Inggris gratis, Smile juga mengadakan promo, dan berbagai hadiah menarik.
               </p>
+
+              {/* Sub-Events Section */}
+              <div className="pt-2">
+                <h4 className="text-sm font-bold tracking-wider text-gray-900 uppercase mb-4 flex items-center">
+                  <span className="w-8 h-[2px] bg-primary mr-3"></span>
+                  Rangkaian Kegiatan
+                </h4>
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                  {[
+                    "Kursus Gratis",
+                    "Lomba Video Testimoni (Siswa)",
+                    "Lomba Video Testimoni (Orang Tua)",
+                    "Lomba Ucapan Ultah (Siswa)",
+                    "Lomba Ucapan Ultah (Orang Tua)"
+                  ].map((item, idx) => (
+                    <div key={idx} className="flex items-start p-3 rounded-xl bg-white border border-gray-100 shadow-sm hover:shadow-md hover:border-primary/50 transition-all group">
+                      <div className="w-8 h-8 rounded-full bg-primary/50 flex items-center justify-center mr-3 flex-shrink-0 group-hover:bg-primary transition-colors">
+                        <svg className="w-4 h-4 text-white group-hover:text-white transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M5 13l4 4L19 7" />
+                        </svg>
+                      </div>
+                      <span className="text-sm text-gray-600 font-medium pt-1.5 leading-snug">{item}</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
               <div className="pt-3">
                 <Link 
-                  href="/events/pameran-karya-kreatif"
+                  href="/gallery?category=SMILEVERSARY#gallery-grid"
                   className="inline-flex justify-center items-center px-6 py-2.5 rounded-full border border-gray-200 bg-white text-gray-700 font-bold hover:bg-gray-50 hover:text-emerald-600 transition-all shadow-sm hover:shadow-md hover:-translate-y-0.5 text-sm group"
                 >
                   Lihat Dokumentasi
@@ -133,7 +160,7 @@ export default function EventHighlightSection() {
               </p>
               <div className="pt-3">
                 <Link 
-                  href="/events/studium-generale-global"
+                  href="/gallery?category=Suasana+Kelas#gallery-grid"
                   className="inline-flex justify-center items-center px-6 py-2.5 rounded-full border border-gray-200 bg-white text-gray-700 font-bold hover:bg-gray-50 hover:text-purple-600 transition-all shadow-sm hover:shadow-md hover:-translate-y-0.5 text-sm group"
                 >
                   Lihat Dokumentasi

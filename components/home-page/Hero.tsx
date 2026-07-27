@@ -32,7 +32,7 @@ export default function Hero() {
       />
       
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-        <div className="pt-24 pb-24 md:pt-32 md:pb-24 lg:flex lg:items-center lg:gap-12">
+        <div className="pt-24 pb-24 md:pt-32 md:pb-24 md:h-[100vh] lg:flex lg:items-center lg:gap-12">
           
           {/* Left Content */}
           <div className="lg:w-[55%] flex flex-col items-start text-left">
