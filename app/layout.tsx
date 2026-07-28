@@ -18,8 +18,12 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "smArt in english",
-  description: "A Private English Course",
+  title: "SMART in ENGLISH",
+  description: "Bimbingan Belajar yang efektif dan menyenangkan untuk jenjang SD/SMP/SMA/MAHASISWA",
+  icons: {
+    icon: '/icon.png',
+    apple: '/icon.png',
+  },
 };
 
 export default function RootLayout({

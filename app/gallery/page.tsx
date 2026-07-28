@@ -5,8 +5,8 @@ import GalleryGrid from "@/components/gallery/GalleryGrid";
 import WhatsAppCTA from "@/components/home-page/WhatsAppCTA";
 
 export const metadata = {
-  title: "Galeri & Momen Kegiatan | smArt in english",
-  description: "Lihat keseruan belajar, berbagai event menarik, dan fasilitas yang kami sediakan untuk mendukung proses belajar peserta didik di smArt in english.",
+  title: "Galeri & Momen Kegiatan | SMART in ENGLISH",
+  description: "Lihat keseruan belajar, berbagai event menarik, dan fasilitas yang kami sediakan untuk mendukung proses belajar peserta didik di SMART in ENGLISH.",
 };
 
 export default function GalleryPage() {

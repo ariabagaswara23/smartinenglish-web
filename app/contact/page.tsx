@@ -5,8 +5,8 @@ import ContactMap from "@/components/contact/ContactMap";
 import WhatsAppCTA from "@/components/home-page/WhatsAppCTA";
 
 export const metadata = {
-  title: "Hubungi Kami | smArt in english",
-  description: "Punya pertanyaan seputar program kami? Jangan ragu untuk menghubungi tim admin smArt in english. Kami siap membantu memberikan solusi belajar terbaik.",
+  title: "Hubungi Kami | SMART in ENGLISH",
+  description: "Punya pertanyaan seputar program kami? Jangan ragu untuk menghubungi tim admin SMART in ENGLISH. Kami siap membantu memberikan solusi belajar terbaik.",
 };
 
 export default function ContactPage() {

@@ -7,7 +7,7 @@ import ImpactCounter from "@/components/about/ImpactCounter";
 import OurTeam from "@/components/about/OurTeam";
 
 export const metadata: Metadata = {
-  title: "About Us - Smart In English",
+  title: "About Us - SMART in ENGLISH",
   description: "Kenali lebih dekat tentang cerita, visi misi, dan tim pengajar kami.",
 };
 
