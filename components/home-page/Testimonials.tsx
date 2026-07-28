@@ -74,10 +74,17 @@ export default function Testimonials() {
                 Testimoni
                 </span>
             </div>
-            <h2 className="text-4xl md:text-5xl font-bold text-primary leading-[1.1] tracking-tight">
+            <h2 className="text-4xl md:text-5xl font-bold text-primary leading-[1.1] tracking-tight mb-4">
                 Apa Kata<br />
                 <span className="italic text-primary font-serif">Mereka?</span>
             </h2>
+            <div className="flex items-center justify-center gap-2">
+                <div className="flex items-center gap-1 bg-amber-50 px-2.5 py-1 rounded-full border border-amber-100">
+                    <Star className="w-4 h-4 fill-amber-400 text-amber-400" />
+                    <span className="font-bold text-amber-600 text-sm">4.9</span>
+                </div>
+                <span className="text-gray-500 text-sm font-medium">Rating di Google Maps</span>
+            </div>
         </div>
                 <Carousel
                     opts={{
