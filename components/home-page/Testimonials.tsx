@@ -7,38 +7,59 @@ import Autoplay from "embla-carousel-autoplay"
 
 const testimonials = [
   {
-    name: "Bunda Rahma",
-    role: "Orang Tua dari Hafizh",
-    program: "Kelas Calistung",
-    content: "Anak saya sekarang jauh lebih lancar membaca sebelum masuk SD. Metode belajarnya seru dan tidak bikin anak stres!",
+    name: "yanita sari",
+    role: "Orang Tua Murid",
+    program: "Bahasa Inggris & Matematika",
+    content: "Tempat les anak, guru guru nya ramah,smart,sabar.  bahasa inggris anak makin bnyk kemajuan tiap tahunnya dan untuk pelajaran matematika bnyk kemajuan juga.sukses terus buat smile.",
     rating: 5,
   },
   {
-    name: "Ahmad Fauzi",
-    role: "Pelajar SMA",
+    name: "Bake_O Pastry",
+    role: "Orang Tua Murid",
     program: "Bahasa Inggris",
-    content: "Membantu banget buat naikin skor TOEFL saya. Tutornya asyik diajak diskusi dan penjelasannya gampang dipahami.",
+    content: "Tempat les bahasa inggris paling menyenangkan di sini, miss2 nya pada baik, anak pun jd betah dan tentunya program nya yg bagus sehingga anak bisa bersaing d zaman yg serba canggih sekarang ini, tq smile",
     rating: 5,
   },
   {
-    name: "Mama Citra",
-    role: "Orang Tua dari Keisha",
-    program: "Matematika",
-    content: "Dulu Keisha paling malas kalau disuruh belajar Matematika. Sejak ikut kursus di sini, nilainya naik drastis dan jadi rajin hitung!",
+    name: "Neu Gustianeu",
+    role: "Orang Tua Murid",
+    program: "Bahasa Inggris",
+    content: "Semoga smile semakin sukses, Alhamdulillah anak saya sudah mulai sdikit2 ada progress dlm menghapal bhs inggris",
     rating: 5,
   },
   {
-    name: "Ayah Dedi",
-    role: "Orang Tua dari Zayan",
-    program: "Kelas Komputer",
-    content: "Zayan sekarang paham dasar coding block dan gak cuma main game aja. Investasi gadget jadi terasa bermanfaat.",
+    name: "Mila Mularsari",
+    role: "Orang Tua Murid",
+    program: "Bahasa Inggris",
+    content: "Anak2 sangat senang dgn gurunya karena penuh dengan kesabaran dalam memberikan materinya sehingga dapat dipahami serta biayanya terjangkau ,sukses selalu buat Smart In English 'Smile'",
     rating: 5,
   },
   {
-    name: "Bunda Sarah",
-    role: "Orang Tua dari Aisyah",
-    program: "Kelas Mengaji",
-    content: "Progres tajwid dan hafalan surat pendeknya cepat sekali. Gurunya sangat sabar membimbing anak-anak aktif.",
+    name: "hendra santoso",
+    role: "Orang Tua Murid",
+    program: "Bahasa Inggris",
+    content: "Sangat cocok untuk mempercayakan putra putri tercinta anda disini. Gurunya ramah, baik, materi pembelajaran yang mudah dimengerti. 👍👍👍",
+    rating: 5,
+  },
+  {
+    name: "Azkadina Shanum Syadila",
+    role: "Orang Tua Murid",
+    program: "Bahasa Inggris",
+    content: "Alhamdulillah anak saya selama bergabung pembelajaran di smile' sangat banyak kemajuan yg signifikan kemampuan dlm mapel Bahasa Inggris nya ☺️🙏🏻 …",
+    rating: 5,
+  },
+  {
+    name: "Eka Fitriani",
+    role: "Orang Tua Murid",
+    program: "Bahasa Inggris",
+    content: "MasyaAllah anak saya suka sekali belajar bahasa Inggris di sini, miss nya sabar dan pandai mengajar anak2 seusianya, bikin anak jd semangat belajar Bahasa Inggrisnya …",
+    rating: 5,
+  },
+  {
+    name: "Yuni Via",
+    role: "Orang Tua Murid",
+    program: "Bahasa Inggris",
+    content: "Anak saya les English di SMILE dari SD sampe sekarang SMA dan Alhamdulillah sangat membantu sekali dan oke banget Guru dan fasilitasnya .makasih SMILE",
     rating: 5,
   },
 ];
@@ -112,9 +133,9 @@ export default function Testimonials() {
                                         </div>
 
                                         {/* Badge Dinamis Multi-program */}
-                                        <span className="text-[10px] font-bold bg-blue-50 text-[#1e40af] px-2.5 py-1 rounded-full shrink-0">
+                                        {/* <span className="text-[10px] font-bold bg-blue-50 text-[#1e40af] px-2.5 py-1 rounded-full shrink-0">
                                           {item.program}
-                                        </span>
+                                        </span> */}
                                     </div>
 
                                     </CardContent>
