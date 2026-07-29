@@ -19,7 +19,7 @@ export default function ImpactCounter() {
 ];
 
   return (
-    <section className="py-12 bg-blue-600 relative overflow-hidden">
+    <section className="py-12 bg-primary relative overflow-hidden">
       {/* Background Pattern */}
       <div 
         className="absolute inset-0 z-0 opacity-[0.15]" 
