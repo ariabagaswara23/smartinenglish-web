@@ -66,12 +66,20 @@ export default function Hero() {
             
             {/* Action Buttons */}
             <div className="flex flex-col sm:flex-row gap-4 w-full sm:w-auto">
-              <Link 
+              {/* <Link 
                 href="/daftar" 
                 className="inline-flex justify-center items-center px-8 py-3.5 rounded-full bg-[#2546a1] text-white font-bold hover:bg-[#1a347d] transition-all shadow-md hover:shadow-lg hover:-translate-y-0.5 text-sm md:text-base"
               >
                 Daftar Kelas Sekarang
-              </Link>
+              </Link> */}
+              <a 
+                href="https://wa.me/6282129183000" 
+                target="_blank" 
+                rel="noopener noreferrer" 
+                className="inline-flex justify-center items-center px-8 py-3.5 rounded-full bg-[#2546a1] text-white font-bold hover:bg-[#1a347d] transition-all shadow-md hover:shadow-lg hover:-translate-y-0.5 text-sm md:text-base"
+              >
+                Daftar Kelas Sekarang
+              </a>
               <Link 
                 href="/#program" 
                 className="inline-flex justify-center items-center px-8 py-3.5 rounded-full border border-[#2546a1]/30 bg-transparent text-[#2546a1] font-bold hover:bg-[#2546a1]/5 transition-all text-sm md:text-base"

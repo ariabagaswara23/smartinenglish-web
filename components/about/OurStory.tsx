@@ -3,9 +3,10 @@ import { CheckCircle2 } from "lucide-react";
 
 export default function OurStory() {
   const milestones = [
-    "Berdiri sejak tahun 2018",
-    "Kurikulum berstandar internasional",
-    "Fasilitas belajar yang modern dan nyaman",
+    "Pengalaman membimbing sejak tahun 2007",
+    "Terakreditasi B resmi dari pemerintah",
+    "Ekosistem belajar lengkap (Bahasa, Math, Calistung, dll)",
+    "Metode belajar yang interaktif, mudah, & menyenangkan",
   ];
 
   return (
@@ -31,11 +32,11 @@ export default function OurStory() {
             <div className="absolute bottom-10 -left-10 bg-white p-6 rounded-2xl shadow-lg border border-slate-100 hidden md:block">
               <div className="flex items-center space-x-4">
                 <div className="bg-blue-100 p-3 rounded-full">
-                  <span className="text-2xl font-bold text-blue-600">5+</span>
+                  <span className="text-2xl font-bold text-blue-600">19</span>
                 </div>
                 <div>
                   <p className="text-sm font-bold text-slate-800">Tahun</p>
-                  <p className="text-xs text-slate-500">Pengalaman Mengajar</p>
+                  <p className="text-xs text-slate-500">Pengalaman Membimbing</p>
                 </div>
               </div>
             </div>
@@ -54,10 +55,13 @@ export default function OurStory() {
             </h2>
             <div className="space-y-6 text-gray-500 text-lg leading-relaxed mb-8">
               <p>
-                Berawal dari semangat untuk menjembatani kesenjangan kemampuan berbahasa Inggris di masyarakat, kami mendirikan lembaga ini dengan satu tujuan sederhana: membuat belajar bahasa Inggris menjadi mudah, menyenangkan, dan aplikatif.
+                Smart in English (SMILE) didirikan oleh <span className="font-bold text-primary">Mrs. Nurhasanah, S.Pd.,</span> pada tahun 2007, berawal dari semangat tulus untuk membantu siswa dan warga sekitar menguasai Bahasa Inggris dengan cara yang mudah, menyenangkan, dan aplikatif.
               </p>
               <p>
-                Selama lebih dari 5 tahun, kami telah bertransformasi menjadi pusat pembelajaran bahasa yang dipercaya oleh ratusan siswa, mulai dari anak-anak hingga profesional, yang ingin meraih mimpi mereka di kancah global.
+                Berangkat dari visi menjadi mitra terpercaya dalam pengembangan SDM, perjalanan kami yang telah membentang selama lebih dari 19 tahun ini terus berkembang. SMILE kini tidak hanya berfokus pada Bahasa Inggris, tetapi juga melengkapi kebutuhan belajar anak melalui program Matematika, Calistung, Bimbel, Komputer, hingga Mengaji.
+              </p>
+              <p>
+                Dengan status yang telah Terakreditasi B, kami terus berkomitmen memberikan pendidikan berkualitas untuk mencetak generasi yang cerdas, berkarakter, dan siap bersaing.
               </p>
             </div>
 

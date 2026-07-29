@@ -1,32 +1,32 @@
-import { BookOpen, Users, Award, Lightbulb } from "lucide-react";
+import { Users, Award, Lightbulb, GraduationCap } from "lucide-react";
 
 export default function WhyChooseUs() {
   const reasons = [
-    {
-      title: "Metode Pembelajaran Interaktif",
-      description: "Kami menerapkan metode yang mendorong siswa aktif berbicara dan berpartisipasi di kelas, bukan sekadar menghafal.",
-      icon: <Lightbulb className="w-8 h-8 text-blue-600" />,
-      bgColor: "bg-blue-50",
-    },
-    {
-      title: "Pengajar Profesional",
-      description: "Dibimbing oleh instruktur berpengalaman, bersertifikat, dan dedikatif yang siap membantu Anda menguasai bahasa Inggris.",
-      icon: <Users className="w-8 h-8 text-yellow-600" />,
-      bgColor: "bg-yellow-50",
-    },
-    {
-      title: "Kurikulum Terstruktur",
-      description: "Materi disusun sistematis sesuai dengan standar internasional, menyesuaikan dengan tingkat kemampuan peserta.",
-      icon: <BookOpen className="w-8 h-8 text-green-600" />,
-      bgColor: "bg-green-50",
-    },
-    {
-      title: "Lulusan Berkualitas",
-      description: "Ratusan alumni kami telah berhasil meraih skor tes memuaskan dan sukses dalam karier atau pendidikan lanjutan.",
-      icon: <Award className="w-8 h-8 text-purple-600" />,
-      bgColor: "bg-purple-50",
-    },
-  ];
+  {
+    title: "Metode Interaktif & Menyenangkan",
+    description: "Pembelajaran dirancang aktif, menyenangkan, dan aplikatif — mendorong siswa paham konsep, bukan sekadar menghafal.",
+    icon: <Lightbulb className="w-8 h-8 text-blue-600" />,
+    bgColor: "bg-blue-50",
+  },
+  {
+    title: "Pengajar Berpengalaman",
+    description: "Dibimbing oleh instruktur yang dedikatif, sabar, dan ramah anak, siap mendampingi setiap jenjang sesuai kebutuhan.",
+    icon: <Users className="w-8 h-8 text-amber-600" />,
+    bgColor: "bg-amber-50",
+  },
+  {
+    title: "Terakreditasi B Resmi",
+    description: "Lembaga teruji dengan materi dan kurikulum terstruktur yang disesuaikan dengan perkembangan dan standar pendidikan.",
+    icon: <GraduationCap className="w-8 h-8 text-emerald-600" />,
+    bgColor: "bg-emerald-50",
+  },
+  {
+    title: "Terbukti & Terpercaya",
+    description: "Telah mendampingi ribuan alumni sejak 2007 untuk meraih kemajuan akademik, kelulusan ujian, hingga kesiapan karier.",
+    icon: <Award className="w-8 h-8 text-purple-600" />,
+    bgColor: "bg-purple-50",
+  },
+];
 
   return (
     <section className="py-20 lg:py-28 bg-slate-50">

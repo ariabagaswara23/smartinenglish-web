@@ -70,12 +70,13 @@ export default function Navbar() {
 
           {/* CTA Button (Desktop) */}
           <div className="hidden md:flex items-center">
-            <Link
+            {/* <Link
               href="/daftar"
               className="bg-primary hover:bg-blue-900 text-primary-foreground font-bold py-2.5 px-6 rounded-full transition-colors duration-300 text-sm shadow-md hover:shadow-lg"
             >
               Daftar Sekarang
-            </Link>
+            </Link> */}
+            <a href="https://wa.me/6282129183000" target="_blank" rel="noopener noreferrer" className="bg-primary hover:bg-blue-900 text-primary-foreground font-bold py-2.5 px-6 rounded-full transition-colors duration-300 text-sm shadow-md hover:shadow-lg">Daftar Sekarang</a>
           </div>
 
           {/* Mobile Menu Button */}
@@ -119,13 +120,14 @@ export default function Navbar() {
             </Link>
           ))}
           <div className="pt-4 pb-2 px-3">
-            <Link
+            {/* <Link
               href="/daftar"
               className="flex justify-center w-full bg-primary hover:bg-blue-900 text-primary-foreground font-bold py-3 px-6 rounded-full transition-colors duration-300 shadow-md"
               onClick={() => setIsMobileMenuOpen(false)}
             >
               Daftar Sekarang
-            </Link>
+            </Link> */}
+            <a href="https://wa.me/6282129183000" target="_blank" rel="noopener noreferrer" className="flex justify-center w-full bg-primary hover:bg-blue-900 text-primary-foreground font-bold py-3 px-6 rounded-full transition-colors duration-300 shadow-md mt-2" onClick={() => setIsMobileMenuOpen(false)}>Daftar Sekarang</a>
           </div>
         </div>
       </div>

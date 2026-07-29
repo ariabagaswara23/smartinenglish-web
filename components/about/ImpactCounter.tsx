@@ -1,10 +1,22 @@
 export default function ImpactCounter() {
   const stats = [
-    { value: "500+", label: "Siswa Aktif & Alumni" },
-    { value: "98%", label: "Tingkat Kepuasan" },
-    { value: "15+", label: "Pengajar Profesional" },
-    { value: "5+", label: "Tahun Pengalaman" },
-  ];
+  { 
+    value: "1.000+", 
+    label: "Siswa & Alumni" 
+  },
+  { 
+    value: "19+", 
+    label: "Tahun Pengalaman" 
+  },
+  { 
+    value: "15+", 
+    label: "Pengajar Dedikatif" 
+  },
+  { 
+    value: "B", 
+    label: "Akreditasi" 
+  },
+];
 
   return (
     <section className="py-12 bg-blue-600 relative overflow-hidden">
