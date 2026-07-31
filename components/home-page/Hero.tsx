@@ -2,6 +2,7 @@ import React from 'react';
 import Link from 'next/link';
 import TextType from '../ui/TextType';
 import Image from 'next/image';
+import HeroImageCollage from './HeroImageCollage';
 
 export default function Hero() {
   return (
@@ -9,7 +10,7 @@ export default function Hero() {
       {/* Background building image */}
       <div className="absolute inset-0 z-0">
         <Image
-        src="/hero.jpg" // Next.js akan auto-convert ke AVIF/WebP di server/edge
+        src="/images/background-hero.jpg" // Next.js akan auto-convert ke AVIF/WebP di server/edge
         alt="Background Hero"
         fill
         priority // Wajib untuk Hero agar LCP cepat!
@@ -91,51 +92,7 @@ export default function Hero() {
           
           {/* Right Image/Graphic Area */}
           <div className="lg:w-[45%] mt-20 lg:mt-0 relative flex justify-center lg:justify-end">
-            {/* Central Graphic Container */}
-            <div className="relative w-full max-w-[400px] sm:max-w-[500px] md:max-w-[560px] lg:max-w-[600px] flex justify-center items-center pt-8">
-              
-              {/* Stacked Cards Effect */}
-              <div className="relative w-full aspect-[4/3]">
-                {/* Back Card */}
-                <div className="absolute inset-0 bg-[#2d436a] rounded-[32px] transform rotate-6 translate-x-4 sm:translate-x-8 shadow-xl overflow-hidden opacity-95">
-                   <img 
-                     src="https://images.unsplash.com/photo-1577896851231-70ef18881754?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" 
-                     alt="Background Card" 
-                     className="w-full h-full object-cover opacity-30 mix-blend-overlay grayscale"
-                   />
-                </div>
-                
-                {/* Front Card */}
-                <div className="absolute inset-0 bg-gray-200 rounded-[32px] shadow-2xl overflow-hidden transform -rotate-2 z-10 border-4 border-white bg-white">
-                  <img 
-                    src="https://images.unsplash.com/photo-1427504494785-3a9ca7044f45?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
-                    alt="Kegiatan Belajar Mengajar"
-                    className="w-full h-full object-cover"
-                  />
-                  {/* Overlay shadow inside the card */}
-                  <div className="absolute inset-0 shadow-[inset_0_0_20px_rgba(0,0,0,0.1)] rounded-[28px] pointer-events-none"></div>
-                </div>
-
-                {/* Floating Elements */}
-
-                {/* Top Left Badge */}
-                <div className="absolute -left-4 sm:-left-12 top-6 sm:top-10 z-20 transform -rotate-3">
-                  <div className="bg-[#2546a1] text-white px-5 py-2.5 rounded-full shadow-lg text-[13px] sm:text-sm font-bold flex items-center space-x-1.5 border-[3px] border-[#fafafc]">
-                    <span>✦</span>
-                    <span>SMART in ENGLISH</span>
-                  </div>
-                </div>
-
-                {/* Bottom Right Floating Badge */}
-                <div className="absolute -bottom-2 -right-2 sm:-right-6 z-20 transform rotate-[4deg]">
-                  <div className="bg-[#facc15] text-[#78350f] px-4 sm:px-5 py-2 rounded-full shadow-lg font-bold text-xs sm:text-sm flex items-center space-x-1 border-[3px] border-[#fafafc]">
-                    <span>4,9 Rating di GMaps</span>
-                    <span>⭐</span>
-                  </div>
-                </div>
-
-              </div>
-            </div>
+            <HeroImageCollage />
           </div>
           
         </div>

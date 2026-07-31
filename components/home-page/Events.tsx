@@ -37,8 +37,8 @@ export default function EventHighlightSection() {
               <div className="relative aspect-video w-full rounded-3xl overflow-hidden shadow-2xl group border-4 border-white">
                 <div className="absolute inset-0 bg-gradient-to-t from-primary/30 to-transparent opacity-60 group-hover:opacity-30 transition-opacity duration-500 z-10 pointer-events-none" />
                 <Image
-                  src="https://images.unsplash.com/photo-1559027615-cd246c2904ca?q=80&w=600&auto=format&fit=crop"
-                  alt="Kegiatan bakti sosial lembaga"
+                  src="/images/smile-fest-1.jpg"
+                  alt="SMILE FEST 2022"
                   fill
                   sizes="(max-width: 768px) 100vw, 50vw"
                   className="object-cover transition-transform duration-700 ease-in-out group-hover:scale-105"
@@ -76,11 +76,12 @@ export default function EventHighlightSection() {
               <div className="relative aspect-video w-full rounded-3xl overflow-hidden shadow-2xl group border-4 border-white">
                 <div className="absolute inset-0 bg-gradient-to-t from-emerald-900/30 to-transparent opacity-60 group-hover:opacity-30 transition-opacity duration-500 z-10 pointer-events-none" />
                 <Image
-                  src="https://images.unsplash.com/photo-1511578314322-379afb476865?q=80&w=600&auto=format&fit=crop"
-                  alt="Suasana pameran karya inovasi"
+                  src="/images/kursus-gratis.jpg"
+                  alt="Kursus gratis dalam rangka perayaan SMILEVERSARY"
                   fill
                   sizes="(max-width: 768px) 100vw, 50vw"
                   className="object-cover transition-transform duration-700 ease-in-out group-hover:scale-105"
+                  quality={80}
                 />
               </div>
             </div>
@@ -141,11 +142,12 @@ export default function EventHighlightSection() {
               <div className="relative aspect-video w-full rounded-3xl overflow-hidden shadow-2xl group border-4 border-white">
                 <div className="absolute inset-0 bg-gradient-to-t from-purple-900/30 to-transparent opacity-60 group-hover:opacity-30 transition-opacity duration-500 z-10 pointer-events-none" />
                 <Image
-                  src="https://images.unsplash.com/photo-1475721027785-f74eccf877e2?q=80&w=600&auto=format&fit=crop"
-                  alt="Seminar internasional stadium generale"
+                  src="/images/holiday-smile-collage.png"
+                  alt="Holiday at Smile"
                   fill
                   sizes="(max-width: 768px) 100vw, 50vw"
                   className="object-cover transition-transform duration-700 ease-in-out group-hover:scale-105"
+                  quality={80}
                 />
               </div>
             </div>

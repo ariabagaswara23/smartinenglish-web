@@ -33,17 +33,17 @@ export default function AboutHero() {
 
         {/* Hero Image */}
         <div className="mt-12 relative rounded-3xl overflow-hidden shadow-2xl aspect-video max-w-5xl mx-auto border border-gray-100">
-          <div className="absolute inset-0 bg-slate-200 flex items-center justify-center">
+          {/* <div className="absolute inset-0 bg-slate-200 flex items-center justify-center">
              <span className="text-slate-400 font-medium">Gambar Suasana Belajar / Institusi (1200x675)</span>
-          </div>
+          </div> */}
           {/* Ganti dengan komponen Image sebenarnya saat gambar tersedia */}
-          {/* <Image 
-            src="/images/about-hero.jpg" 
+          <Image 
+            src="/images/hero-image-2.jpg" 
             alt="Suasana belajar di Smart In English" 
             fill 
             className="object-cover"
             priority
-          /> */}
+          />
         </div>
       </div>
     </section>

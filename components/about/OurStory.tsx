@@ -16,13 +16,12 @@ export default function OurStory() {
           {/* Image Column */}
           <div className="relative order-2 lg:order-1">
             <div className="relative rounded-3xl overflow-hidden shadow-xl aspect-[4/5] bg-slate-200 flex items-center justify-center">
-              <span className="text-slate-400 font-medium text-center px-4">Gambar Perjalanan/Gedung Institusi (800x1000)</span>
-              {/* <Image 
+              <Image 
                 src="/images/our-story.jpg" 
-                alt="Perjalanan Smart In English" 
-                fill 
-                className="object-cover"
-              /> */}
+                alt="SMILE di tahun 2017" 
+                fill
+                className="object-fill"
+              />
             </div>
             
             {/* Decoration Elements */}

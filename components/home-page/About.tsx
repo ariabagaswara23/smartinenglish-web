@@ -45,12 +45,12 @@ export default function About() {
           {/* Right Image */}
           <div className="lg:w-[50%] relative flex justify-center lg:justify-end">
             {/* Move aspect-ratio classes to this wrapper div */}
-            <div className="relative w-full max-w-[500px] lg:max-w-full aspect-[4/3] sm:aspect-[4/3] lg:aspect-[5/4] rounded-3xl overflow-hidden shadow-2xl group border-4 border-white">
+            <div className="relative w-full max-w-[500px] lg:max-w-full aspect-[4/3] sm:aspect-[4/3] lg:aspect-[4/3] rounded-3xl overflow-hidden shadow-2xl group border-4 border-white">
               {/* Overlay for premium feel */}
               <div className="absolute inset-0 bg-gradient-to-t from-primary/30 to-transparent opacity-60 group-hover:opacity-30 transition-opacity duration-500 z-10 pointer-events-none"></div>
 
               <Image
-                src="/hero.jpg"
+                src="/images/background-hero.jpg"
                 alt="Gedung Lembaga smArt in english"
                 fill
                 priority
