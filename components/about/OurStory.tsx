@@ -23,12 +23,12 @@ export default function OurStory() {
                 className="object-fill"
               />
             </div>
-            
+            <p className="text-sm font-bold text-gray-500 mt-2">Gambar SMILE di tahun 2017</p>
             {/* Decoration Elements */}
-            <div className="absolute -bottom-8 -right-8 w-40 h-40 bg-yellow-400 rounded-3xl -z-10" />
-            <div className="absolute -top-8 -left-8 w-40 h-40 bg-blue-600 rounded-full -z-10 opacity-10" />
+            {/* <div className="absolute -bottom-8 -right-8 w-40 h-40 bg-yellow-400 rounded-3xl -z-10" />
+            <div className="absolute -top-8 -left-8 w-40 h-40 bg-blue-600 rounded-full -z-10 opacity-10" /> */}
             
-            <div className="absolute bottom-10 -left-10 bg-white p-6 rounded-2xl shadow-lg border border-slate-100 hidden md:block">
+            {/* <div className="absolute bottom-10 -left-10 bg-white p-6 rounded-2xl shadow-lg border border-slate-100 hidden md:block">
               <div className="flex items-center space-x-4">
                 <div className="bg-blue-100 p-3 rounded-full">
                   <span className="text-2xl font-bold text-blue-600">19</span>
@@ -38,7 +38,7 @@ export default function OurStory() {
                   <p className="text-xs text-slate-500">Pengalaman Membimbing</p>
                 </div>
               </div>
-            </div>
+            </div> */}
           </div>
 
           {/* Text Column */}
