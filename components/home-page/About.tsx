@@ -21,7 +21,7 @@ export default function About() {
               <span className="italic text-primary font-serif pr-2">Tempat Kursus.</span>
             </h2>
             
-            <p className="text-lg text-gray-500 mb-10 leading-relaxed max-w-[540px]">
+            <p className="text-lg text-gray-500 mb-10 leading-relaxed max-w-[540px] font-medium">
               Didirikan sejak tahun 2007 oleh <span className='font-bold text-primary'>Mrs. Nurhasanah, S.Pd</span>, SMART IN ENGLISH didirikan dengan maksud untuk membantu warga sekitar dan para siswa sekolah dalam mempelajari Bahasa Inggris. Seiring dengan berjalannya waktu, SMART IN ENGLISH berkembang dan mulai membuka beberapa program lain seperti Calistung, Bimbel, Komputer dan Mengaji. Saat ini SMART IN ENGLISH sudah menjadi lembaga yang <span className='font-bold text-primary'>Terakreditasi B</span>.
             </p>
             
