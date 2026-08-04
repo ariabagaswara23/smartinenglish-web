@@ -1,9 +1,9 @@
 // components/SocialProof.tsx
 export default function SocialProof() {
   const stats = [
-    { value: '2.000+', label: 'Alumni Sukses' },
+    { value: '5.000+', label: 'Alumni Sukses' },
     { value: '19', label: 'Tahun Pengalaman' },
-    { value: '100%', label: 'Tutor Tersertifikasi' },
+    { value: '100%', label: 'Instruktur Tersertifikasi' },
     { value: 'B', label: 'Akreditasi' },
   ];
 

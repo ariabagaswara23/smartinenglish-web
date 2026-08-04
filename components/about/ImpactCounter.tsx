@@ -1,7 +1,7 @@
 export default function ImpactCounter() {
   const stats = [
   { 
-    value: "1.000+", 
+    value: "5.000+", 
     label: "Siswa & Alumni" 
   },
   { 
