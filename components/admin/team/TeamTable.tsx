@@ -104,7 +104,7 @@ export function TeamTable() {
     }
 
     return (
-        <div className="space-y-6">
+        <div className="space-y-2">
             <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
                 <div className="flex bg-slate-100 p-1 rounded-xl">
                     <button
@@ -123,11 +123,11 @@ export function TeamTable() {
                         onClick={() => setFilter('staff')}
                         className={`px-4 py-2 rounded-lg text-sm font-medium transition-all ${filter === 'staff' ? 'bg-white shadow-sm text-slate-900' : 'text-slate-500 hover:text-slate-700'}`}
                     >
-                        Staf
+                        Staff
                     </button>
                 </div>
 
-                <Button onClick={handleCreate} className="bg-[#2546a1] hover:bg-[#1a347d] text-white gap-2">
+                <Button onClick={handleCreate} className="bg-[#2546a1] hover:bg-[#1a347d] text-white gap-2 px-4 py-2 text-base">
                     <Plus className="w-4 h-4" /> Tambah Tim
                 </Button>
             </div>
@@ -136,13 +136,13 @@ export function TeamTable() {
                 <Table>
                     <TableHeader>
                         <TableRow className="bg-slate-50/50 hover:bg-slate-50/50">
-                            <TableHead className="w-[80px] text-center">Foto</TableHead>
-                            <TableHead>Info Tim</TableHead>
-                            <TableHead>Tipe & Role</TableHead>
-                            <TableHead>Materi (Pengajar)</TableHead>
-                            <TableHead className="text-center w-[100px]">Order</TableHead>
-                            <TableHead className="w-[120px]">Status</TableHead>
-                            <TableHead className="text-right w-[80px]">Aksi</TableHead>
+                            <TableHead className="w-20 text-center font-semibold">Foto</TableHead>
+                            <TableHead className='font-semibold'>Info Tim</TableHead>
+                            <TableHead className='font-semibold'>Tipe & Role</TableHead>
+                            <TableHead className='font-semibold'>Materi (Pengajar)</TableHead>
+                            <TableHead className="text-center w-24 font-semibold">Order</TableHead>
+                            <TableHead className="w-20 font-semibold">Status</TableHead>
+                            <TableHead className="text-left w-20 font-semibold">Aksi</TableHead>
                         </TableRow>
                     </TableHeader>
                     <TableBody>
@@ -181,7 +181,7 @@ export function TeamTable() {
                                     <TableCell>
                                         <div className="flex flex-col items-start gap-1">
                                             <Badge variant="outline" className={member.type === 'teacher' ? 'bg-blue-50 text-blue-700 border-blue-200' : 'bg-emerald-50 text-emerald-700 border-emerald-200'}>
-                                                {member.type === 'teacher' ? 'Pengajar' : 'Staf'}
+                                                {member.type === 'teacher' ? 'Pengajar' : 'Staff'}
                                             </Badge>
                                             <span className="text-sm text-slate-600 font-medium">{member.role}</span>
                                         </div>
@@ -212,7 +212,7 @@ export function TeamTable() {
                                             {member.is_active ? 'Aktif' : 'Nonaktif'}
                                         </Badge>
                                     </TableCell>
-                                    <TableCell className="text-right">
+                                    <TableCell className="text-center">
                                         <DropdownMenu>
                                             <DropdownMenuTrigger className="h-8 w-8 p-0 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center rounded-md hover:bg-slate-100 outline-none">
                                                 <MoreVertical className="h-4 w-4 text-slate-500" />

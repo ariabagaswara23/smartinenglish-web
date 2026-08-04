@@ -36,7 +36,7 @@ interface TeamFormModalProps {
     memberToEdit?: TeamMember | null
 }
 
-const SUBJECT_OPTIONS = ['English', 'Calistung', 'Bimbel', 'Komputer', 'Mengaji']
+const SUBJECT_OPTIONS = ['English', 'Calistung', 'Bimbel', 'Matematika', 'Mengaji']
 
 export function TeamFormModal({ isOpen, onClose, memberToEdit }: TeamFormModalProps) {
     const queryClient = useQueryClient()
@@ -210,16 +210,17 @@ export function TeamFormModal({ isOpen, onClose, memberToEdit }: TeamFormModalPr
 
     return (
         <Dialog open={isOpen} onOpenChange={(open) => !open && onClose()}>
-            <DialogContent className="sm:max-w-[600px] max-h-[90vh] overflow-y-auto">
+            <DialogContent className="sm:max-w-[600px] lg:max-w-[800px] max-h-[90vh] overflow-y-auto">
                 <DialogHeader>
-                    <DialogTitle>{isEditMode ? 'Edit Anggota Tim' : 'Tambah Anggota Tim'}</DialogTitle>
+                    <DialogTitle className="font-bold text-2xl">{isEditMode ? 'Edit Anggota Tim' : 'Tambah Anggota Tim'}</DialogTitle>
+                    <hr />
                 </DialogHeader>
 
                 <form onSubmit={handleSubmit(onSubmit)} className="space-y-6 mt-4">
                     
                     {/* Image Upload */}
                     <div className="space-y-2">
-                        <label className="text-sm font-medium text-slate-700">Foto (Opsional)</label>
+                        <label className="text-sm font-semibold text-black">Foto (Opsional)</label>
                         <div className="flex items-start gap-4">
                             {imagePreview ? (
                                 <div className="relative w-24 h-24 rounded-xl overflow-hidden border border-slate-200 group">
@@ -251,25 +252,27 @@ export function TeamFormModal({ isOpen, onClose, memberToEdit }: TeamFormModalPr
 
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                         <div className="space-y-2">
-                            <label className="text-sm font-medium text-slate-700">Nama Lengkap</label>
+                            <label className="text-sm font-semibold text-black">Nama Lengkap</label>
                             <Input placeholder="John Doe" {...register('name')} aria-invalid={!!errors.name} />
                             {errors.name && <p className="text-xs text-destructive">{errors.name.message}</p>}
                         </div>
 
                         <div className="space-y-2">
-                            <label className="text-sm font-medium text-slate-700">Tipe Tim</label>
+                            <label className="text-sm font-semibold text-black">Tipe Tim</label>
                             <Select 
-                                value={typeValue} 
+                                value={typeValue}
                                 onValueChange={(val) => {
                                     if (val) setValue('type', val as 'teacher' | 'staff', { shouldValidate: true });
                                 }}
                             >
-                                <SelectTrigger aria-invalid={!!errors.type}>
-                                    <SelectValue placeholder="Pilih Tipe" />
+                                <SelectTrigger className="w-full" aria-invalid={!!errors.type}>
+                                    <SelectValue placeholder="Pilih Tipe">
+                                        {typeValue === 'teacher' ? 'Pengajar' : typeValue === 'staff' ? 'Staff/Manajemen' : ''}
+                                    </SelectValue>
                                 </SelectTrigger>
                                 <SelectContent>
                                     <SelectItem value="teacher">Pengajar</SelectItem>
-                                    <SelectItem value="staff">Staf/Manajemen</SelectItem>
+                                    <SelectItem value="staff">Staff/Manajemen</SelectItem>
                                 </SelectContent>
                             </Select>
                             {errors.type && <p className="text-xs text-destructive">{errors.type.message}</p>}
@@ -277,15 +280,15 @@ export function TeamFormModal({ isOpen, onClose, memberToEdit }: TeamFormModalPr
                     </div>
 
                     <div className="space-y-2">
-                        <label className="text-sm font-medium text-slate-700">Role / Jabatan</label>
+                        <label className="text-sm font-semibold text-black">Role / Jabatan</label>
                         <Input placeholder="Senior English Teacher" {...register('role')} aria-invalid={!!errors.role} />
                         {errors.role && <p className="text-xs text-destructive">{errors.role.message}</p>}
                     </div>
 
                     {typeValue === 'teacher' && (
                         <div className="space-y-3 p-4 rounded-xl border border-slate-100 bg-slate-50">
-                            <label className="text-sm font-medium text-slate-700">Mata Pelajaran (Wajib)</label>
-                            <div className="grid grid-cols-2 gap-3">
+                            <label className="text-sm font-semibold text-black">Mata Pelajaran (Wajib)</label>
+                            <div className="grid grid-cols-2 gap-3 mt-2">
                                 {SUBJECT_OPTIONS.map(subject => (
                                     <label key={subject} className="flex items-center gap-2 cursor-pointer">
                                         <Checkbox 
@@ -301,19 +304,19 @@ export function TeamFormModal({ isOpen, onClose, memberToEdit }: TeamFormModalPr
                     )}
 
                     <div className="space-y-2">
-                        <label className="text-sm font-medium text-slate-700">Deskripsi (Opsional)</label>
+                        <label className="text-sm font-semibold text-black">Deskripsi (Opsional)</label>
                         <Textarea placeholder="Tuliskan pengalaman atau motto pengajar..." className="resize-none h-24" {...register('description')} />
                     </div>
 
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                         <div className="space-y-2">
-                            <label className="text-sm font-medium text-slate-700">Urutan Tampil (Order)</label>
+                            <label className="text-sm font-semibold text-black">Urutan Tampil (Order)</label>
                             <Input type="number" {...register('order_index')} />
                             {errors.order_index && <p className="text-xs text-destructive">{errors.order_index.message}</p>}
                         </div>
 
                         <div className="space-y-2 flex flex-col justify-center">
-                            <label className="text-sm font-medium text-slate-700 mb-1">Status</label>
+                            <label className="text-sm font-semibold text-black mb-1">Status</label>
                             <label className="flex items-center gap-2 cursor-pointer">
                                 <Checkbox 
                                     checked={isActiveValue} 

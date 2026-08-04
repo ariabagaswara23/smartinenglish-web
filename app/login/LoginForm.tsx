@@ -3,6 +3,7 @@
 import { useState, useTransition } from 'react'
 import { login } from './actions'
 import { Eye, EyeOff, Loader2, LogIn, AlertCircle } from 'lucide-react'
+import Image from "next/image";
 
 export default function LoginForm() {
     const [showPassword, setShowPassword] = useState(false)
@@ -23,10 +24,14 @@ export default function LoginForm() {
         <div className="bg-white rounded-[2rem] shadow-2xl shadow-slate-200/60 border border-slate-100 p-8 sm:p-10">
             {/* Logo & Title */}
             <div className="text-center mb-8">
-                <div className="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-[#2546a1] shadow-lg shadow-blue-500/20 mb-5">
-                    <svg viewBox="0 0 24 24" className="w-8 h-8 text-white" fill="none" stroke="currentColor" strokeWidth={2}>
-                        <path strokeLinecap="round" strokeLinejoin="round" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
-                    </svg>
+                <div className="inline-flex items-center justify-center mb-5">
+                    <Image
+                            src="/logo.png"
+                            alt="Smart in English Logo"
+                            width={80}
+                            height={20}
+                            className="object-contain"
+                        />
                 </div>
                 <h1 className="text-2xl font-bold text-[#0f172a] tracking-tight">
                     SMART in ENGLISH

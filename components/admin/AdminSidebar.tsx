@@ -20,7 +20,7 @@ const navItems = [
     { href: '/admin/dashboard', label: 'Dashboard', icon: LayoutDashboard },
     { href: '/admin/programs', label: 'Programs', icon: BookOpen },
     { href: '/admin/team', label: 'Tim Pengajar', icon: Users },
-    { href: '/admin/events', label: 'Events', icon: Calendar },
+    // { href: '/admin/events', label: 'Events', icon: Calendar },
     { href: '/admin/gallery', label: 'Gallery', icon: ImageIcon },
     { href: '/admin/blog', label: 'Blog', icon: FileText },
     { href: '/admin/settings', label: 'Pengaturan', icon: Settings },
