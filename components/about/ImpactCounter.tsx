@@ -1,11 +1,14 @@
 export default function ImpactCounter() {
+  const startYear = 2007;
+  const currentYear = new Date().getFullYear();
+  const yearsOfExperience = currentYear - startYear;
   const stats = [
   { 
     value: "5.000+", 
     label: "Siswa & Alumni" 
   },
   { 
-    value: "19+", 
+    value: `${yearsOfExperience}+`, 
     label: "Tahun Pengalaman" 
   },
   { 

@@ -1,8 +1,11 @@
 // components/SocialProof.tsx
 export default function SocialProof() {
+  const startYear = 2007;
+  const currentYear = new Date().getFullYear();
+  const yearsOfExperience = currentYear - startYear;
   const stats = [
     { value: '5.000+', label: 'Alumni Sukses' },
-    { value: '19', label: 'Tahun Pengalaman' },
+    { value: yearsOfExperience, label: 'Tahun Pengalaman' },
     { value: '100%', label: 'Instruktur Tersertifikasi' },
     { value: 'B', label: 'Akreditasi' },
   ];

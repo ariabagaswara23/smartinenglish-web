@@ -2,6 +2,10 @@ import Image from "next/image";
 import { CheckCircle2 } from "lucide-react";
 
 export default function OurStory() {
+  const startYear = 2007;
+  const currentYear = new Date().getFullYear();
+  const yearsOfExperience = currentYear - startYear;
+
   const milestones = [
     "Pengalaman membimbing sejak tahun 2007",
     "Terakreditasi B resmi dari pemerintah",
@@ -57,7 +61,7 @@ export default function OurStory() {
                 Smart in English (SMILE) didirikan oleh <span className="font-bold text-primary">Mrs. Nurhasanah, S.Pd.,</span> pada tahun 2007, berawal dari semangat tulus untuk membantu siswa dan warga sekitar menguasai Bahasa Inggris dengan cara yang mudah, menyenangkan, dan aplikatif.
               </p>
               <p>
-                Berangkat dari visi menjadi mitra terpercaya dalam pengembangan SDM, perjalanan kami yang telah membentang selama lebih dari 19 tahun ini terus berkembang. SMILE kini tidak hanya berfokus pada Bahasa Inggris, tetapi juga melengkapi kebutuhan belajar anak melalui program Matematika, Calistung, Bimbel, Komputer, hingga Mengaji.
+                Berangkat dari visi menjadi mitra terpercaya dalam pengembangan SDM, perjalanan kami yang telah membentang selama lebih dari ${yearsOfExperience} tahun ini terus berkembang. SMILE kini tidak hanya berfokus pada Bahasa Inggris, tetapi juga melengkapi kebutuhan belajar anak melalui program Matematika, Calistung, Bimbel, Komputer, hingga Mengaji.
               </p>
               <p>
                 Dengan status yang telah Terakreditasi B, kami terus berkomitmen memberikan pendidikan berkualitas untuk mencetak generasi yang cerdas, berkarakter, dan siap bersaing.
