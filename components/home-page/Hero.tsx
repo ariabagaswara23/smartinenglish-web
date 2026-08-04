@@ -21,7 +21,7 @@ export default function Hero() {
       </div>
       {/* Gradient overlay to ensure text is readable */}
       <div className="absolute inset-0 bg-gradient-to-r from-[#fafafc]/95 via-[#fafafc]/80 to-transparent z-0 md:block hidden"></div>
-      <div className="absolute inset-0 bg-[#fafafc]/90 z-0 md:hidden block"></div>
+      <div className="absolute inset-0 bg-gradient-to-b from-[#fafafc]/95 via-[#fafafc]/70 to-[#fafafc]/20 z-0 md:hidden block"></div>
 
       {/* Background pattern (dots) */}
       <div 

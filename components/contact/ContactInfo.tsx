@@ -101,12 +101,12 @@ export default function ContactInfo() {
             <ExternalLink className="w-4 h-4 ml-1.5" />
           </a>
           <a
-            href="https://www.tiktok.com/@smile_smartinenglish"
+            href="https://www.tiktok.com/@lkpsmartinenglish_smile"
             target="_blank"
             rel="noopener noreferrer"
             className="inline-flex items-center text-sm font-semibold text-[#040404] hover:text-[#fe2858] transition-colors mt-auto"
           >
-            @smile_smartinenglish (TikTok)
+            @lkpsmartinenglish_smile (TikTok)
             <ExternalLink className="w-4 h-4 ml-1.5" />
           </a>
         </div>
