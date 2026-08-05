@@ -3,6 +3,7 @@
 import { useState } from 'react'
 import AdminSidebar from './AdminSidebar'
 import AdminHeader from './AdminHeader'
+import { AdminBreadcrumbs } from './AdminBreadcrumbs'
 
 interface AdminSidebarWrapperProps {
     user: {
@@ -29,6 +30,7 @@ export default function AdminSidebarWrapper({ user, children }: AdminSidebarWrap
                     onMenuOpen={() => setSidebarOpen(true)}
                 />
                 <main className="flex-1 p-4 sm:p-6 lg:p-8 overflow-auto">
+                    <AdminBreadcrumbs />
                     {children}
                 </main>
             </div>
