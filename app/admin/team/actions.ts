@@ -27,9 +27,24 @@ export async function createTeamMember(payload: unknown) {
         return { success: false, error: 'Data tidak valid' }
     }
 
+    const teamData = { ...parsed.data }
+
+    // Hitung jumlah tim berdasarkan tipe (teacher/staff) untuk mendapatkan order_index di posisi paling akhir
+    const { count, error: countError } = await supabase
+        .from('team')
+        .select('*', { count: 'exact', head: true })
+        .eq('type', teamData.type)
+
+    if (countError) {
+        console.error('Error counting team members:', countError)
+        return { success: false, error: 'Gagal menghitung urutan tim' }
+    }
+
+    teamData.order_index = count || 0
+
     const { data, error } = await supabase
         .from('team')
-        .insert(parsed.data)
+        .insert(teamData)
         .select()
         .single()
 
@@ -119,4 +134,32 @@ export async function toggleTeamStatus(id: string, currentStatus: boolean) {
     }
 
     return { success: true }
+}
+
+export async function updateTeamOrder(items: { id: string; order_index: number }[]) {
+    const supabase = await createClient()
+
+    // Menggunakan perulangan dengan Promise.all untuk mencegah isu upsert 
+    // jika kita tidak mengirimkan semua required field (seperti yang pengguna khawatirkan)
+    const promises = items.map(item => 
+        supabase
+            .from('team')
+            .update({ order_index: item.order_index })
+            .eq('id', item.id)
+    )
+
+    try {
+        const results = await Promise.all(promises)
+        const hasError = results.some(res => res.error)
+        
+        if (hasError) {
+            console.error('Error updating team order for some items:', results.filter(r => r.error))
+            return { success: false, error: 'Gagal memperbarui urutan beberapa item' }
+        }
+
+        return { success: true }
+    } catch (error) {
+        console.error('Error in updateTeamOrder:', error)
+        return { success: false, error: 'Terjadi kesalahan sistem saat memperbarui urutan' }
+    }
 }

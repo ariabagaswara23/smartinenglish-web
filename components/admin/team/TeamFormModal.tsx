@@ -308,23 +308,15 @@ export function TeamFormModal({ isOpen, onClose, memberToEdit }: TeamFormModalPr
                         <Textarea placeholder="Tuliskan pengalaman atau motto pengajar..." className="resize-none h-24" {...register('description')} />
                     </div>
 
-                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                        <div className="space-y-2">
-                            <label className="text-sm font-semibold text-black">Urutan Tampil (Order)</label>
-                            <Input type="number" {...register('order_index')} />
-                            {errors.order_index && <p className="text-xs text-destructive">{errors.order_index.message}</p>}
-                        </div>
-
-                        <div className="space-y-2 flex flex-col justify-center">
-                            <label className="text-sm font-semibold text-black mb-1">Status</label>
-                            <label className="flex items-center gap-2 cursor-pointer">
-                                <Checkbox 
-                                    checked={isActiveValue} 
-                                    onCheckedChange={(checked) => setValue('is_active', !!checked)} 
-                                />
-                                <span className="text-sm text-slate-600">Aktif (Tampil di website)</span>
-                            </label>
-                        </div>
+                    <div className="space-y-2 flex flex-col justify-center">
+                        <label className="text-sm font-semibold text-black mb-1">Status</label>
+                        <label className="flex items-center gap-2 cursor-pointer">
+                            <Checkbox 
+                                checked={isActiveValue} 
+                                onCheckedChange={(checked) => setValue('is_active', !!checked)} 
+                            />
+                            <span className="text-sm text-slate-600">Aktif (Tampil di website)</span>
+                        </label>
                     </div>
 
                     <div className="flex items-center justify-end gap-3 pt-4 border-t border-slate-100">
