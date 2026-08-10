@@ -2,28 +2,36 @@
 
 import React, { useState, useEffect } from "react";
 import Image from "next/image";
-import { featuredEvents } from "@/lib/data/galleryData";
+import { FeaturedEvent } from "@/types/gallery";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 
-export default function FeaturedSlider() {
+interface FeaturedSliderProps {
+  events: FeaturedEvent[];
+}
+
+export default function FeaturedSlider({ events }: FeaturedSliderProps) {
   const [currentIndex, setCurrentIndex] = useState(0);
 
+  // Don't render if no featured events
+  if (events.length === 0) return null;
+
   // Auto-slide effect
+  // eslint-disable-next-line react-hooks/rules-of-hooks
   useEffect(() => {
     const timer = setInterval(() => {
-      setCurrentIndex((prev) => (prev + 1) % featuredEvents.length);
+      setCurrentIndex((prev) => (prev + 1) % events.length);
     }, 3500); // 3.5 seconds
 
     return () => clearInterval(timer);
-  }, []);
+  }, [events.length]);
 
   const handleNext = () => {
-    setCurrentIndex((prev) => (prev + 1) % featuredEvents.length);
+    setCurrentIndex((prev) => (prev + 1) % events.length);
   };
 
   const handlePrev = () => {
     setCurrentIndex((prev) =>
-      prev === 0 ? featuredEvents.length - 1 : prev - 1
+      prev === 0 ? events.length - 1 : prev - 1
     );
   };
 
@@ -37,7 +45,7 @@ export default function FeaturedSlider() {
         </div>
 
         <div className="relative w-full max-w-5xl mx-auto rounded-3xl overflow-hidden shadow-2xl aspect-video bg-gray-100 group">
-          {featuredEvents.map((event, index) => (
+          {events.map((event, index) => (
             <div
               key={event.id}
               className={`absolute inset-0 transition-opacity duration-1000 ease-in-out ${
@@ -87,7 +95,7 @@ export default function FeaturedSlider() {
 
           {/* Indicators */}
           <div className="absolute bottom-6 right-6 md:right-12 z-20 flex space-x-2">
-            {featuredEvents.map((_, index) => (
+            {events.map((_, index) => (
               <button
                 key={index}
                 onClick={() => setCurrentIndex(index)}
@@ -105,3 +113,4 @@ export default function FeaturedSlider() {
     </section>
   );
 }
+

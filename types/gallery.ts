@@ -1,22 +1,36 @@
-export interface FeaturedEvent {
+// ─── Supabase Table: events ────────────────────────────────
+export interface Event {
     id: string;
     title: string;
-    description: string;
+    description: string | null;
     src: string;
     alt: string;
     badge: string;
+    is_featured: boolean;
+    created_at: string;
+    updated_at: string;
 }
 
+// Alias backward-compatible untuk FeaturedSlider
+export type FeaturedEvent = Pick<Event, 'id' | 'title' | 'description' | 'src' | 'alt' | 'badge'>;
+
+// ─── Supabase Table: gallery_items ─────────────────────────
 export interface GalleryItem {
     id: string;
     src: string;
     alt: string;
-    category: string;
     caption: string;
-    event_id?: string;
+    category: string;
+    event_id: string | null;
+    created_at: string;
 }
 
-// Untuk kodingan tab filter di FE:
+// Joined type: gallery_items + nested event data (dari Supabase select with join)
+export interface GalleryItemWithEvent extends GalleryItem {
+    event: Pick<Event, 'id' | 'title' | 'badge'> | null;
+}
+
+// ─── Category Constants ────────────────────────────────────
 export const GALLERY_CATEGORIES = [
     "Semua",
     "SMILE FEST",
@@ -24,3 +38,5 @@ export const GALLERY_CATEGORIES = [
     "Suasana Kelas",
     "Fasilitas",
 ] as const;
+
+export type GalleryCategory = (typeof GALLERY_CATEGORIES)[number];

@@ -3,16 +3,20 @@
 import React, { useState, useEffect, useCallback, Suspense } from "react";
 import Image from "next/image";
 import { useSearchParams } from "next/navigation";
-import { galleryItems, galleryCategories, GalleryCategory } from "@/lib/data/galleryData";
+import { GalleryItemWithEvent, GALLERY_CATEGORIES, GalleryCategory } from "@/types/gallery";
 import { X, ChevronLeft, ChevronRight, ZoomIn } from "lucide-react";
 
-function GalleryGridContent() {
+interface GalleryGridContentProps {
+  items: GalleryItemWithEvent[];
+}
+
+function GalleryGridContent({ items }: GalleryGridContentProps) {
   const searchParams = useSearchParams();
   const categoryQuery = searchParams.get("category");
   
   // Set initial filter based on URL query if it's a valid category
   const initialCategory: GalleryCategory = 
-    categoryQuery && galleryCategories.includes(categoryQuery as GalleryCategory)
+    categoryQuery && (GALLERY_CATEGORIES as readonly string[]).includes(categoryQuery)
       ? (categoryQuery as GalleryCategory)
       : "Semua";
 
@@ -21,7 +25,7 @@ function GalleryGridContent() {
 
   // Update filter if URL changes
   useEffect(() => {
-    if (categoryQuery && galleryCategories.includes(categoryQuery as GalleryCategory)) {
+    if (categoryQuery && (GALLERY_CATEGORIES as readonly string[]).includes(categoryQuery)) {
       // eslint-disable-next-line react-hooks/set-state-in-effect
       setActiveFilter(categoryQuery as GalleryCategory);
     }
@@ -30,8 +34,8 @@ function GalleryGridContent() {
   // Filter items based on active category
   const filteredItems =
     activeFilter === "Semua"
-      ? galleryItems
-      : galleryItems.filter((item) => item.category === activeFilter);
+      ? items
+      : items.filter((item) => item.category === activeFilter);
 
   // Lightbox Handlers
   const openLightbox = (index: number) => {
@@ -78,7 +82,7 @@ function GalleryGridContent() {
         
         {/* Filter Tabs */}
         <div className="flex flex-wrap justify-center gap-2 md:gap-4 mb-12">
-          {galleryCategories.map((category) => (
+          {GALLERY_CATEGORIES.map((category) => (
             <button
               key={category}
               onClick={() => setActiveFilter(category)}
@@ -118,6 +122,11 @@ function GalleryGridContent() {
                 <span className="text-blue-100 text-sm mt-1 transform translate-y-4 group-hover:translate-y-0 transition-transform duration-500 delay-75">
                   {item.category}
                 </span>
+                {item.event && (
+                  <span className="mt-2 inline-block bg-white/20 backdrop-blur-sm text-white text-xs font-semibold px-3 py-1 rounded-full transform translate-y-4 group-hover:translate-y-0 transition-transform duration-500 delay-100">
+                    {item.event.badge || item.event.title}
+                  </span>
+                )}
               </div>
             </div>
           ))}
@@ -180,11 +189,18 @@ function GalleryGridContent() {
               />
             </div>
             
-            {/* Caption in Lightbox */}
+            {/* Caption + Event Badge in Lightbox */}
             <div className="absolute bottom-4 left-0 w-full text-center pointer-events-none px-4">
-              <p className="text-white text-lg md:text-xl font-bold bg-black/50 inline-block px-6 py-2 rounded-full backdrop-blur-md">
-                {filteredItems[lightboxIndex].caption}
-              </p>
+              <div className="inline-flex flex-col items-center gap-2">
+                <p className="text-white text-lg md:text-xl font-bold bg-black/50 inline-block px-6 py-2 rounded-full backdrop-blur-md">
+                  {filteredItems[lightboxIndex].caption}
+                </p>
+                {filteredItems[lightboxIndex].event && (
+                  <span className="text-white text-xs md:text-sm font-semibold bg-primary/80 backdrop-blur-md px-4 py-1.5 rounded-full">
+                    {filteredItems[lightboxIndex].event!.badge || filteredItems[lightboxIndex].event!.title}
+                  </span>
+                )}
+              </div>
             </div>
           </div>
         </div>
@@ -193,14 +209,19 @@ function GalleryGridContent() {
   );
 }
 
-export default function GalleryGrid() {
+interface GalleryGridProps {
+  items: GalleryItemWithEvent[];
+}
+
+export default function GalleryGrid({ items }: GalleryGridProps) {
   return (
     <Suspense fallback={
       <div className="py-24 text-center text-gray-500">
         Memuat galeri...
       </div>
     }>
-      <GalleryGridContent />
+      <GalleryGridContent items={items} />
     </Suspense>
   );
 }
+

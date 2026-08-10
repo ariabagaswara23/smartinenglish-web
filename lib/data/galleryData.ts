@@ -1,6 +1,8 @@
 // ============================================================
 //  Gallery Dummy Data
-//  Semua data foto galeri dipusatkan di sini agar mudah dikelola.
+//  @deprecated — File ini tidak lagi digunakan. Semua komponen
+//  gallery sudah bermigrasi ke Supabase (server actions).
+//  File dipertahankan sementara sebagai referensi data awal.
 // ============================================================
 
 export type GalleryCategory =
