@@ -1,32 +1,52 @@
-import { LucideIcon } from "lucide-react";
-
-interface SubProgram {
-    name: string;
-    description: string;
-    badge?: string;
-    // Modal detail fields
-    detail?: {
-        hargaDaftar: string;
-        sppBulanan: string;
-        /** Override label for sppBulanan (e.g. 'Harga Paket', 'Harga Pembelajaran') */
-        sppLabel?: string;
-        /** Override note for sppBulanan */
-        sppNote?: string;
-        hargaModul?: string;
-        hargaUjian?: string;
-        jadwal: string;
-        materi: string[];
-    };
+export interface Program {
+  id: string; // e.g., 'english', 'math', 'calistung'
+  title: string;
+  icon_name: string; // Nama icon Lucide, e.g. 'Languages', 'Percent'
+  color: string; // Tailwind class background
+  accent_class: string; // Tailwind class text
+  badge_bg: string; // Tailwind class badge
+  border_accent: string; // Tailwind class border
+  description: string;
+  order_index: number;
+  is_active: boolean;
+  created_at?: string;
+  updated_at?: string;
+  sub_programs?: SubProgram[];
 }
 
-interface Program {
-    id: string;
-    icon: LucideIcon;
-    title: string;
-    color: string;
-    accentClass: string;
-    badgeBg: string;
-    borderAccent: string;
-    description: string;
-    subPrograms: SubProgram[];
+export interface SubProgram {
+  id: string; // UUID
+  program_id: string; // FK to programs.id
+  name: string;
+  description: string;
+  badge: string | null;
+  
+  // Harga & Biaya
+  harga_daftar: string;
+  spp_bulanan: string;
+  spp_label: string | null; // e.g., 'Harga Paket'
+  spp_note: string | null; // e.g., 'Dibayar di awal per paket'
+  harga_modul: string | null;
+  harga_ujian: string | null;
+  
+  // Detail
+  jadwal: string;
+  materi: string[]; // JSONB Array dari Supabase
+  module_images: string[]; // List URL public dari bucket 'program-modules'
+  
+  // Promo / Discount Info
+  is_discount_active: boolean;
+  discount_percentage: number | null;
+  harga_daftar_discount: string | null;
+  spp_bulanan_discount: string | null;
+  
+  // Pengaturan
+  order_index: number;
+  is_active: boolean;
+  created_at?: string;
+  updated_at?: string;
+}
+
+export interface SubProgramDetail extends SubProgram {
+  program?: Program; // Data relasi induk program
 }
