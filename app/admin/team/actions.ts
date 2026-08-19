@@ -2,6 +2,8 @@
 
 import { createClient } from '@/utils/supabase/server'
 import { teamFormSchema } from '@/schemas/team'
+import { revalidatePath } from 'next/cache'
+import type { TeamMember } from '@/types/team'
 
 export async function getTeamMembers() {
     const supabase = await createClient()
@@ -17,6 +19,23 @@ export async function getTeamMembers() {
     }
 
     return data
+}
+
+export async function getPublicTeamMembers(): Promise<TeamMember[]> {
+    const supabase = await createClient()
+
+    const { data, error } = await supabase
+        .from('team')
+        .select('*')
+        .eq('is_active', true)
+        .order('order_index', { ascending: true })
+
+    if (error) {
+        console.error('Error fetching public team members:', error)
+        return []
+    }
+
+    return (data as TeamMember[]) || []
 }
 
 export async function createTeamMember(payload: unknown) {
@@ -53,6 +72,8 @@ export async function createTeamMember(payload: unknown) {
         return { success: false, error: 'Gagal menambahkan anggota tim' }
     }
 
+    revalidatePath('/about')
+    revalidatePath('/admin/team')
     return { success: true, data }
 }
 
@@ -76,6 +97,8 @@ export async function updateTeamMember(id: string, payload: unknown) {
         return { success: false, error: 'Gagal memperbarui anggota tim' }
     }
 
+    revalidatePath('/about')
+    revalidatePath('/admin/team')
     return { success: true, data }
 }
 
@@ -117,6 +140,8 @@ export async function deleteTeamMember(id: string, imageUrl?: string | null) {
         return { success: false, error: 'Gagal menghapus anggota tim' }
     }
 
+    revalidatePath('/about')
+    revalidatePath('/admin/team')
     return { success: true }
 }
 
@@ -133,6 +158,8 @@ export async function toggleTeamStatus(id: string, currentStatus: boolean) {
         return { success: false, error: 'Gagal mengubah status' }
     }
 
+    revalidatePath('/about')
+    revalidatePath('/admin/team')
     return { success: true }
 }
 
@@ -157,6 +184,8 @@ export async function updateTeamOrder(items: { id: string; order_index: number }
             return { success: false, error: 'Gagal memperbarui urutan beberapa item' }
         }
 
+        revalidatePath('/about')
+        revalidatePath('/admin/team')
         return { success: true }
     } catch (error) {
         console.error('Error in updateTeamOrder:', error)

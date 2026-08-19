@@ -25,6 +25,15 @@ import {
     DropdownMenuSeparator,
 } from '@/components/ui/dropdown-menu'
 import {
+    AlertDialog,
+    AlertDialogCancel,
+    AlertDialogContent,
+    AlertDialogDescription,
+    AlertDialogFooter,
+    AlertDialogHeader,
+    AlertDialogTitle,
+} from '@/components/ui/alert-dialog'
+import {
     MoreVertical,
     Edit,
     Trash2,
@@ -58,7 +67,7 @@ interface DraggableRowProps {
     member: TeamMember
     isDragEnabled: boolean
     onEdit: (m: TeamMember) => void
-    onDelete: (id: string, img: string | null | undefined) => void
+    onDelete: (member: TeamMember) => void
     onToggleStatus: (id: string, status: boolean) => void
 }
 
@@ -163,7 +172,7 @@ function DraggableRow({ member, isDragEnabled, onEdit, onDelete, onToggleStatus 
                             )}
                         </DropdownMenuItem>
                         <DropdownMenuSeparator />
-                        <DropdownMenuItem onClick={() => onDelete(member.id, member.image_url)} variant="destructive" className="cursor-pointer">
+                        <DropdownMenuItem onClick={() => onDelete(member)} variant="destructive" className="cursor-pointer">
                             <Trash2 className="w-4 h-4 mr-2" /> Hapus
                         </DropdownMenuItem>
                     </DropdownMenuContent>
@@ -178,6 +187,7 @@ export function TeamTable() {
     const [filter, setFilter] = React.useState<FilterTab>('all')
     const [isModalOpen, setIsModalOpen] = React.useState(false)
     const [memberToEdit, setMemberToEdit] = React.useState<TeamMember | null>(null)
+    const [memberToDelete, setMemberToDelete] = React.useState<TeamMember | null>(null)
 
     const { data: teamMembers, isLoading } = useQuery({
         queryKey: ['team'],
@@ -192,7 +202,8 @@ export function TeamTable() {
         },
         onSuccess: () => {
             queryClient.invalidateQueries({ queryKey: ['team'] })
-            toast.add({ title: 'Berhasil', description: 'Anggota tim dihapus', type: 'success' })
+            toast.add({ title: 'Berhasil', description: 'Anggota tim berhasil dihapus', type: 'success' })
+            setMemberToDelete(null)
         },
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         onError: (error: any) => {
@@ -275,10 +286,13 @@ export function TeamTable() {
         setIsModalOpen(true)
     }
 
-    const handleDelete = (id: string, imageUrl?: string | null) => {
-        if (window.confirm('Yakin ingin menghapus anggota tim ini?')) {
-            deleteMutation.mutate({ id, imageUrl })
-        }
+    const handleDelete = (member: TeamMember) => {
+        setMemberToDelete(member)
+    }
+
+    const handleDeleteConfirm = () => {
+        if (!memberToDelete) return
+        deleteMutation.mutate({ id: memberToDelete.id, imageUrl: memberToDelete.image_url })
     }
 
     return (
@@ -369,6 +383,24 @@ export function TeamTable() {
                 onClose={() => setIsModalOpen(false)}
                 memberToEdit={memberToEdit}
             />
+
+            {/* Alert Dialog for Delete Confirmation */}
+            <AlertDialog open={!!memberToDelete} onOpenChange={(open) => !open && !deleteMutation.isPending && setMemberToDelete(null)}>
+                <AlertDialogContent>
+                    <AlertDialogHeader>
+                        <AlertDialogTitle>Apakah Anda yakin?</AlertDialogTitle>
+                        <AlertDialogDescription>
+                            Tindakan ini tidak dapat dibatalkan. Anggota tim <span className="font-semibold text-slate-900">{memberToDelete?.name}</span> akan dihapus secara permanen dari server.
+                        </AlertDialogDescription>
+                    </AlertDialogHeader>
+                    <AlertDialogFooter>
+                        <AlertDialogCancel disabled={deleteMutation.isPending}>Batal</AlertDialogCancel>
+                        <Button variant="destructive" onClick={handleDeleteConfirm} disabled={deleteMutation.isPending}>
+                            {deleteMutation.isPending ? 'Menghapus...' : 'Hapus Anggota'}
+                        </Button>
+                    </AlertDialogFooter>
+                </AlertDialogContent>
+            </AlertDialog>
         </div>
     )
 }

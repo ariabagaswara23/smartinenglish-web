@@ -17,6 +17,7 @@ import {
 import { cn } from "@/lib/utils";
 import Link from "next/link";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
+import { toast } from "@/components/ui/toast";
 
 const CURATED_ICONS = [
   { name: 'Languages', icon: Languages },
@@ -125,6 +126,7 @@ export default function ProgramFormDialog({ program, open, onOpenChange, onSucce
     setLoading(true);
 
     const formData = new FormData(e.currentTarget);
+    const orderIndexRaw = formData.get("order_index");
     const data: Partial<Program> = {
       id: program?.id || id, // use state ID
       title: formData.get("title") as string,
@@ -134,7 +136,7 @@ export default function ProgramFormDialog({ program, open, onOpenChange, onSucce
       badge_bg: selectedPreset.badgeBg,
       border_accent: selectedPreset.borderAccent,
       description: formData.get("description") as string,
-      order_index: parseInt(formData.get("order_index") as string) || 0,
+      order_index: orderIndexRaw !== null ? (parseInt(orderIndexRaw as string) || 0) : undefined,
       is_active: program?.is_active ?? true,
     };
 
@@ -142,11 +144,19 @@ export default function ProgramFormDialog({ program, open, onOpenChange, onSucce
     setLoading(false);
 
     if (res.success) {
-      alert("Program saved successfully");
+      toast.add({
+        title: program ? "Program Diperbarui" : "Program Ditambahkan",
+        description: `Data program "${data.title}" berhasil disimpan.`,
+        type: "success",
+      });
       onSuccess();
       onOpenChange(false);
     } else {
-      alert("Failed to save program: " + res.error);
+      toast.add({
+        title: "Gagal Menyimpan",
+        description: res.error || "Terjadi kesalahan saat menyimpan program.",
+        type: "error",
+      });
     }
   };
 
@@ -154,7 +164,7 @@ export default function ProgramFormDialog({ program, open, onOpenChange, onSucce
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="sm:max-w-[600px] max-h-[90vh] overflow-y-auto">
         <DialogHeader>
-          <DialogTitle className="font-bold text-slate-900">{program ? "Edit Program" : "Add Program"}</DialogTitle>
+          <DialogTitle className="text-2xl font-bold tracking-tight text-slate-900">{program ? "Edit Program" : "Add Program"}</DialogTitle>
         </DialogHeader>
         <form onSubmit={handleSubmit} className="space-y-6 py-4">
           
@@ -209,9 +219,9 @@ export default function ProgramFormDialog({ program, open, onOpenChange, onSucce
               />
             </div>
 
-            <div className="grid grid-cols-2 gap-4">
+            <div className={cn("grid gap-4", program ? "grid-cols-2" : "grid-cols-1")}>
               <div className="space-y-2">
-                <Label htmlFor="icon_name" className="font-semibold">Icon Name (Lucide)</Label>
+                <Label htmlFor="icon_name" className="font-semibold">Icon Program (Lucide)</Label>
                 <input type="hidden" name="icon_name" value={iconName} />
                 <Popover open={isIconPopoverOpen} onOpenChange={setIsIconPopoverOpen}>
                   <PopoverTrigger render={
@@ -283,10 +293,21 @@ export default function ProgramFormDialog({ program, open, onOpenChange, onSucce
                 </Popover>
                 <p className="text-[10px] text-slate-500">Lihat icon lain di <Link href="https://lucide.dev/icons" target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">lucide.dev/icons</Link></p>
               </div>
-              <div className="space-y-2">
-                <Label htmlFor="order_index" className="font-semibold">Urutan Tampil (Order Index)</Label>
-                <Input id="order_index" name="order_index" type="number" defaultValue={program?.order_index || 0} required />
-              </div>
+              
+              {program && (
+                <div className="space-y-2">
+                  <Label htmlFor="order_index" className="font-semibold">Urutan Tampil (Order Index)</Label>
+                  <Input 
+                    id="order_index" 
+                    name="order_index" 
+                    type="number" 
+                    min={0}
+                    defaultValue={program?.order_index ?? 0} 
+                    required 
+                  />
+                  <p className="text-[11px] text-slate-500">Ubah urutan tab program pada landing page.</p>
+                </div>
+              )}
             </div>
           </div>
 

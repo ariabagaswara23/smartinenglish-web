@@ -21,13 +21,13 @@ export interface SubProgram {
   description: string;
   badge: string | null;
   
-  // Harga & Biaya
-  harga_daftar: string;
-  spp_bulanan: string;
+  // Harga & Biaya (BIGINT numeric values)
+  harga_daftar: number;
+  spp_bulanan: number;
   spp_label: string | null; // e.g., 'Harga Paket'
   spp_note: string | null; // e.g., 'Dibayar di awal per paket'
-  harga_modul: string | null;
-  harga_ujian: string | null;
+  harga_modul: number | null;
+  harga_ujian: number | null;
   
   // Detail
   jadwal: string;
@@ -37,8 +37,8 @@ export interface SubProgram {
   // Promo / Discount Info
   is_discount_active: boolean;
   discount_percentage: number | null;
-  harga_daftar_discount: string | null;
-  spp_bulanan_discount: string | null;
+  harga_daftar_discount: number | null;
+  spp_bulanan_discount: number | null;
   
   // Pengaturan
   order_index: number;

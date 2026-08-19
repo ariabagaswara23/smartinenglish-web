@@ -9,6 +9,7 @@ import { Program, SubProgram } from '@/types/program';
 import { Skeleton } from '@/components/ui/skeleton';
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from '@/components/ui/carousel';
 import { Dialog, DialogContent, DialogTrigger } from '@/components/ui/dialog';
+import { formatRupiah } from '@/lib/utils';
 
 // --- Helper Icon Component ---
 const DynamicIcon = ({ name, className }: { name: string, className?: string }) => {
@@ -46,10 +47,30 @@ function ProgramModal({ sub, accentClass, badgeBg, borderAccent, programIconName
   const { harga_daftar, spp_bulanan, spp_label, spp_note, harga_modul, harga_ujian, jadwal, materi } = sub;
 
   const priceItems = [
-    { label: 'Harga Daftar', value: harga_daftar, valueDiscount: sub.harga_daftar_discount, icon: ClipboardList, note: 'Dibayar sekali saat pendaftaran' },
-    { label: spp_label ?? 'SPP Bulanan', value: spp_bulanan, valueDiscount: sub.spp_bulanan_discount, icon: Calendar, note: spp_note ?? 'Dibayar setiap bulan' },
-    ...(harga_modul ? [{ label: 'Harga Modul', value: harga_modul, icon: BookOpen, note: 'Buku ajar / modul pembelajaran' }] : []),
-    ...(harga_ujian ? [{ label: 'Harga Ujian', value: harga_ujian, icon: GraduationCap, note: 'Biaya pelaksanaan ujian' }] : []),
+    {
+      label: 'Harga Daftar',
+      value: formatRupiah(harga_daftar),
+      valueDiscount: sub.is_discount_active && sub.harga_daftar_discount !== null && sub.harga_daftar_discount !== undefined
+        ? (sub.harga_daftar_discount === 0 ? 'GRATIS (Rp 0)' : formatRupiah(sub.harga_daftar_discount))
+        : null,
+      icon: ClipboardList,
+      note: 'Dibayar sekali saat pendaftaran'
+    },
+    {
+      label: spp_label ?? 'SPP Bulanan',
+      value: formatRupiah(spp_bulanan),
+      valueDiscount: sub.is_discount_active && sub.spp_bulanan_discount !== null && sub.spp_bulanan_discount !== undefined
+        ? formatRupiah(sub.spp_bulanan_discount)
+        : null,
+      icon: Calendar,
+      note: spp_note ?? 'Dibayar setiap bulan'
+    },
+    ...(harga_modul !== null && harga_modul !== undefined
+      ? [{ label: 'Harga Modul', value: formatRupiah(harga_modul), icon: BookOpen, note: 'Buku ajar / modul pembelajaran' }]
+      : []),
+    ...(harga_ujian !== null && harga_ujian !== undefined
+      ? [{ label: 'Harga Ujian', value: formatRupiah(harga_ujian), icon: GraduationCap, note: 'Biaya pelaksanaan ujian' }]
+      : []),
   ];
 
   const waMessage = `Halo Admin, saya tertarik untuk mendaftar program ${sub.name}. Boleh minta info lebih lanjut?`;

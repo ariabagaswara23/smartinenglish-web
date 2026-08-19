@@ -73,7 +73,7 @@ export default function ContactInfo() {
             </li>
             <li className="flex justify-between border-b border-gray-50 pb-2 pt-1">
               <span>Sabtu</span>
-              <span className="font-medium text-gray-700">09:00 - 18:00</span>
+              <span className="font-medium text-gray-700">09:00 - 17:00</span>
             </li>
             <li className="flex justify-between pt-1">
               <span>Minggu</span>

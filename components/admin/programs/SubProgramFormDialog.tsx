@@ -1,15 +1,20 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
 import { SubProgram } from "@/types/program";
+import { subProgramFormSchema, SubProgramFormValues } from "@/schemas/program";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Switch } from "@/components/ui/switch";
+import { toast } from "@/components/ui/toast";
 import { upsertSubProgram } from "@/app/admin/programs/actions";
 import { createClient } from "@/utils/supabase/client";
+import { Loader2 } from "lucide-react";
 
 interface SubProgramFormDialogProps {
   programId: string;
@@ -19,7 +24,13 @@ interface SubProgramFormDialogProps {
   onSuccess: () => void;
 }
 
-export default function SubProgramFormDialog({ programId, subProgram, open, onOpenChange, onSuccess }: SubProgramFormDialogProps) {
+export default function SubProgramFormDialog({
+  programId,
+  subProgram,
+  open,
+  onOpenChange,
+  onSuccess,
+}: SubProgramFormDialogProps) {
   const [loading, setLoading] = useState(false);
   const [isDiscountActive, setIsDiscountActive] = useState(subProgram?.is_discount_active ?? false);
   const [materi, setMateri] = useState<string[]>(subProgram?.materi || []);
@@ -30,15 +41,106 @@ export default function SubProgramFormDialog({ programId, subProgram, open, onOp
 
   const supabase = createClient();
 
+  const {
+    register,
+    handleSubmit,
+    setValue,
+    reset,
+    formState: { errors },
+  } = useForm<SubProgramFormValues>({
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    resolver: zodResolver(subProgramFormSchema) as any,
+    defaultValues: {
+      name: "",
+      badge: "",
+      description: "",
+      jadwal: "",
+      order_index: 0,
+      harga_daftar: undefined,
+      spp_bulanan: undefined,
+      spp_label: "",
+      spp_note: "",
+      harga_modul: null,
+      harga_ujian: null,
+      is_discount_active: false,
+      discount_percentage: null,
+      harga_daftar_discount: null,
+      spp_bulanan_discount: null,
+      is_active: true,
+      materi: [],
+      module_images: [],
+    },
+  });
+
+  useEffect(() => {
+    if (open) {
+      if (subProgram) {
+        reset({
+          name: subProgram.name,
+          badge: subProgram.badge || "",
+          description: subProgram.description,
+          jadwal: subProgram.jadwal,
+          order_index: subProgram.order_index ?? 0,
+          harga_daftar: subProgram.harga_daftar,
+          spp_bulanan: subProgram.spp_bulanan,
+          spp_label: subProgram.spp_label || "",
+          spp_note: subProgram.spp_note || "",
+          harga_modul: subProgram.harga_modul ?? null,
+          harga_ujian: subProgram.harga_ujian ?? null,
+          is_discount_active: subProgram.is_discount_active,
+          discount_percentage: subProgram.discount_percentage ?? null,
+          harga_daftar_discount: subProgram.harga_daftar_discount ?? null,
+          spp_bulanan_discount: subProgram.spp_bulanan_discount ?? null,
+          is_active: subProgram.is_active ?? true,
+          materi: subProgram.materi || [],
+          module_images: subProgram.module_images || [],
+        });
+        // eslint-disable-next-line react-hooks/set-state-in-effect
+        setIsDiscountActive(subProgram.is_discount_active);
+        setMateri(subProgram.materi || []);
+        setModuleImages(subProgram.module_images || []);
+      } else {
+        reset({
+          name: "",
+          badge: "",
+          description: "",
+          jadwal: "",
+          order_index: 0,
+          harga_daftar: undefined,
+          spp_bulanan: undefined,
+          spp_label: "",
+          spp_note: "",
+          harga_modul: null,
+          harga_ujian: null,
+          is_discount_active: false,
+          discount_percentage: null,
+          harga_daftar_discount: null,
+          spp_bulanan_discount: null,
+          is_active: true,
+          materi: [],
+          module_images: [],
+        });
+        setIsDiscountActive(false);
+        setMateri([]);
+        setModuleImages([]);
+      }
+      setMateriInput("");
+    }
+  }, [open, subProgram, reset]);
+
   const handleAddMateri = () => {
     if (materiInput.trim()) {
-      setMateri([...materi, materiInput.trim()]);
+      const updated = [...materi, materiInput.trim()];
+      setMateri(updated);
+      setValue("materi", updated, { shouldValidate: true });
       setMateriInput("");
     }
   };
 
   const handleRemoveMateri = (index: number) => {
-    setMateri(materi.filter((_, i) => i !== index));
+    const updated = materi.filter((_, i) => i !== index);
+    setMateri(updated);
+    setValue("materi", updated, { shouldValidate: true });
   };
 
   const handleFileUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -46,7 +148,7 @@ export default function SubProgramFormDialog({ programId, subProgram, open, onOp
     if (!file) return;
 
     setUploadingImage(true);
-    const fileExt = file.name.split('.').pop();
+    const fileExt = file.name.split(".").pop();
     const fileName = `${Math.random().toString(36).substring(2, 15)}_${Date.now()}.${fileExt}`;
     const filePath = `${fileName}`;
 
@@ -55,7 +157,11 @@ export default function SubProgramFormDialog({ programId, subProgram, open, onOp
       .upload(filePath, file);
 
     if (uploadError) {
-      alert("Error uploading image: " + uploadError.message);
+      toast.add({
+        title: "Gagal Upload Gambar",
+        description: uploadError.message,
+        type: "error",
+      });
       setUploadingImage(false);
       return;
     }
@@ -63,59 +169,69 @@ export default function SubProgramFormDialog({ programId, subProgram, open, onOp
     const { data } = supabase.storage.from("program-modules").getPublicUrl(filePath);
     
     if (data?.publicUrl) {
-      setModuleImages([...moduleImages, data.publicUrl]);
+      const updated = [...moduleImages, data.publicUrl];
+      setModuleImages(updated);
+      setValue("module_images", updated, { shouldValidate: true });
     }
     setUploadingImage(false);
     
-    // reset input
-    e.target.value = '';
+    e.target.value = "";
   };
 
   const handleRemoveImage = (index: number) => {
-    setModuleImages(moduleImages.filter((_, i) => i !== index));
+    const updated = moduleImages.filter((_, i) => i !== index);
+    setModuleImages(updated);
+    setValue("module_images", updated, { shouldValidate: true });
   };
 
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
+  const onSubmit = async (values: SubProgramFormValues) => {
     setLoading(true);
 
-    const formData = new FormData(e.currentTarget);
-    const data: Partial<SubProgram> = {
-      id: subProgram?.id, // Will be generated if undefined
+    const payload: Partial<SubProgram> = {
+      id: subProgram?.id,
       program_id: programId,
-      name: formData.get("name") as string,
-      description: formData.get("description") as string,
-      badge: formData.get("badge") as string || null,
-      jadwal: formData.get("jadwal") as string,
+      name: values.name,
+      description: values.description,
+      badge: values.badge ? values.badge.trim() : null,
+      jadwal: values.jadwal,
       
-      harga_daftar: formData.get("harga_daftar") as string,
-      spp_bulanan: formData.get("spp_bulanan") as string,
-      spp_label: formData.get("spp_label") as string || null,
-      spp_note: formData.get("spp_note") as string || null,
-      harga_modul: formData.get("harga_modul") as string || null,
-      harga_ujian: formData.get("harga_ujian") as string || null,
+      // Numeric price values (BIGINT)
+      harga_daftar: values.harga_daftar,
+      spp_bulanan: values.spp_bulanan,
+      spp_label: values.spp_label ? values.spp_label.trim() : null,
+      spp_note: values.spp_note ? values.spp_note.trim() : null,
+      harga_modul: values.harga_modul !== undefined ? values.harga_modul : null,
+      harga_ujian: values.harga_ujian !== undefined ? values.harga_ujian : null,
       
       is_discount_active: isDiscountActive,
-      discount_percentage: parseInt(formData.get("discount_percentage") as string) || null,
-      harga_daftar_discount: formData.get("harga_daftar_discount") as string || null,
-      spp_bulanan_discount: formData.get("spp_bulanan_discount") as string || null,
+      discount_percentage: isDiscountActive ? (values.discount_percentage ?? null) : null,
+      harga_daftar_discount: isDiscountActive ? (values.harga_daftar_discount ?? null) : null,
+      spp_bulanan_discount: isDiscountActive ? (values.spp_bulanan_discount ?? null) : null,
       
-      order_index: parseInt(formData.get("order_index") as string) || 0,
+      order_index: subProgram?.order_index !== undefined ? subProgram.order_index : undefined,
       is_active: subProgram?.is_active ?? true,
       
       materi,
       module_images: moduleImages,
     };
 
-    const res = await upsertSubProgram(data);
+    const res = await upsertSubProgram(payload);
     setLoading(false);
 
     if (res.success) {
-      alert("Sub Program saved successfully");
+      toast.add({
+        title: subProgram ? "Sub-Program Diperbarui" : "Sub-Program Ditambahkan",
+        description: `Data sub-program "${values.name}" berhasil disimpan.`,
+        type: "success",
+      });
       onSuccess();
       onOpenChange(false);
     } else {
-      alert("Failed to save: " + res.error);
+      toast.add({
+        title: "Gagal Menyimpan",
+        description: res.error || "Terjadi kesalahan saat menyimpan data.",
+        type: "error",
+      });
     }
   };
 
@@ -123,108 +239,262 @@ export default function SubProgramFormDialog({ programId, subProgram, open, onOp
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="sm:max-w-[700px] max-h-[90vh] overflow-y-auto">
         <DialogHeader>
-          <DialogTitle>{subProgram ? "Edit Sub-Program" : "Add Sub-Program"}</DialogTitle>
+          <DialogTitle className="text-2xl font-bold tracking-tight text-slate-900">{subProgram ? "Edit Sub-Program" : "Tambah Sub-Program"}</DialogTitle>
         </DialogHeader>
         
-        <form onSubmit={handleSubmit} className="space-y-6 py-4">
-          <div className="grid grid-cols-2 gap-4">
+        <form onSubmit={handleSubmit(onSubmit)} className="space-y-6 py-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div className="space-y-2">
-              <Label htmlFor="name">Name</Label>
-              <Input id="name" name="name" defaultValue={subProgram?.name} required />
+              <Label htmlFor="name">Nama Sub-Program *</Label>
+              <Input
+                id="name"
+                placeholder="e.g. English for Kids"
+                {...register("name")}
+                aria-invalid={!!errors.name}
+              />
+              {errors.name && <p className="text-xs text-destructive">{errors.name.message}</p>}
             </div>
             <div className="space-y-2">
-              <Label htmlFor="badge">Badge (Optional)</Label>
-              <Input id="badge" name="badge" defaultValue={subProgram?.badge || ""} placeholder="e.g. Best Seller" />
+              <Label htmlFor="badge">Badge Jenjang (Opsional)</Label>
+              <Input
+                id="badge"
+                placeholder="e.g. SD / SMP / SMA"
+                {...register("badge")}
+              />
             </div>
           </div>
 
           <div className="space-y-2">
-            <Label htmlFor="description">Description</Label>
-            <Textarea id="description" name="description" defaultValue={subProgram?.description} required />
+            <Label htmlFor="description">Deskripsi *</Label>
+            <Textarea
+              id="description"
+              placeholder="Deskripsi singkat program belajar..."
+              rows={3}
+              {...register("description")}
+              aria-invalid={!!errors.description}
+            />
+            {errors.description && <p className="text-xs text-destructive">{errors.description.message}</p>}
           </div>
 
-          <div className="grid grid-cols-2 gap-4">
-            <div className="space-y-2">
-              <Label htmlFor="jadwal">Jadwal</Label>
-              <Input id="jadwal" name="jadwal" defaultValue={subProgram?.jadwal} required placeholder="e.g. Senin & Rabu, 15:00" />
-            </div>
-            <div className="space-y-2">
-              <Label htmlFor="order_index">Order Index</Label>
-              <Input id="order_index" name="order_index" type="number" defaultValue={subProgram?.order_index || 0} required />
-            </div>
+          <div className="space-y-2">
+            <Label htmlFor="jadwal">Jadwal Pertemuan *</Label>
+            <Input
+              id="jadwal"
+              placeholder="e.g. Senin & Rabu, 15:00 - 16:30"
+              {...register("jadwal")}
+              aria-invalid={!!errors.jadwal}
+            />
+            {errors.jadwal && <p className="text-xs text-destructive">{errors.jadwal.message}</p>}
           </div>
 
+          {/* Biaya Normal */}
           <div className="border-t pt-4">
-            <h4 className="font-semibold mb-4">Biaya Normal</h4>
-            <div className="grid grid-cols-2 gap-4">
+            <h4 className="font-semibold text-base mb-1">Biaya Program</h4>
+            <p className="text-xs text-muted-foreground mb-4">
+              Masukkan angka murni tanpa titik atau tanda mata uang (contoh: 150000).
+            </p>
+            
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div className="space-y-2">
-                <Label htmlFor="harga_daftar">Biaya Pendaftaran</Label>
-                <Input id="harga_daftar" name="harga_daftar" defaultValue={subProgram?.harga_daftar} required placeholder="Rp 150.000" />
+                <Label htmlFor="harga_daftar">Biaya Pendaftaran *</Label>
+                <div className="relative">
+                  <span className="absolute left-3 top-1/2 -translate-y-1/2 text-sm text-muted-foreground font-medium select-none pointer-events-none">
+                    Rp
+                  </span>
+                  <Input
+                    id="harga_daftar"
+                    type="number"
+                    min={0}
+                    step={1000}
+                    className="pl-10"
+                    placeholder="150000"
+                    {...register("harga_daftar")}
+                    aria-invalid={!!errors.harga_daftar}
+                  />
+                </div>
+                {errors.harga_daftar && <p className="text-xs text-destructive">{errors.harga_daftar.message}</p>}
               </div>
+
               <div className="space-y-2">
-                <Label htmlFor="spp_bulanan">SPP Bulanan</Label>
-                <Input id="spp_bulanan" name="spp_bulanan" defaultValue={subProgram?.spp_bulanan} required placeholder="Rp 350.000" />
+                <Label htmlFor="spp_bulanan">SPP Bulanan / Paket *</Label>
+                <div className="relative">
+                  <span className="absolute left-3 top-1/2 -translate-y-1/2 text-sm text-muted-foreground font-medium select-none pointer-events-none">
+                    Rp
+                  </span>
+                  <Input
+                    id="spp_bulanan"
+                    type="number"
+                    min={0}
+                    step={1000}
+                    className="pl-10"
+                    placeholder="350000"
+                    {...register("spp_bulanan")}
+                    aria-invalid={!!errors.spp_bulanan}
+                  />
+                </div>
+                {errors.spp_bulanan && <p className="text-xs text-destructive">{errors.spp_bulanan.message}</p>}
               </div>
+
               <div className="space-y-2">
-                <Label htmlFor="spp_label">Label SPP (Optional)</Label>
-                <Input id="spp_label" name="spp_label" defaultValue={subProgram?.spp_label || ""} placeholder="e.g. Harga Paket" />
+                <Label htmlFor="spp_label">Label SPP (Opsional)</Label>
+                <Input
+                  id="spp_label"
+                  placeholder="e.g. Harga Paket / SPP Bulanan"
+                  {...register("spp_label")}
+                />
               </div>
+
               <div className="space-y-2">
-                <Label htmlFor="spp_note">Catatan SPP (Optional)</Label>
-                <Input id="spp_note" name="spp_note" defaultValue={subProgram?.spp_note || ""} placeholder="e.g. Dibayar di awal" />
+                <Label htmlFor="spp_note">Catatan SPP (Opsional)</Label>
+                <Input
+                  id="spp_note"
+                  placeholder="e.g. Dibayar di awal per paket"
+                  {...register("spp_note")}
+                />
               </div>
+
               <div className="space-y-2">
-                <Label htmlFor="harga_modul">Harga Modul (Optional)</Label>
-                <Input id="harga_modul" name="harga_modul" defaultValue={subProgram?.harga_modul || ""} placeholder="Rp 100.000" />
+                <Label htmlFor="harga_modul">Harga Modul (Opsional)</Label>
+                <div className="relative">
+                  <span className="absolute left-3 top-1/2 -translate-y-1/2 text-sm text-muted-foreground font-medium select-none pointer-events-none">
+                    Rp
+                  </span>
+                  <Input
+                    id="harga_modul"
+                    type="number"
+                    min={0}
+                    step={1000}
+                    className="pl-10"
+                    placeholder="100000"
+                    {...register("harga_modul")}
+                    aria-invalid={!!errors.harga_modul}
+                  />
+                </div>
+                {errors.harga_modul && <p className="text-xs text-destructive">{errors.harga_modul.message}</p>}
               </div>
+
               <div className="space-y-2">
-                <Label htmlFor="harga_ujian">Harga Ujian (Optional)</Label>
-                <Input id="harga_ujian" name="harga_ujian" defaultValue={subProgram?.harga_ujian || ""} placeholder="Rp 50.000" />
+                <Label htmlFor="harga_ujian">Harga Ujian (Opsional)</Label>
+                <div className="relative">
+                  <span className="absolute left-3 top-1/2 -translate-y-1/2 text-sm text-muted-foreground font-medium select-none pointer-events-none">
+                    Rp
+                  </span>
+                  <Input
+                    id="harga_ujian"
+                    type="number"
+                    min={0}
+                    step={1000}
+                    className="pl-10"
+                    placeholder="50000"
+                    {...register("harga_ujian")}
+                    aria-invalid={!!errors.harga_ujian}
+                  />
+                </div>
+                {errors.harga_ujian && <p className="text-xs text-destructive">{errors.harga_ujian.message}</p>}
               </div>
             </div>
           </div>
 
-          <div className="border-t pt-4 bg-muted/30 p-4 rounded-lg">
-            <div className="flex items-center justify-between mb-4">
-              <h4 className="font-semibold">Promo / Diskon</h4>
+          {/* Promo / Diskon */}
+          <div className="border-t pt-4 bg-muted/40 p-4 rounded-xl space-y-4">
+            <div className="flex items-center justify-between">
+              <div>
+                <h4 className="font-semibold text-sm">Promo / Diskon Khusus</h4>
+                <p className="text-xs text-muted-foreground">Aktifkan untuk memberikan harga promo tercoret</p>
+              </div>
               <div className="flex items-center gap-2">
-                <Label htmlFor="is_discount_active">Aktifkan Promo</Label>
+                <Label htmlFor="is_discount_active" className="text-xs cursor-pointer">
+                  {isDiscountActive ? "Promo Aktif" : "Non-Aktif"}
+                </Label>
                 <Switch 
                   id="is_discount_active" 
                   checked={isDiscountActive} 
-                  onCheckedChange={setIsDiscountActive} 
+                  onCheckedChange={(checked) => {
+                    setIsDiscountActive(checked);
+                    setValue("is_discount_active", checked, { shouldValidate: true });
+                  }} 
                 />
               </div>
             </div>
             
             {isDiscountActive && (
-              <div className="grid grid-cols-2 gap-4">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-2">
                 <div className="space-y-2">
                   <Label htmlFor="discount_percentage">Persentase Diskon (%)</Label>
-                  <Input id="discount_percentage" name="discount_percentage" type="number" defaultValue={subProgram?.discount_percentage || ""} placeholder="e.g. 20" />
+                  <div className="relative">
+                    <Input
+                      id="discount_percentage"
+                      type="number"
+                      min={0}
+                      max={100}
+                      className="pr-8"
+                      placeholder="20"
+                      {...register("discount_percentage")}
+                      aria-invalid={!!errors.discount_percentage}
+                    />
+                    <span className="absolute right-3 top-1/2 -translate-y-1/2 text-sm text-muted-foreground font-medium select-none pointer-events-none">
+                      %
+                    </span>
+                  </div>
+                  {errors.discount_percentage && <p className="text-xs text-destructive">{errors.discount_percentage.message}</p>}
                 </div>
-                <div className="space-y-2"></div>
+                
+                <div className="hidden sm:block"></div>
+
                 <div className="space-y-2">
                   <Label htmlFor="harga_daftar_discount">Promo Biaya Pendaftaran</Label>
-                  <Input id="harga_daftar_discount" name="harga_daftar_discount" defaultValue={subProgram?.harga_daftar_discount || ""} placeholder="Rp 0 (GRATIS)" />
+                  <div className="relative">
+                    <span className="absolute left-3 top-1/2 -translate-y-1/2 text-sm text-muted-foreground font-medium select-none pointer-events-none">
+                      Rp
+                    </span>
+                    <Input
+                      id="harga_daftar_discount"
+                      type="number"
+                      min={0}
+                      step={1000}
+                      className="pl-10"
+                      placeholder="0"
+                      {...register("harga_daftar_discount")}
+                      aria-invalid={!!errors.harga_daftar_discount}
+                    />
+                  </div>
+                  <p className="text-[11px] text-muted-foreground">Isi 0 jika gratis pendaftaran</p>
+                  {errors.harga_daftar_discount && <p className="text-xs text-destructive">{errors.harga_daftar_discount.message}</p>}
                 </div>
+
                 <div className="space-y-2">
                   <Label htmlFor="spp_bulanan_discount">Promo SPP</Label>
-                  <Input id="spp_bulanan_discount" name="spp_bulanan_discount" defaultValue={subProgram?.spp_bulanan_discount || ""} placeholder="Rp 250.000" />
+                  <div className="relative">
+                    <span className="absolute left-3 top-1/2 -translate-y-1/2 text-sm text-muted-foreground font-medium select-none pointer-events-none">
+                      Rp
+                    </span>
+                    <Input
+                      id="spp_bulanan_discount"
+                      type="number"
+                      min={0}
+                      step={1000}
+                      className="pl-10"
+                      placeholder="250000"
+                      {...register("spp_bulanan_discount")}
+                      aria-invalid={!!errors.spp_bulanan_discount}
+                    />
+                  </div>
+                  {errors.spp_bulanan_discount && <p className="text-xs text-destructive">{errors.spp_bulanan_discount.message}</p>}
                 </div>
               </div>
             )}
           </div>
 
+          {/* Materi Pembelajaran */}
           <div className="border-t pt-4">
-            <h4 className="font-semibold mb-4">Materi Pembelajaran</h4>
+            <h4 className="font-semibold text-sm mb-2">Materi Pembelajaran</h4>
             <div className="flex gap-2 mb-2">
               <Input 
                 value={materiInput} 
                 onChange={(e) => setMateriInput(e.target.value)} 
-                placeholder="Tambahkan materi..."
+                placeholder="Ketik poin materi lalu klik Tambah..."
                 onKeyDown={(e) => {
-                  if (e.key === 'Enter') {
+                  if (e.key === "Enter") {
                     e.preventDefault();
                     handleAddMateri();
                   }
@@ -232,50 +502,72 @@ export default function SubProgramFormDialog({ programId, subProgram, open, onOp
               />
               <Button type="button" onClick={handleAddMateri} variant="secondary">Tambah</Button>
             </div>
-            <ul className="list-disc pl-5 space-y-1">
-              {materi.map((m, idx) => (
-                <li key={idx} className="flex items-center justify-between group">
-                  <span className="text-sm">{m}</span>
-                  <button type="button" onClick={() => handleRemoveMateri(idx)} className="text-red-500 text-xs opacity-0 group-hover:opacity-100">
-                    Hapus
-                  </button>
-                </li>
-              ))}
-            </ul>
+            {materi.length > 0 ? (
+              <ul className="list-disc pl-5 space-y-1.5 mt-3">
+                {materi.map((m, idx) => (
+                  <li key={idx} className="flex items-center justify-between group text-sm">
+                    <span>{m}</span>
+                    <button
+                      type="button"
+                      onClick={() => handleRemoveMateri(idx)}
+                      className="text-red-500 text-xs hover:underline ml-2"
+                    >
+                      Hapus
+                    </button>
+                  </li>
+                ))}
+              </ul>
+            ) : (
+              <p className="text-xs text-muted-foreground">Belum ada materi pembelajaran yang ditambahkan.</p>
+            )}
           </div>
 
+          {/* Galeri Modul / Buku */}
           <div className="border-t pt-4">
-            <h4 className="font-semibold mb-4">Galeri Modul / Buku</h4>
+            <h4 className="font-semibold text-sm mb-2">Galeri Modul / Buku</h4>
             <div className="space-y-4">
               <div className="flex items-center gap-4">
-                <Input type="file" accept="image/*" onChange={handleFileUpload} disabled={uploadingImage} />
-                {uploadingImage && <span className="text-sm text-muted-foreground">Uploading...</span>}
+                <Input
+                  type="file"
+                  accept="image/jpeg,image/png,image/webp"
+                  onChange={handleFileUpload}
+                  disabled={uploadingImage}
+                />
+                {uploadingImage && (
+                  <span className="text-xs text-muted-foreground flex items-center gap-1">
+                    <Loader2 className="w-3.5 h-3.5 animate-spin" /> Mengupload...
+                  </span>
+                )}
               </div>
               
-              <div className="flex flex-wrap gap-4">
-                {moduleImages.map((img, idx) => (
-                  <div key={idx} className="relative w-24 h-24 border rounded overflow-hidden group">
-                    {/* eslint-disable-next-line @next/next/no-img-element */}
-                    <img src={img} alt={`Module ${idx}`} className="w-full h-full object-cover" />
-                    <button 
-                      type="button" 
-                      onClick={() => handleRemoveImage(idx)}
-                      className="absolute top-1 right-1 bg-red-500 text-white rounded-full w-5 h-5 flex items-center justify-center text-xs opacity-0 group-hover:opacity-100"
-                    >
-                      X
-                    </button>
-                  </div>
-                ))}
-              </div>
+              {moduleImages.length > 0 && (
+                <div className="flex flex-wrap gap-3">
+                  {moduleImages.map((img, idx) => (
+                    <div key={idx} className="relative w-24 h-24 border rounded-xl overflow-hidden group shadow-sm">
+                      {/* eslint-disable-next-line @next/next/no-img-element */}
+                      <img src={img} alt={`Module ${idx + 1}`} className="w-full h-full object-cover" />
+                      <button 
+                        type="button" 
+                        onClick={() => handleRemoveImage(idx)}
+                        className="absolute top-1 right-1 bg-red-600 text-white rounded-full w-5 h-5 flex items-center justify-center text-xs opacity-90 group-hover:opacity-100 shadow transition-opacity"
+                        aria-label="Hapus gambar"
+                      >
+                        ✕
+                      </button>
+                    </div>
+                  ))}
+                </div>
+              )}
             </div>
           </div>
 
-          <div className="flex justify-end pt-4 mt-8">
-            <Button type="button" variant="outline" className="mr-2" onClick={() => onOpenChange(false)}>
-              Cancel
+          <div className="flex justify-end gap-3 pt-4 border-t mt-8">
+            <Button type="button" variant="outline" onClick={() => onOpenChange(false)} disabled={loading}>
+              Batal
             </Button>
-            <Button type="submit" disabled={loading}>
-              {loading ? "Saving..." : "Save Sub-Program"}
+            <Button type="submit" disabled={loading} className="bg-[#2546a1] hover:bg-[#1a347d] text-white">
+              {loading && <Loader2 className="w-4 h-4 mr-2 animate-spin" />}
+              {subProgram ? "Simpan Perubahan" : "Simpan Sub-Program"}
             </Button>
           </div>
         </form>
