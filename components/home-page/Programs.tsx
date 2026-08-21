@@ -10,6 +10,7 @@ import { Skeleton } from '@/components/ui/skeleton';
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from '@/components/ui/carousel';
 import { Dialog, DialogContent, DialogTrigger } from '@/components/ui/dialog';
 import { formatRupiah } from '@/lib/utils';
+import { useWhatsAppModal } from '@/providers/SiteSettingsContext';
 
 // --- Helper Icon Component ---
 const DynamicIcon = ({ name, className }: { name: string, className?: string }) => {
@@ -31,6 +32,8 @@ interface ModalProps {
 }
 
 function ProgramModal({ sub, accentClass, badgeBg, borderAccent, programIconName, programTitle, onClose }: ModalProps) {
+  const { openWhatsAppModal } = useWhatsAppModal();
+
   // Close on Escape key
   useEffect(() => {
     const handler = (e: KeyboardEvent) => { if (e.key === 'Escape') onClose(); };
@@ -72,9 +75,6 @@ function ProgramModal({ sub, accentClass, badgeBg, borderAccent, programIconName
       ? [{ label: 'Harga Ujian', value: formatRupiah(harga_ujian), icon: GraduationCap, note: 'Biaya pelaksanaan ujian' }]
       : []),
   ];
-
-  const waMessage = `Halo Admin, saya tertarik untuk mendaftar program ${sub.name}. Boleh minta info lebih lanjut?`;
-  const waUrl = `https://wa.me/6281234567890?text=${encodeURIComponent(waMessage)}`;
 
   return (
     <div
@@ -216,25 +216,35 @@ function ProgramModal({ sub, accentClass, badgeBg, borderAccent, programIconName
 
         {/* Footer CTA */}
         <div className="sticky bottom-0 bg-white border-t border-gray-100 px-6 py-4 rounded-b-3xl flex flex-col sm:flex-row gap-3">
-          <Link
-            href="/konsultasi"
-            onClick={onClose}
-            className="flex-1 inline-flex justify-center items-center gap-2 px-5 py-2.5 rounded-full border border-gray-200 text-gray-700 font-semibold text-sm hover:bg-gray-50 transition-all"
+          <button
+            type="button"
+            onClick={() => {
+              onClose();
+              openWhatsAppModal({
+                programName: sub.name,
+                defaultMessage: `Halo Admin, saya ingin berkonsultasi mengenai program ${sub.name}. Boleh dibantu penjelasan jadwal dan rekomendasinya?`
+              });
+            }}
+            className="flex-1 inline-flex justify-center items-center gap-2 px-5 py-2.5 rounded-full border border-gray-200 text-gray-700 font-semibold text-sm hover:bg-gray-50 transition-all cursor-pointer"
           >
             Konsultasi Dulu
-          </Link>
-          <a
-            href={waUrl}
-            target="_blank"
-            rel="noopener noreferrer"
-            onClick={onClose}
-            className="flex-1 inline-flex justify-center items-center gap-2 px-5 py-2.5 rounded-full bg-[#2546a1] text-white font-bold text-sm hover:bg-[#1a347d] transition-all shadow hover:shadow-md hover:-translate-y-0.5"
+          </button>
+          <button
+            type="button"
+            onClick={() => {
+              onClose();
+              openWhatsAppModal({
+                programName: sub.name,
+                templateType: 'program',
+              });
+            }}
+            className="flex-1 inline-flex justify-center items-center gap-2 px-5 py-2.5 rounded-full bg-[#2546a1] text-white font-bold text-sm hover:bg-[#1a347d] transition-all shadow hover:shadow-md hover:-translate-y-0.5 cursor-pointer"
           >
             Daftar Sekarang
             <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M14 5l7 7m0 0l-7 7m7-7H3" />
             </svg>
-          </a>
+          </button>
         </div>
       </div>
     </div>

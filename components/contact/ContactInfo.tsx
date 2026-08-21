@@ -1,8 +1,18 @@
+"use client";
+
 import React from "react";
 import { MapPin, MessageCircle, Clock, ExternalLink, Phone } from "lucide-react";
 import { InstagramIcon } from "../svg/InstagramIcon";
+import { useSiteSettings } from "@/providers/SiteSettingsContext";
+import { cleanWhatsAppNumber } from "@/lib/whatsapp";
 
 export default function ContactInfo() {
+  const { settings, openWhatsAppModal } = useSiteSettings();
+  const cleanPhone = cleanWhatsAppNumber(settings.whatsapp_number);
+
+  const instagramUrl = settings.social_instagram || "https://instagram.com/smile_smartinenglish";
+  const tiktokUrl = settings.social_tiktok || "https://www.tiktok.com/@lkpsmartinenglish_smile";
+
   return (
     <div className="flex flex-col space-y-8 lg:pr-8">
       
@@ -39,17 +49,18 @@ export default function ContactInfo() {
             Kami siap menjawab pertanyaan Anda seputar program, biaya, dan pendaftaran.
           </p>
           <div className="flex flex-wrap gap-3">
-            <a
-              href="https://wa.me/6282129183000"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center justify-center bg-[#25D366] hover:bg-[#1ebe5d] text-white font-semibold px-5 py-2.5 rounded-full transition-all shadow-sm hover:shadow-md text-sm"
+            <button
+              type="button"
+              onClick={() => openWhatsAppModal({
+                defaultMessage: "Halo Admin, saya ingin berkonsultasi seputar pendaftaran kelas di SMART in ENGLISH."
+              })}
+              className="inline-flex items-center justify-center bg-[#25D366] hover:bg-[#1ebe5d] text-white font-semibold px-5 py-2.5 rounded-full transition-all shadow-sm hover:shadow-md text-sm cursor-pointer"
             >
               <MessageCircle className="w-4 h-4 mr-2" />
               Chat via WhatsApp
-            </a>
+            </button>
             <a
-              href="tel:+6282129183000"
+              href={`tel:+${cleanPhone}`}
               className="inline-flex items-center justify-center bg-gray-100 hover:bg-gray-200 text-gray-700 font-semibold px-5 py-2.5 rounded-full transition-all text-sm"
             >
               <Phone className="w-4 h-4 mr-2" />
@@ -92,21 +103,21 @@ export default function ContactInfo() {
             Ikuti keseruan dan update kegiatan terbaru kami.
           </p>
           <a
-            href="https://instagram.com/smile_smartinenglish"
+            href={instagramUrl}
             target="_blank"
             rel="noopener noreferrer"
             className="inline-flex items-center text-sm font-semibold text-pink-600 hover:text-pink-700 transition-colors mt-auto mb-2"
           >
-            @smile_smartinenglish (Instagram)
+            Instagram Resmi
             <ExternalLink className="w-4 h-4 ml-1.5" />
           </a>
           <a
-            href="https://www.tiktok.com/@lkpsmartinenglish_smile"
+            href={tiktokUrl}
             target="_blank"
             rel="noopener noreferrer"
             className="inline-flex items-center text-sm font-semibold text-[#040404] hover:text-[#fe2858] transition-colors mt-auto"
           >
-            @lkpsmartinenglish_smile (TikTok)
+            TikTok Resmi
             <ExternalLink className="w-4 h-4 ml-1.5" />
           </a>
         </div>

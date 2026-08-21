@@ -7,6 +7,7 @@ import {
   AccordionTrigger,
 } from "@/components/ui/accordion"
 import { MessageCircle } from "lucide-react"
+import { useWhatsAppModal } from "@/providers/SiteSettingsContext"
 
 // Menggunakan penamaan 'trigger' dan 'content' sesuai dokumentasimu
 const faqItems = [
@@ -37,6 +38,8 @@ const faqItems = [
 ]
 
 export default function FAQ() {
+  const { openWhatsAppModal } = useWhatsAppModal();
+
   return (
     <section className="py-20 bg-gray-50/50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -58,15 +61,15 @@ export default function FAQ() {
               Berikut adalah beberapa pertanyaan yang paling sering diajukan oleh para orang tua.
             </p>
 
-            <a
-              href="https://wa.me/6282129183000"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 bg-[#1e40af] hover:bg-[#25D366] text-white font-semibold text-sm px-5 py-3 rounded-xl transition-colors shadow-sm"
+            <button
+              onClick={() => openWhatsAppModal({
+                defaultMessage: "Halo Admin, saya ingin bertanya lebih lanjut seputar program bimbingan di SMART in ENGLISH."
+              })}
+              className="inline-flex items-center gap-2 bg-[#1e40af] hover:bg-[#25D366] text-white font-semibold text-sm px-5 py-3 rounded-xl transition-colors shadow-sm cursor-pointer"
             >
               <MessageCircle className="w-4 h-4" />
               Tanya Admin via WhatsApp
-            </a>
+            </button>
           </div>
 
           {/* Kolom Kanan: Accordion Sesuai Dokumentasimu */}

@@ -1,10 +1,14 @@
+"use client";
+
 import React from 'react';
 import Link from 'next/link';
 import TextType from '../ui/TextType';
 import Image from 'next/image';
 import HeroImageCollage from './HeroImageCollage';
+import { useWhatsAppModal } from '@/providers/SiteSettingsContext';
 
 export default function Hero() {
+  const { openWhatsAppModal } = useWhatsAppModal();
   return (
     <section className="relative overflow-hidden bg-[#fafafc]">
       {/* Background building image */}
@@ -67,20 +71,12 @@ export default function Hero() {
             
             {/* Action Buttons */}
             <div className="flex flex-col sm:flex-row gap-4 w-full sm:w-auto">
-              {/* <Link 
-                href="/daftar" 
-                className="inline-flex justify-center items-center px-8 py-3.5 rounded-full bg-[#2546a1] text-white font-bold hover:bg-[#1a347d] transition-all shadow-md hover:shadow-lg hover:-translate-y-0.5 text-sm md:text-base"
+              <button 
+                onClick={() => openWhatsAppModal()}
+                className="inline-flex justify-center items-center px-8 py-3.5 rounded-full bg-[#2546a1] text-white font-bold hover:bg-[#1a347d] transition-all shadow-md hover:shadow-lg hover:-translate-y-0.5 text-sm md:text-base cursor-pointer"
               >
                 Daftar Kelas Sekarang
-              </Link> */}
-              <a 
-                href="https://wa.me/6282129183000" 
-                target="_blank" 
-                rel="noopener noreferrer" 
-                className="inline-flex justify-center items-center px-8 py-3.5 rounded-full bg-[#2546a1] text-white font-bold hover:bg-[#1a347d] transition-all shadow-md hover:shadow-lg hover:-translate-y-0.5 text-sm md:text-base"
-              >
-                Daftar Kelas Sekarang
-              </a>
+              </button>
               <Link 
                 href="/#program" 
                 className="inline-flex justify-center items-center px-8 py-3.5 rounded-full border border-[#2546a1]/30 bg-transparent text-[#2546a1] font-bold hover:bg-[#2546a1]/5 transition-all text-sm md:text-base"

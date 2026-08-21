@@ -1,8 +1,11 @@
 "use client"
 
 import { MessageCircle, ArrowRight, Sparkles } from "lucide-react"
+import { useWhatsAppModal } from "@/providers/SiteSettingsContext"
 
 export default function WhatsAppCTA() {
+  const { openWhatsAppModal } = useWhatsAppModal();
+
   return (
     <section className="relative py-24 overflow-hidden">
       {/* Background dengan gradient */}
@@ -48,12 +51,10 @@ export default function WhatsAppCTA() {
 
         {/* CTA Button — centered */}
         <div className="flex justify-center">
-          <a
-            href="https://wa.me/6282129183000"
-            target="_blank"
-            rel="noopener noreferrer"
+          <button
+            onClick={() => openWhatsAppModal()}
             id="cta-whatsapp-button"
-            className="group relative inline-flex items-center gap-3 bg-[#25D366] hover:bg-[#1ebe5d] text-white font-bold text-base px-8 py-4 rounded-2xl shadow-lg shadow-green-900/30 transition-all duration-300 hover:scale-105 hover:shadow-xl hover:shadow-green-900/40 active:scale-100"
+            className="group relative inline-flex items-center gap-3 bg-[#25D366] hover:bg-[#1ebe5d] text-white font-bold text-base px-8 py-4 rounded-2xl shadow-lg shadow-green-900/30 transition-all duration-300 hover:scale-105 hover:shadow-xl hover:shadow-green-900/40 active:scale-100 cursor-pointer"
           >
             {/* Glow effect */}
             <span className="absolute inset-0 rounded-2xl bg-white/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
@@ -61,7 +62,7 @@ export default function WhatsAppCTA() {
             <MessageCircle className="w-5 h-5 flex-shrink-0 transition-transform duration-300 group-hover:-rotate-6" />
             <span>Hubungi Admin via WhatsApp</span>
             <ArrowRight className="w-4 h-4 flex-shrink-0 transition-transform duration-300 group-hover:translate-x-1" />
-          </a>
+          </button>
         </div>
 
         {/* Trust note */}
