@@ -188,13 +188,13 @@ function ProgramModal({ sub, accentClass, badgeBg, borderAccent, programIconName
           {sub.module_images && sub.module_images.length > 0 && (
             <div>
               <h4 className="text-xs font-bold tracking-widest uppercase text-gray-400 mb-3">Galeri Modul / Buku</h4>
-              <Carousel className="w-full max-w-2xl mx-auto">
+              <Carousel className="w-full max-w-xl mx-auto">
                 <CarouselContent>
                   {sub.module_images.map((img, idx) => (
                     <CarouselItem key={idx} className="md:basis-1/2 lg:basis-1/3">
                       <div className="p-1">
                         <Dialog>
-                          <DialogTrigger render={<div className="cursor-pointer overflow-hidden rounded-xl border hover:border-blue-500 transition-colors" />}>
+                          <DialogTrigger render={<button type="button" className="cursor-pointer overflow-hidden rounded-xl border hover:border-blue-500 transition-colors w-full block focus:outline-none" />}>
                             {/* eslint-disable-next-line @next/next/no-img-element */}
                             <img src={img} alt={`Module ${idx}`} className="w-full h-40 object-cover" />
                           </DialogTrigger>
