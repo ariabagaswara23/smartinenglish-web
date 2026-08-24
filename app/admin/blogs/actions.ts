@@ -21,6 +21,66 @@ export async function getBlogs() {
     return data as BlogPost[]
 }
 
+export async function getPublicBlogs(): Promise<BlogPost[]> {
+    const supabase = await createClient()
+
+    const { data, error } = await supabase
+        .from('blogs')
+        .select('*')
+        .eq('status', 'published')
+        .order('published_at', { ascending: false, nullsFirst: false })
+        .order('created_at', { ascending: false })
+
+    if (error) {
+        console.error('Error fetching public blogs:', error)
+        return []
+    }
+
+    return (data as BlogPost[]) || []
+}
+
+export async function getBlogBySlug(slug: string): Promise<BlogPost | null> {
+    const supabase = await createClient()
+
+    const { data, error } = await supabase
+        .from('blogs')
+        .select('*')
+        .eq('slug', slug)
+        .single()
+
+    if (error) {
+        console.error('Error fetching blog by slug:', error)
+        return null
+    }
+
+    return data as BlogPost
+}
+
+export async function getRecentBlogs(currentSlug?: string, limit: number = 3): Promise<BlogPost[]> {
+    const supabase = await createClient()
+
+    let query = supabase
+        .from('blogs')
+        .select('*')
+        .eq('status', 'published')
+        .order('published_at', { ascending: false, nullsFirst: false })
+        .order('created_at', { ascending: false })
+        .limit(limit + 1)
+
+    if (currentSlug) {
+        query = query.neq('slug', currentSlug)
+    }
+
+    const { data, error } = await query
+
+    if (error) {
+        console.error('Error fetching recent blogs:', error)
+        return []
+    }
+
+    return ((data as BlogPost[]) || []).slice(0, limit)
+}
+
 export async function getBlogById(id: string) {
     const supabase = await createClient()
 
@@ -65,6 +125,7 @@ export async function createBlog(payload: unknown) {
         return { success: false, error: error.message || 'Gagal menambahkan artikel' }
     }
 
+    revalidatePath('/blog')
     revalidatePath('/admin/blogs')
     return { success: true, data }
 }
@@ -98,6 +159,10 @@ export async function updateBlog(id: string, payload: unknown) {
         return { success: false, error: error.message || 'Gagal memperbarui artikel' }
     }
 
+    revalidatePath('/blog')
+    if (blogData.slug) {
+        revalidatePath(`/blog/${blogData.slug}`)
+    }
     revalidatePath('/admin/blogs')
     return { success: true, data }
 }
@@ -139,6 +204,7 @@ export async function deleteBlog(id: string, imageUrl?: string | null) {
         return { success: false, error: 'Gagal menghapus artikel' }
     }
 
+    revalidatePath('/blog')
     revalidatePath('/admin/blogs')
     return { success: true }
 }
