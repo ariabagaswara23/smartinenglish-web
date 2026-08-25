@@ -1,4 +1,6 @@
 import { Metadata } from 'next'
+import Link from 'next/link'
+import { ArrowLeft } from 'lucide-react'
 import LoginForm from './LoginForm'
 
 export const metadata: Metadata = {
@@ -8,7 +10,7 @@ export const metadata: Metadata = {
 
 export default function LoginPage() {
     return (
-        <div className="min-h-screen bg-[#fafafc] flex items-center justify-center relative overflow-hidden px-4">
+        <div className="min-h-screen bg-[#fafafc] flex flex-col items-center justify-center relative overflow-hidden px-4 py-8">
             {/* Dot pattern background */}
             <div
                 className="absolute inset-0 z-0 opacity-[0.3]"
@@ -24,6 +26,15 @@ export default function LoginPage() {
 
             {/* Login card */}
             <div className="relative z-10 w-full max-w-md">
+                <div className="mb-4">
+                    <Link
+                        href="/"
+                        className="inline-flex items-center gap-2 text-sm font-medium text-slate-500 hover:text-[#2546a1] transition-all group"
+                    >
+                        <ArrowLeft className="w-4 h-4 transition-transform group-hover:-translate-x-1" />
+                        <span>Kembali ke Website</span>
+                    </Link>
+                </div>
                 <LoginForm />
             </div>
         </div>
