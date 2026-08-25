@@ -170,7 +170,7 @@ export default function ProgramFormDialog({ program, open, onOpenChange, onSucce
           
           <div className="space-y-4">
             <div className="space-y-2">
-              <Label htmlFor="title" className="font-semibold">Judul Program</Label>
+              <Label htmlFor="title">Judul Program *</Label>
               <Input 
                 id="title" 
                 name="title" 
@@ -184,7 +184,7 @@ export default function ProgramFormDialog({ program, open, onOpenChange, onSucce
             {!program && (
               <div className="space-y-2">
                 <div className="flex items-center justify-between">
-                  <Label htmlFor="id" className="font-semibold">Program ID (Slug)</Label>
+                  <Label htmlFor="id">Program ID (Slug)</Label>
                   <button
                     type="button"
                     onClick={() => setIsIdManual(!isIdManual)}
@@ -209,7 +209,7 @@ export default function ProgramFormDialog({ program, open, onOpenChange, onSucce
             )}
 
             <div className="space-y-2">
-              <Label htmlFor="description" className="font-semibold">Deskripsi</Label>
+              <Label htmlFor="description">Deskripsi</Label>
               <Textarea 
                 id="description" 
                 name="description" 
@@ -221,7 +221,7 @@ export default function ProgramFormDialog({ program, open, onOpenChange, onSucce
 
             <div className={cn("grid gap-4", program ? "grid-cols-2" : "grid-cols-1")}>
               <div className="space-y-2">
-                <Label htmlFor="icon_name" className="font-semibold">Icon Program (Lucide)</Label>
+                <Label htmlFor="icon_name">Icon Program (Lucide)</Label>
                 <input type="hidden" name="icon_name" value={iconName} />
                 <Popover open={isIconPopoverOpen} onOpenChange={setIsIconPopoverOpen}>
                   <PopoverTrigger render={
@@ -291,12 +291,11 @@ export default function ProgramFormDialog({ program, open, onOpenChange, onSucce
                     </div>
                   </PopoverContent>
                 </Popover>
-                <p className="text-[10px] text-slate-500">Lihat icon lain di <Link href="https://lucide.dev/icons" target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">lucide.dev/icons</Link></p>
               </div>
               
               {program && (
                 <div className="space-y-2">
-                  <Label htmlFor="order_index" className="font-semibold">Urutan Tampil (Order Index)</Label>
+                  <Label htmlFor="order_index">Urutan Tampil (Order Index)</Label>
                   <Input 
                     id="order_index" 
                     name="order_index" 
@@ -314,11 +313,11 @@ export default function ProgramFormDialog({ program, open, onOpenChange, onSucce
           {/* Color Palette Section */}
           <div className="space-y-3 pt-4 border-t border-slate-100">
             <div>
-              <Label className="font-semibold">Tema Warna Program</Label>
+              <Label>Tema Warna Program</Label>
               <p className="text-xs text-slate-500 mt-1">Pilih kombinasi warna yang akan digunakan untuk tampilan program ini.</p>
             </div>
             
-            <div className="grid grid-cols-6 sm:grid-cols-8 gap-3">
+            <div className="grid grid-cols-6 sm:grid-cols-8 gap-3 p-2">
               {PROGRAM_COLOR_PRESETS.map((preset) => (
                 <button
                   key={preset.value}

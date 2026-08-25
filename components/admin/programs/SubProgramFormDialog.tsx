@@ -14,7 +14,7 @@ import { Switch } from "@/components/ui/switch";
 import { toast } from "@/components/ui/toast";
 import { upsertSubProgram } from "@/app/admin/programs/actions";
 import { createClient } from "@/utils/supabase/client";
-import { Loader2 } from "lucide-react";
+import { BookOpen, Loader2, X } from "lucide-react";
 
 interface SubProgramFormDialogProps {
   programId: string;
@@ -503,22 +503,29 @@ export default function SubProgramFormDialog({
               <Button type="button" onClick={handleAddMateri} variant="secondary">Tambah</Button>
             </div>
             {materi.length > 0 ? (
-              <ul className="list-disc pl-5 space-y-1.5 mt-3">
+              <div className="flex flex-wrap gap-2 mt-3">
                 {materi.map((m, idx) => (
-                  <li key={idx} className="flex items-center justify-between group text-sm">
+                  <div
+                    key={idx}
+                    className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-slate-100 hover:bg-slate-200/80 border border-slate-200/60 text-xs font-medium text-slate-700 transition-all group"
+                  >
                     <span>{m}</span>
                     <button
                       type="button"
                       onClick={() => handleRemoveMateri(idx)}
-                      className="text-red-500 text-xs hover:underline ml-2"
+                      className="text-slate-400 hover:text-red-600 hover:bg-red-50 p-0.5 rounded-full transition-colors ml-0.5"
+                      title="Hapus materi"
                     >
-                      Hapus
+                      <X className="w-3 h-3" />
                     </button>
-                  </li>
+                  </div>
                 ))}
-              </ul>
+              </div>
             ) : (
-              <p className="text-xs text-muted-foreground">Belum ada materi pembelajaran yang ditambahkan.</p>
+              <div className="flex items-center gap-2 p-3 mt-3 rounded-xl border border-dashed border-slate-200 bg-slate-50/50 text-slate-400">
+                <BookOpen className="w-4 h-4 text-slate-300 shrink-0" />
+                <p className="text-xs">Belum ada materi pembelajaran yang ditambahkan.</p>
+              </div>
             )}
           </div>
 

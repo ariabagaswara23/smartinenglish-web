@@ -59,6 +59,15 @@ export function GalleryAdminGrid() {
         return items
     }, [galleryItems, categoryFilter, eventFilter])
 
+    const eventFilterOptions = React.useMemo(() => [
+        { value: '__all__', label: 'Semua Event' },
+        { value: '__none__', label: 'Tanpa Event' },
+        ...(events?.map((event: { id: string; title: string; badge: string }) => ({
+            value: event.id,
+            label: event.title,
+        })) || []),
+    ], [events])
+
     // ── Pagination ───────────────────────────────────────────
     const totalPages = Math.ceil(filteredItems.length / ITEMS_PER_PAGE)
     const paginatedItems = filteredItems.slice(
@@ -117,16 +126,18 @@ export function GalleryAdminGrid() {
                     </Select>
 
                     {/* Event Filter */}
-                    <Select value={eventFilter} onValueChange={(val) => setEventFilter(val ?? '__all__')}>
+                    <Select
+                        items={eventFilterOptions}
+                        value={eventFilter}
+                        onValueChange={(val) => setEventFilter(val ?? '__all__')}
+                    >
                         <SelectTrigger className="w-[200px] bg-white">
                             <SelectValue placeholder="Filter Event" />
                         </SelectTrigger>
                         <SelectContent>
-                            <SelectItem value="__all__">Semua Event</SelectItem>
-                            <SelectItem value="__none__">Tanpa Event</SelectItem>
-                            {events?.map((event: { id: string; title: string; badge: string }) => (
-                                <SelectItem key={event.id} value={event.id}>
-                                    {event.title}
+                            {eventFilterOptions.map((opt) => (
+                                <SelectItem key={opt.value} value={opt.value}>
+                                    {opt.label}
                                 </SelectItem>
                             ))}
                         </SelectContent>

@@ -65,6 +65,11 @@ export function GalleryFormDialog({ isOpen, onClose, itemToEdit, events }: Galle
     const categoryValue = watch('category')
     const eventIdValue = watch('event_id')
 
+    const eventSelectOptions = React.useMemo(() => [
+        { value: '__none__', label: '— Tanpa Event —' },
+        ...events.map((event) => ({ value: event.id, label: event.title })),
+    ], [events])
+
     React.useEffect(() => {
         if (isOpen) {
             if (itemToEdit) {
@@ -149,7 +154,7 @@ export function GalleryFormDialog({ isOpen, onClose, itemToEdit, events }: Galle
 
                     {/* Caption */}
                     <div className="space-y-2">
-                        <label className="text-sm font-semibold text-black">Caption *</label>
+                        <label className="text-sm text-slate-800">Caption *</label>
                         <Textarea
                             placeholder="Deskripsi singkat foto..."
                             className="resize-none h-20"
@@ -161,7 +166,7 @@ export function GalleryFormDialog({ isOpen, onClose, itemToEdit, events }: Galle
 
                     {/* Alt Text */}
                     <div className="space-y-2">
-                        <label className="text-sm font-semibold text-black">Alt Text *</label>
+                        <label className="text-sm text-slate-800">Alt Text *</label>
                         <Input
                             placeholder="Teks alternatif untuk aksesibilitas..."
                             {...register('alt')}
@@ -173,7 +178,7 @@ export function GalleryFormDialog({ isOpen, onClose, itemToEdit, events }: Galle
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                         {/* Category */}
                         <div className="space-y-2">
-                            <label className="text-sm font-semibold text-black">Kategori *</label>
+                            <label className="text-sm text-slate-800">Kategori *</label>
                             <Select
                                 value={categoryValue}
                                 onValueChange={(val) => {
@@ -194,10 +199,11 @@ export function GalleryFormDialog({ isOpen, onClose, itemToEdit, events }: Galle
 
                         {/* Event (optional) */}
                         <div className="space-y-2">
-                            <label className="text-sm font-semibold text-black">
+                            <label className="text-sm text-slate-800">
                                 Event <span className="font-normal text-slate-400">(opsional)</span>
                             </label>
                             <Select
+                                items={eventSelectOptions}
                                 value={eventIdValue || '__none__'}
                                 onValueChange={(val) => {
                                     setValue('event_id', val === '__none__' ? null : val, { shouldValidate: true })
@@ -207,10 +213,9 @@ export function GalleryFormDialog({ isOpen, onClose, itemToEdit, events }: Galle
                                     <SelectValue placeholder="— Tanpa Event —" />
                                 </SelectTrigger>
                                 <SelectContent>
-                                    <SelectItem value="__none__">— Tanpa Event —</SelectItem>
-                                    {events.map((event) => (
-                                        <SelectItem key={event.id} value={event.id}>
-                                            {event.title}
+                                    {eventSelectOptions.map((opt) => (
+                                        <SelectItem key={opt.value} value={opt.value}>
+                                            {opt.label}
                                         </SelectItem>
                                     ))}
                                 </SelectContent>

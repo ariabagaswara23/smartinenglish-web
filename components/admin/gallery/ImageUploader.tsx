@@ -78,7 +78,7 @@ export function ImageUploader({ currentImageUrl, onImageUploaded, onImageRemoved
 
     return (
         <div className="space-y-2">
-            <label className="text-sm font-semibold text-black">Gambar *</label>
+            <label className="text-sm text-slate-800">Gambar *</label>
             <div className="flex items-start gap-4">
                 {preview ? (
                     <div className="relative w-32 h-24 rounded-xl overflow-hidden border border-slate-200 group">

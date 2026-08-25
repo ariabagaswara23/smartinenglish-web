@@ -3,7 +3,7 @@ import { Metadata } from 'next'
 import {
     BookOpen,
     Users,
-    Calendar,
+    Layers,
     FileText,
     Image,
     Settings,
@@ -16,47 +16,12 @@ export const metadata: Metadata = {
     title: 'Dashboard — Admin SMART in ENGLISH',
 }
 
-const statCards = [
-    {
-        label: 'Total Program',
-        value: '—',
-        icon: BookOpen,
-        color: 'bg-blue-50',
-        iconColor: 'text-[#2546a1]',
-        description: 'Program aktif',
-    },
-    {
-        label: 'Tim Pengajar',
-        value: '—',
-        icon: Users,
-        color: 'bg-emerald-50',
-        iconColor: 'text-emerald-600',
-        description: 'Anggota tim',
-    },
-    {
-        label: 'Events',
-        value: '—',
-        icon: Calendar,
-        color: 'bg-amber-50',
-        iconColor: 'text-amber-600',
-        description: 'Event tersimpan',
-    },
-    {
-        label: 'Blog & Artikel',
-        value: '—',
-        icon: FileText,
-        color: 'bg-purple-50',
-        iconColor: 'text-purple-600',
-        description: 'Artikel dipublish',
-    },
-]
-
 const quickActions = [
     { href: '/admin/programs', label: 'Kelola Program', icon: BookOpen, desc: 'Tambah atau edit program belajar' },
-    { href: '/admin/team', label: 'Kelola Tim', icon: Users, desc: 'Atur data tim pengajar' },
-    { href: '/admin/events', label: 'Kelola Events', icon: Calendar, desc: 'Buat dan kelola event' },
+    { href: '/admin/team', label: 'Kelola Tim', icon: Users, desc: 'Atur data tim' },
+    // { href: '/admin/events', label: 'Kelola Events', icon: Calendar, desc: 'Buat dan kelola event' },
     { href: '/admin/gallery', label: 'Kelola Gallery', icon: Image, desc: 'Upload foto dan galeri' },
-    { href: '/admin/blog', label: 'Kelola Blog', icon: FileText, desc: 'Tulis dan publikasi artikel' },
+    { href: '/admin/blogs', label: 'Kelola Blog', icon: FileText, desc: 'Tulis dan publikasi artikel' },
     { href: '/admin/settings', label: 'Pengaturan', icon: Settings, desc: 'Konfigurasi website' },
 ]
 
@@ -64,11 +29,54 @@ export default async function DashboardPage() {
     const supabase = await createClient()
     const { data: { user } } = await supabase.auth.getUser()
 
-    const { data: profile } = await supabase
-        .from('profiles')
-        .select('full_name')
-        .eq('id', user!.id)
-        .single()
+    const [
+        { data: profile },
+        { count: programsCount },
+        { count: subProgramsCount },
+        { count: teamCount },
+        { count: blogsCount },
+    ] = await Promise.all([
+        supabase.from('profiles').select('full_name').eq('id', user?.id || '').single(),
+        supabase.from('programs').select('*', { count: 'exact', head: true }),
+        supabase.from('sub_programs').select('*', { count: 'exact', head: true }),
+        supabase.from('team').select('*', { count: 'exact', head: true }),
+        supabase.from('blogs').select('*', { count: 'exact', head: true }),
+    ])
+
+    const statCards = [
+        {
+            label: 'Total Program',
+            value: programsCount ?? 0,
+            icon: BookOpen,
+            color: 'bg-blue-50',
+            iconColor: 'text-[#2546a1]',
+            description: 'Program terdaftar',
+        },
+        {
+            label: 'Total Sub Program',
+            value: subProgramsCount ?? 0,
+            icon: Layers,
+            color: 'bg-sky-50',
+            iconColor: 'text-sky-600',
+            description: 'Sub program terdaftar',
+        },
+        {
+            label: 'Total Tim',
+            value: teamCount ?? 0,
+            icon: Users,
+            color: 'bg-emerald-50',
+            iconColor: 'text-emerald-600',
+            description: 'Anggota tim',
+        },
+        {
+            label: 'Blog & Artikel',
+            value: blogsCount ?? 0,
+            icon: FileText,
+            color: 'bg-purple-50',
+            iconColor: 'text-purple-600',
+            description: 'Artikel dipublish',
+        },
+    ]
 
     const displayName = profile?.full_name || user?.email?.split('@')[0] || 'Admin'
     const now = new Date()

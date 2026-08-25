@@ -19,7 +19,7 @@ import Image from "next/image";
 const navItems = [
     { href: '/admin/dashboard', label: 'Dashboard', icon: LayoutDashboard },
     { href: '/admin/programs', label: 'Programs', icon: BookOpen },
-    { href: '/admin/team', label: 'Tim Pengajar', icon: Users },
+    { href: '/admin/team', label: 'Tim', icon: Users },
     // { href: '/admin/events', label: 'Events', icon: Calendar },
     { href: '/admin/gallery', label: 'Gallery', icon: ImageIcon },
     { href: '/admin/blogs', label: 'Blog', icon: FileText },
