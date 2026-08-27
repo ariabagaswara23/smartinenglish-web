@@ -1,4 +1,5 @@
 import { Users, Award, Lightbulb, GraduationCap } from "lucide-react";
+import Image from "next/image";
 
 export default function WhyChooseUs() {
   const reasons = [
@@ -29,8 +30,54 @@ export default function WhyChooseUs() {
 ];
 
   return (
-    <section className="py-20 lg:py-28 bg-slate-50">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <section className="py-20 lg:py-28 bg-[#fafafc] relative overflow-hidden">
+      {/* Dot grid pattern background */}
+      <div 
+        className="absolute inset-0 z-0 opacity-[0.25]" 
+        style={{
+          backgroundImage: 'radial-gradient(#94a3b8 1px, transparent 1px)',
+          backgroundSize: '24px 24px'
+        }}
+      />
+
+      {/* Subtle Ambient Glow */}
+      <div className="absolute top-1/3 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[350px] bg-blue-100/30 rounded-full blur-3xl pointer-events-none z-0" />
+
+      {/* 1. Left Flank Accent: Full Height with Smooth Fade into Center */}
+      <div 
+        className="absolute inset-y-0 left-0 w-full sm:w-2/3 lg:w-1/2 h-full opacity-25 pointer-events-none z-0 select-none"
+        style={{
+          maskImage: 'radial-gradient(ellipse 90% 80% at 0% 50%, #000 30%, transparent 85%)',
+          WebkitMaskImage: 'radial-gradient(ellipse 90% 80% at 0% 50%, #000 30%, transparent 85%)'
+        }}
+      >
+        <Image
+          src="/bg/visionmission-bg.svg"
+          alt="Why Choose Us Pattern Left Accent"
+          fill
+          className="object-cover object-left"
+          priority={false}
+        />
+      </div>
+
+      {/* 2. Right Flank Accent: Full Height (Mirrored Horizontally & Vertically) with Smooth Fade into Center */}
+      <div 
+        className="absolute inset-y-0 right-0 w-full sm:w-2/3 lg:w-1/2 h-full opacity-20 pointer-events-none z-0 select-none"
+        style={{
+          maskImage: 'radial-gradient(ellipse 90% 80% at 100% 50%, #000 30%, transparent 85%)',
+          WebkitMaskImage: 'radial-gradient(ellipse 90% 80% at 100% 50%, #000 30%, transparent 85%)'
+        }}
+      >
+        <Image
+          src="/bg/visionmission-bg.svg"
+          alt="Why Choose Us Pattern Right Accent"
+          fill
+          className="object-cover object-right scale-x-[-1] scale-y-[-1]"
+          priority={false}
+        />
+      </div>
+
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         <div className="text-center max-w-3xl mx-auto mb-16">
           <div className="inline-flex items-center justify-center space-x-2 px-4 py-1.5 rounded-full border border-blue-100 bg-blue-50/50 mb-6 shadow-sm">
             <span className="text-[12px] font-bold tracking-[0.15em] text-primary uppercase">
