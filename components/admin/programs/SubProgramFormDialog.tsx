@@ -280,7 +280,7 @@ export default function SubProgramFormDialog({
             <Label htmlFor="jadwal">Jadwal Pertemuan *</Label>
             <Input
               id="jadwal"
-              placeholder="e.g. Senin & Rabu, 15:00 - 16:30"
+              placeholder="2× seminggu, 60 menit per pertemuan"
               {...register("jadwal")}
               aria-invalid={!!errors.jadwal}
             />
