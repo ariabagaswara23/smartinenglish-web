@@ -1,3 +1,4 @@
+import { Suspense } from "react";
 import { getAdminPrograms } from "@/app/admin/programs/actions";
 import ProgramsClient from "@/components/admin/programs/ProgramsClient";
 import { Metadata } from "next";
@@ -28,7 +29,9 @@ export default async function ProgramsAdminPage() {
           </div>
         </div>
       </div>
-      <ProgramsClient initialPrograms={programs} />
+      <Suspense fallback={<div className="p-8 text-center text-slate-500">Memuat program...</div>}>
+        <ProgramsClient initialPrograms={programs} />
+      </Suspense>
     </div>
   );
 }

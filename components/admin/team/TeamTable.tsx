@@ -139,9 +139,11 @@ function DraggableRow({ member, isDragEnabled, onEdit, onDelete, onToggleStatus 
                     <span className="text-slate-400 text-sm italic">-</span>
                 )}
             </TableCell>
-            <TableCell className="text-center font-medium text-slate-700">
-                {member.order_index}
-            </TableCell>
+            {isDragEnabled && (
+                <TableCell className="text-center font-medium text-slate-700">
+                    {member.order_index !== undefined ? member.order_index + 1 : '-'}
+                </TableCell>
+            )}
             <TableCell>
                 <Badge 
                     variant={member.is_active ? 'default' : 'secondary'}
@@ -338,7 +340,7 @@ export function TeamTable() {
                                 <TableHead className='font-semibold'>Info Tim</TableHead>
                                 <TableHead className='font-semibold'>Tipe & Role</TableHead>
                                 <TableHead className='font-semibold'>Materi (Pengajar)</TableHead>
-                                <TableHead className="text-center w-24 font-semibold">Order</TableHead>
+                                {isDragEnabled && <TableHead className="text-center w-24 font-semibold">Order</TableHead>}
                                 <TableHead className="w-20 font-semibold">Status</TableHead>
                                 <TableHead className="text-left w-20 font-semibold">Aksi</TableHead>
                             </TableRow>
@@ -346,13 +348,13 @@ export function TeamTable() {
                         <TableBody>
                             {isLoading ? (
                                 <TableRow>
-                                    <TableCell colSpan={isDragEnabled ? 8 : 7} className="h-32 text-center text-slate-500">
+                                    <TableCell colSpan={isDragEnabled ? 8 : 6} className="h-32 text-center text-slate-500">
                                         Memuat data...
                                     </TableCell>
                                 </TableRow>
                             ) : localData.length === 0 ? (
                                 <TableRow>
-                                    <TableCell colSpan={isDragEnabled ? 8 : 7} className="h-32 text-center text-slate-500">
+                                    <TableCell colSpan={isDragEnabled ? 8 : 6} className="h-32 text-center text-slate-500">
                                         Belum ada data anggota tim.
                                     </TableCell>
                                 </TableRow>

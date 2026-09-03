@@ -1,12 +1,13 @@
 "use client";
 
-import { useState } from "react";
-import { useRouter } from "next/navigation";
+import { useState, useEffect, useCallback } from "react";
+import { useRouter, useSearchParams, usePathname } from "next/navigation";
 import { Program, SubProgram } from "@/types/program";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Plus, Edit, Trash2, ChevronUp, ChevronDown, Loader2 } from "lucide-react";
+import * as LucideIcons from "lucide-react";
 import { Switch } from "@/components/ui/switch";
 import { Badge } from "@/components/ui/badge";
 import { 
@@ -24,16 +25,33 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
-import { formatRupiah } from "@/lib/utils";
+import { cn, formatRupiah } from "@/lib/utils";
 import { toast } from "@/components/ui/toast";
 
 import ProgramFormDialog from "./ProgramFormDialog";
 import SubProgramFormDialog from "./SubProgramFormDialog";
 
+// Helper component untuk render icon Lucide secara dinamis
+const DynamicIcon = ({ name, className }: { name: string; className?: string }) => {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const IconComponent = (LucideIcons as any)[name] || LucideIcons.Book;
+  return <IconComponent className={className} />;
+};
+
 export default function ProgramsClient({ initialPrograms }: { initialPrograms: Program[] }) {
   const router = useRouter();
+  const searchParams = useSearchParams();
+  const pathname = usePathname();
+
   const [programs, setPrograms] = useState(initialPrograms);
-  const [activeTab, setActiveTab] = useState(programs[0]?.id || "");
+  
+  // Ambil tab aktif awal dari searchParams URL jika ada, atau fallback ke program pertama
+  const tabFromUrl = searchParams.get("tab");
+  const defaultTab = (tabFromUrl && initialPrograms.some(p => p.id === tabFromUrl))
+    ? tabFromUrl
+    : (initialPrograms[0]?.id || "");
+
+  const [activeTab, setActiveTab] = useState(defaultTab);
   const [programDialogOpen, setProgramDialogOpen] = useState(false);
   const [selectedProgram, setSelectedProgram] = useState<Program | null>(null);
   
@@ -45,8 +63,53 @@ export default function ProgramsClient({ initialPrograms }: { initialPrograms: P
   const [subProgramToDelete, setSubProgramToDelete] = useState<SubProgram | null>(null);
   const [isDeleting, setIsDeleting] = useState(false);
 
+  // Sinkronisasi data lokal saat data server diperbarui melalui router.refresh()
+  useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    setPrograms(initialPrograms);
+  }, [initialPrograms]);
+
+  // Handler pergantian tab yang menyimpan status ke URL searchParams
+  const handleTabChange = useCallback((newTabId: string) => {
+    setActiveTab(newTabId);
+    const params = new URLSearchParams(searchParams.toString());
+    params.set("tab", newTabId);
+    router.replace(`${pathname}?${params.toString()}`, { scroll: false });
+  }, [searchParams, pathname, router]);
+
+  // Jaga activeTab tetap valid bila daftar program atau URL berubah
+  useEffect(() => {
+    const currentTabInUrl = searchParams.get("tab");
+    if (currentTabInUrl && programs.some((p) => p.id === currentTabInUrl)) {
+      if (activeTab !== currentTabInUrl) {
+        // eslint-disable-next-line react-hooks/set-state-in-effect
+        setActiveTab(currentTabInUrl);
+      }
+    } else if (programs.length > 0 && (!activeTab || !programs.some((p) => p.id === activeTab))) {
+      // eslint-disable-next-line react-hooks/set-state-in-effect
+      setActiveTab(programs[0].id);
+    }
+  }, [searchParams, programs, activeTab]);
+
   const handleToggleActive = async (id: string, table: "programs" | "sub_programs", currentStatus: boolean) => {
-    const res = await toggleProgramActive(id, table, !currentStatus);
+    const newStatus = !currentStatus;
+    // Optimistic UI update
+    if (table === "programs") {
+      setPrograms((prev) =>
+        prev.map((p) => (p.id === id ? { ...p, is_active: newStatus } : p))
+      );
+    } else {
+      setPrograms((prev) =>
+        prev.map((p) => ({
+          ...p,
+          sub_programs: p.sub_programs?.map((sub) =>
+            sub.id === id ? { ...sub, is_active: newStatus } : sub
+          ),
+        }))
+      );
+    }
+
+    const res = await toggleProgramActive(id, table, newStatus);
     if (res.success) {
       toast.add({
         title: "Status Diperbarui",
@@ -54,8 +117,9 @@ export default function ProgramsClient({ initialPrograms }: { initialPrograms: P
         type: "success",
       });
       router.refresh();
-      window.location.reload();
     } else {
+      // Rollback ke state awal jika gagal
+      setPrograms(initialPrograms);
       toast.add({
         title: "Gagal Mengubah Status",
         description: res.error || "Terjadi kesalahan.",
@@ -75,8 +139,11 @@ export default function ProgramsClient({ initialPrograms }: { initialPrograms: P
           description: "Program berhasil dihapus.",
           type: "success",
         });
+        const remaining = programs.filter((p) => p.id !== programToDelete.id);
+        if (activeTab === programToDelete.id && remaining.length > 0) {
+          handleTabChange(remaining[0].id);
+        }
         router.refresh();
-        window.location.reload();
       } else {
         toast.add({
           title: "Gagal Menghapus",
@@ -109,7 +176,6 @@ export default function ProgramsClient({ initialPrograms }: { initialPrograms: P
           type: "success",
         });
         router.refresh();
-        window.location.reload();
       } else {
         toast.add({
           title: "Gagal Menghapus",
@@ -195,7 +261,7 @@ export default function ProgramsClient({ initialPrograms }: { initialPrograms: P
           No programs found. Start by adding one.
         </div>
       ) : (
-        <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
+        <Tabs value={activeTab} onValueChange={handleTabChange} className="w-full">
           <TabsList className="mb-4">
             {programs.map((p) => (
               <TabsTrigger key={p.id} value={p.id} className="text-base px-3 h-9">
@@ -207,14 +273,26 @@ export default function ProgramsClient({ initialPrograms }: { initialPrograms: P
           {programs.map((program) => (
             <TabsContent key={program.id} value={program.id}>
               <Card className="mb-6">
-                <CardHeader className="flex flex-row items-center justify-between">
-                  <div>
-                    <CardTitle className="font-semibold">{program.title}</CardTitle>
-                    <CardDescription>{program.description}</CardDescription>
+                <CardHeader className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                  <div className="flex items-center gap-3.5">
+                    <div className={cn(
+                      "w-12 h-12 rounded-xl flex items-center justify-center border shrink-0 shadow-xs",
+                      program.badge_bg || "bg-blue-50",
+                      program.border_accent || "border-blue-200"
+                    )}>
+                      <DynamicIcon 
+                        name={program.icon_name} 
+                        className={cn("w-6 h-6", program.accent_class || "text-blue-700")} 
+                      />
+                    </div>
+                    <div>
+                      <CardTitle className="font-semibold text-xl">{program.title}</CardTitle>
+                      <CardDescription className="mt-0.5">{program.description}</CardDescription>
+                    </div>
                   </div>
                   <div className="flex items-center gap-4">
                     <div className="flex items-center gap-2">
-                      <span className="text-sm">Active</span>
+                      <span className="text-sm font-medium">Active</span>
                       <Switch 
                         checked={program.is_active} 
                         onCheckedChange={() => handleToggleActive(program.id, "programs", program.is_active)} 
@@ -361,7 +439,9 @@ export default function ProgramsClient({ initialPrograms }: { initialPrograms: P
         open={programDialogOpen} 
         onOpenChange={setProgramDialogOpen} 
         program={selectedProgram} 
-        onSuccess={() => window.location.reload()} 
+        onSuccess={() => {
+          router.refresh();
+        }} 
       />
 
       {activeTab && (
@@ -370,7 +450,9 @@ export default function ProgramsClient({ initialPrograms }: { initialPrograms: P
           onOpenChange={setSubProgramDialogOpen} 
           programId={activeTab} 
           subProgram={selectedSubProgram} 
-          onSuccess={() => window.location.reload()} 
+          onSuccess={() => {
+            router.refresh();
+          }} 
         />
       )}
 
