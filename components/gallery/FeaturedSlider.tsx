@@ -10,28 +10,33 @@ interface FeaturedSliderProps {
 }
 
 export default function FeaturedSlider({ events }: FeaturedSliderProps) {
+  // Hanya ambil event yang memiliki gambar valid
+  const validEvents = React.useMemo(() => {
+    return events.filter((e) => Boolean(e.gallery_items?.[0]?.src || e.src));
+  }, [events]);
+
   const [currentIndex, setCurrentIndex] = useState(0);
 
-  // Don't render if no featured events
-  if (events.length === 0) return null;
+  // Jangan render section jika tidak ada event yang memiliki gambar
+  if (validEvents.length === 0) return null;
 
   // Auto-slide effect
   // eslint-disable-next-line react-hooks/rules-of-hooks
   useEffect(() => {
     const timer = setInterval(() => {
-      setCurrentIndex((prev) => (prev + 1) % events.length);
+      setCurrentIndex((prev) => (prev + 1) % validEvents.length);
     }, 3500); // 3.5 seconds
 
     return () => clearInterval(timer);
-  }, [events.length]);
+  }, [validEvents.length]);
 
   const handleNext = () => {
-    setCurrentIndex((prev) => (prev + 1) % events.length);
+    setCurrentIndex((prev) => (prev + 1) % validEvents.length);
   };
 
   const handlePrev = () => {
     setCurrentIndex((prev) =>
-      prev === 0 ? events.length - 1 : prev - 1
+      prev === 0 ? validEvents.length - 1 : prev - 1
     );
   };
 
@@ -45,37 +50,46 @@ export default function FeaturedSlider({ events }: FeaturedSliderProps) {
         </div>
 
         <div className="relative w-full max-w-5xl mx-auto rounded-3xl overflow-hidden shadow-2xl aspect-video bg-gray-100 group">
-          {events.map((event, index) => (
-            <div
-              key={event.id}
-              className={`absolute inset-0 transition-opacity duration-1000 ease-in-out ${
-                index === currentIndex ? "opacity-100 z-10" : "opacity-0 z-0"
-              }`}
-            >
-              <Image
-                src={event.src}
-                alt={event.alt}
-                fill
-                className="object-cover"
-                priority={index === 0}
-              />
-              {/* Gradient Overlay for Text Visibility */}
-              <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent" />
+          {validEvents.map((event, index) => {
+            const imageSrc = event.gallery_items?.[0]?.src || event.src;
+            const imageAlt = event.gallery_items?.[0]?.alt || event.alt || event.title;
 
-              {/* Content */}
-              <div className="absolute bottom-0 left-0 w-full p-6 md:p-12 flex flex-col items-start text-white">
-                <span className="bg-primary text-white text-[10px] md:text-xs font-bold px-3 py-1 md:px-4 md:py-1.5 rounded-full uppercase tracking-wider mb-3 shadow-md">
-                  {event.badge}
-                </span>
-                <h3 className="text-2xl md:text-4xl font-bold mb-2 md:mb-4 drop-shadow-md">
-                  {event.title}
-                </h3>
-                <p className="text-sm md:text-lg text-gray-200 max-w-2xl drop-shadow-sm line-clamp-2 md:line-clamp-none">
-                  {event.description}
-                </p>
+            return (
+              <div
+                key={event.id}
+                className={`absolute inset-0 transition-opacity duration-1000 ease-in-out ${
+                  index === currentIndex ? "opacity-100 z-10" : "opacity-0 z-0"
+                }`}
+              >
+                {imageSrc ? (
+                  <Image
+                    src={imageSrc}
+                    alt={imageAlt}
+                    fill
+                    className="object-cover"
+                    priority={index === 0}
+                  />
+                ) : (
+                  <div className="w-full h-full bg-slate-800" />
+                )}
+                {/* Gradient Overlay for Text Visibility */}
+                <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent" />
+
+                {/* Content */}
+                <div className="absolute bottom-0 left-0 w-full p-6 md:p-12 flex flex-col items-start text-white">
+                  <span className="bg-primary text-white text-[10px] md:text-xs font-bold px-3 py-1 md:px-4 md:py-1.5 rounded-full uppercase tracking-wider mb-3 shadow-md">
+                    {event.badge}
+                  </span>
+                  <h3 className="text-2xl md:text-4xl font-bold mb-2 md:mb-4 drop-shadow-md">
+                    {event.title}
+                  </h3>
+                  <p className="text-sm md:text-lg text-gray-200 max-w-2xl drop-shadow-sm line-clamp-2 md:line-clamp-none">
+                    {event.description}
+                  </p>
+                </div>
               </div>
-            </div>
-          ))}
+            );
+          })}
 
           {/* Navigation Controls */}
           <button
@@ -95,7 +109,7 @@ export default function FeaturedSlider({ events }: FeaturedSliderProps) {
 
           {/* Indicators */}
           <div className="absolute bottom-6 right-6 md:right-12 z-20 flex space-x-2">
-            {events.map((_, index) => (
+            {validEvents.map((_, index) => (
               <button
                 key={index}
                 onClick={() => setCurrentIndex(index)}

@@ -107,7 +107,7 @@ function GalleryGridContent({ items }: GalleryGridContentProps) {
             >
               <Image
                 src={item.src}
-                alt={item.alt}
+                alt={item.caption}
                 fill
                 className="object-cover transition-transform duration-700 ease-in-out group-hover:scale-110"
                 sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"

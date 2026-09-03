@@ -128,7 +128,10 @@ export function GalleryFormDialog({ isOpen, onClose, itemToEdit, events }: Galle
             toast.add({ title: 'Gambar wajib diisi', description: 'Silakan upload gambar terlebih dahulu', type: 'warning' })
             return
         }
-        mutation.mutate(data)
+        mutation.mutate({
+            ...data,
+            alt: data.caption || data.alt || '',
+        })
     }
 
     return (
@@ -162,17 +165,6 @@ export function GalleryFormDialog({ isOpen, onClose, itemToEdit, events }: Galle
                             aria-invalid={!!errors.caption}
                         />
                         {errors.caption && <p className="text-xs text-destructive">{errors.caption.message}</p>}
-                    </div>
-
-                    {/* Alt Text */}
-                    <div className="space-y-2">
-                        <label className="text-sm text-slate-800">Alt Text *</label>
-                        <Input
-                            placeholder="Teks alternatif untuk aksesibilitas..."
-                            {...register('alt')}
-                            aria-invalid={!!errors.alt}
-                        />
-                        {errors.alt && <p className="text-xs text-destructive">{errors.alt.message}</p>}
                     </div>
 
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">

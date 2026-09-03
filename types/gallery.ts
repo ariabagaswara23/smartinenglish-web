@@ -9,10 +9,13 @@ export interface Event {
     is_featured: boolean;
     created_at: string;
     updated_at: string;
+    gallery_items?: GalleryItem[];
 }
 
-// Alias backward-compatible untuk FeaturedSlider
-export type FeaturedEvent = Pick<Event, 'id' | 'title' | 'description' | 'src' | 'alt' | 'badge'>;
+// Alias backward-compatible untuk FeaturedSlider dengan data relasi gallery_items
+export type FeaturedEvent = Pick<Event, 'id' | 'title' | 'description' | 'src' | 'alt' | 'badge'> & {
+    gallery_items?: Pick<GalleryItem, 'id' | 'src' | 'alt' | 'created_at'>[];
+};
 
 // ─── Supabase Table: gallery_items ─────────────────────────
 export interface GalleryItem {
@@ -36,6 +39,7 @@ export const GALLERY_CATEGORIES = [
     "SMILE FEST",
     "SMILEVERSARY",
     "Suasana Kelas",
+    "Event Tahunan",
     "Fasilitas",
 ] as const;
 

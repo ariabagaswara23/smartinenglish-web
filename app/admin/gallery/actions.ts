@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 'use server'
 
 import { createClient } from '@/utils/supabase/server'
@@ -51,16 +52,46 @@ export async function getFeaturedEvents(): Promise<FeaturedEvent[]> {
 
     const { data, error } = await supabase
         .from('events')
-        .select('id, title, description, src, alt, badge')
+        .select(`
+            id,
+            title,
+            description,
+            src,
+            alt,
+            badge,
+            gallery_items (
+                id,
+                src,
+                alt,
+                created_at
+            )
+        `)
         .eq('is_featured', true)
         .order('created_at', { ascending: false })
+        .order('created_at', { referencedTable: 'gallery_items', ascending: false })
 
     if (error) {
         console.error('Error fetching featured events:', error)
         throw new Error('Gagal mengambil data featured events')
     }
 
-    return data as FeaturedEvent[]
+    // Hanya sertakan event yang memiliki foto asli di gallery_items
+    const formatted = (data || [])
+        .filter((event: any) => event.gallery_items && event.gallery_items.length > 0 && event.gallery_items[0].src)
+        .map((event: any) => {
+            const firstGalleryItem = event.gallery_items[0]
+            return {
+                id: event.id,
+                title: event.title,
+                description: event.description,
+                src: firstGalleryItem.src,
+                alt: firstGalleryItem.alt || event.alt || event.title,
+                badge: event.badge,
+                gallery_items: event.gallery_items,
+            }
+        })
+
+    return formatted as FeaturedEvent[]
 }
 
 // ─── CREATE ────────────────────────────────────────────────
