@@ -70,7 +70,7 @@ export default function Testimonials() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="text-center mb-16 md:mb-20">
             <div className="inline-flex items-center space-x-2 px-4 py-1.5 rounded-full border border-blue-100 bg-blue-50/50 mb-5">
-                <span className="text-[11px] font-bold tracking-[0.15em] text-blue-700 uppercase">
+                <span className="text-[11px] font-bold tracking-[0.15em] text-primary uppercase">
                 Testimoni
                 </span>
             </div>

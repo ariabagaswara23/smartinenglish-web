@@ -66,8 +66,7 @@ export default function BlogList({ initialBlogs = [] }: BlogListProps) {
       <section className="bg-white py-16 md:py-24 border-b border-gray-100 relative overflow-hidden">
 
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative z-10">
-          <div className="inline-flex items-center justify-center space-x-2 px-4 py-1.5 rounded-full border border-blue-100 bg-blue-50/60 mb-6 shadow-xs">
-            <Sparkles className="w-3.5 h-3.5 text-primary" />
+          <div className="inline-flex items-center justify-center space-x-2 px-4 py-1.5 rounded-full border border-blue-100 bg-blue-50/50 mb-6 shadow-sm">
             <span className="text-[12px] font-bold tracking-[0.15em] text-primary uppercase">
               Pusat Informasi & Edukasi
             </span>

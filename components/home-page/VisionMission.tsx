@@ -101,12 +101,10 @@ export default function VisionMission() {
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         <div className="text-center max-w-3xl mx-auto mb-16">
-          <div className="inline-flex items-center justify-center space-x-2 px-4 py-1.5 rounded-full border border-gray-200 bg-white shadow-sm mb-6">
-            <div className="w-1.5 h-1.5 rounded-full bg-primary"></div>
+          <div className="inline-flex items-center justify-center space-x-2 px-4 py-1.5 rounded-full border border-blue-100 bg-blue-50/50 mb-6 shadow-sm">
             <span className="text-[12px] font-bold tracking-[0.15em] text-primary uppercase">
               Komitmen Kami
             </span>
-            <div className="w-1.5 h-1.5 rounded-full bg-primary"></div>
           </div>
           
           <h2 className="text-4xl md:text-5xl font-bold text-[#0f172a] leading-tight mb-6 tracking-tight">

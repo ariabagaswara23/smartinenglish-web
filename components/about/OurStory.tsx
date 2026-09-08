@@ -47,8 +47,8 @@ export default function OurStory() {
 
           {/* Text Column */}
           <div className="order-1 lg:order-2">
-            <div className="inline-flex items-center space-x-2 px-4 py-1.5 rounded-full border border-blue-100 bg-blue-50/50 mb-5">
-              <span className="text-[11px] font-bold tracking-[0.15em] text-blue-700 uppercase">
+            <div className="inline-flex items-center justify-center space-x-2 px-4 py-1.5 rounded-full border border-blue-100 bg-blue-50/50 mb-6 shadow-sm">
+              <span className="text-[12px] font-bold tracking-[0.15em] text-primary uppercase">
                 Perjalanan Kami
               </span>
             </div>

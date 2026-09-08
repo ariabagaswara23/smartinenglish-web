@@ -26,13 +26,6 @@ export default function WhatsAppCTA() {
       />
 
       <div className="relative max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-        {/* Badge */}
-        <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/10 border border-white/20 backdrop-blur-sm mb-8">
-          <Sparkles className="w-3.5 h-3.5 text-yellow-300" />
-          <span className="text-[11px] font-bold tracking-[0.18em] text-white/90 uppercase">
-            Daftar Sekarang
-          </span>
-        </div>
 
         {/* Heading */}
         <h2 className="text-4xl sm:text-5xl font-bold text-white leading-[1.1] tracking-tight mb-5">
