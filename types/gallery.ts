@@ -36,11 +36,10 @@ export interface GalleryItemWithEvent extends GalleryItem {
 // ─── Category Constants ────────────────────────────────────
 export const GALLERY_CATEGORIES = [
     "Semua",
-    "SMILE FEST",
-    "SMILEVERSARY",
+    "Event/Kegiatan",
     "Suasana Kelas",
-    "Event Tahunan",
     "Fasilitas",
+    "Lainnya",
 ] as const;
 
 export type GalleryCategory = (typeof GALLERY_CATEGORIES)[number];

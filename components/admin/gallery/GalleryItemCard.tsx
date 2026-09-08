@@ -12,10 +12,10 @@ interface GalleryItemCardProps {
 }
 
 const categoryColors: Record<string, string> = {
-    'SMILE FEST': 'bg-blue-50 text-blue-700 border-blue-200',
-    'SMILEVERSARY': 'bg-purple-50 text-purple-700 border-purple-200',
+    'Event/Kegiatan': 'bg-blue-50 text-blue-700 border-blue-200',
     'Suasana Kelas': 'bg-emerald-50 text-emerald-700 border-emerald-200',
     'Fasilitas': 'bg-amber-50 text-amber-700 border-amber-200',
+    'Lainnya': 'bg-slate-50 text-slate-700 border-slate-200',
 }
 
 export function GalleryItemCard({ item, onEdit, onDelete }: GalleryItemCardProps) {
