@@ -112,8 +112,17 @@ function DraggableRow({ member, isDragEnabled, onEdit, onDelete, onToggleStatus 
             </TableCell>
             <TableCell>
                 <p className="font-semibold text-slate-900">{member.name}</p>
+                {(member.education || member.experience_years) && (
+                    <div className="flex flex-wrap items-center gap-x-2 text-xs text-slate-500 mt-0.5">
+                        {member.education && <span>{member.education}</span>}
+                        {member.education && member.experience_years && <span>•</span>}
+                        {member.experience_years && (
+                            <span>{member.experience_years}</span>
+                        )}
+                    </div>
+                )}
                 {member.description && (
-                    <p className="text-xs text-slate-500 line-clamp-1 max-w-[250px]" title={member.description}>
+                    <p className="text-xs text-slate-500 line-clamp-1 max-w-[250px] mt-0.5" title={member.description}>
                         {member.description}
                     </p>
                 )}

@@ -5,6 +5,8 @@ export interface TeamMember {
     type: 'teacher' | 'staff';
     subject_category: string[] | null;
     description: string | null;
+    experience_years?: string | null;
+    education?: string | null;
     image_url: string | null;
     order_index?: number;
     is_active?: boolean;

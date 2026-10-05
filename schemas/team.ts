@@ -1,9 +1,16 @@
 import { z } from "zod";
 
+const optionalStringSchema = z.preprocess(
+  (val) => (typeof val === "string" && val.trim() === "" ? null : val),
+  z.string().nullable().optional()
+);
+
 export const teamFormSchema = z.object({
   name: z.string().min(2, { message: "Name must be at least 2 characters." }),
   type: z.enum(['teacher', 'staff']),
   role: z.string().min(2, { message: "Role must be at least 2 characters." }),
+  experience_years: optionalStringSchema,
+  education: optionalStringSchema,
   subject_category: z.array(z.string()).optional(),
   description: z.string().optional(),
   order_index: z.coerce.number().min(0),

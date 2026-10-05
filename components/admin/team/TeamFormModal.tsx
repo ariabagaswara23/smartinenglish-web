@@ -62,6 +62,8 @@ export function TeamFormModal({ isOpen, onClose, memberToEdit }: TeamFormModalPr
             name: '',
             type: 'teacher',
             role: '',
+            experience_years: '',
+            education: '',
             subject_category: [],
             description: '',
             order_index: 0,
@@ -81,6 +83,8 @@ export function TeamFormModal({ isOpen, onClose, memberToEdit }: TeamFormModalPr
                     name: memberToEdit.name,
                     type: memberToEdit.type,
                     role: memberToEdit.role,
+                    experience_years: memberToEdit.experience_years || '',
+                    education: memberToEdit.education || '',
                     subject_category: memberToEdit.subject_category || [],
                     description: memberToEdit.description || '',
                     order_index: memberToEdit.order_index || 0,
@@ -93,6 +97,8 @@ export function TeamFormModal({ isOpen, onClose, memberToEdit }: TeamFormModalPr
                     name: '',
                     type: 'teacher',
                     role: '',
+                    experience_years: '',
+                    education: '',
                     subject_category: [],
                     description: '',
                     order_index: 0,
@@ -283,6 +289,28 @@ export function TeamFormModal({ isOpen, onClose, memberToEdit }: TeamFormModalPr
                         <label className="text-sm font-semibold text-black">Role / Jabatan</label>
                         <Input placeholder="Senior English Teacher" {...register('role')} aria-invalid={!!errors.role} />
                         {errors.role && <p className="text-xs text-destructive">{errors.role.message}</p>}
+                    </div>
+
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <div className="space-y-2">
+                            <label className="text-sm font-semibold text-black">Pendidikan Terakhir (Opsional)</label>
+                            <Input 
+                                placeholder="Contoh: S1 Pendidikan Bahasa Inggris" 
+                                {...register('education')} 
+                                aria-invalid={!!errors.education} 
+                            />
+                            {errors.education && <p className="text-xs text-destructive">{errors.education.message}</p>}
+                        </div>
+
+                        <div className="space-y-2">
+                            <label className="text-sm font-semibold text-black">Lama Pengalaman (Opsional)</label>
+                            <Input 
+                                placeholder="Contoh: 3 Tahun / 5+ Tahun" 
+                                {...register('experience_years')} 
+                                aria-invalid={!!errors.experience_years} 
+                            />
+                            {errors.experience_years && <p className="text-xs text-destructive">{errors.experience_years.message}</p>}
+                        </div>
                     </div>
 
                     {typeValue === 'teacher' && (

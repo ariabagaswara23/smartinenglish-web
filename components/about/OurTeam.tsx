@@ -1,73 +1,10 @@
-import Image from "next/image";
-import { GraduationCap, Users, User, Sparkles } from "lucide-react";
+import { GraduationCap, Users } from "lucide-react";
 import { getPublicTeamMembers } from "@/app/admin/team/actions";
 import { TeamMember } from "@/types/team";
+import { TeamGrid } from "./TeamGrid";
 
 interface OurTeamProps {
   members?: TeamMember[];
-}
-
-function TeamMemberCard({ member }: { member: TeamMember }) {
-  const isTeacher = member.type === "teacher";
-
-  return (
-    <div className="bg-white rounded-3xl overflow-hidden border border-slate-100 shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-300 flex flex-col group">
-      {/* Photo Container */}
-      <div className="relative aspect-[4/5] w-full bg-slate-100 overflow-hidden">
-        {member.image_url ? (
-          <Image
-            src={member.image_url}
-            alt={`Foto ${member.name}`}
-            fill
-            sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, (max-width: 1280px) 33vw, 25vw"
-            className="object-cover group-hover:scale-105 transition-transform duration-500"
-          />
-        ) : (
-          <div className="absolute inset-0 flex flex-col items-center justify-center bg-gradient-to-br from-slate-50 via-slate-100 to-slate-200 text-slate-400 p-4 text-center">
-            <div className="w-16 h-16 rounded-2xl bg-white/90 border border-slate-200 flex items-center justify-center mb-2 shadow-sm text-slate-400">
-              {isTeacher ? (
-                <GraduationCap className="w-8 h-8 text-blue-500" />
-              ) : (
-                <User className="w-8 h-8 text-emerald-500" />
-              )}
-            </div>
-            <span className="text-xs font-semibold text-slate-600 line-clamp-1">{member.name}</span>
-          </div>
-        )}
-      </div>
-
-      {/* Info Container */}
-      <div className="p-6 flex flex-col flex-1 text-center">
-        <h3 className="text-lg font-bold text-slate-900 group-hover:text-primary transition-colors leading-snug">
-          {member.name}
-        </h3>
-        <p className={`text-sm font-semibold mt-1 mb-3 ${isTeacher ? "text-primary" : "text-emerald-700"}`}>
-          {member.role}
-        </p>
-
-        {/* Subject Categories for Teachers */}
-        {isTeacher && member.subject_category && member.subject_category.length > 0 && (
-          <div className="flex flex-wrap justify-center gap-1.5 mb-3">
-            {member.subject_category.map((subject, idx) => (
-              <span
-                key={idx}
-                className="inline-block text-[11px] font-medium bg-blue-50 text-blue-700 px-2.5 py-0.5 rounded-full border border-blue-100/80"
-              >
-                {subject}
-              </span>
-            ))}
-          </div>
-        )}
-
-        {/* Description / Bio */}
-        {member.description && (
-          <p className="text-slate-600 text-sm leading-relaxed mt-auto pt-2">
-            {member.description}
-          </p>
-        )}
-      </div>
-    </div>
-  );
 }
 
 export default async function OurTeam({ members }: OurTeamProps) {
@@ -126,11 +63,7 @@ export default async function OurTeam({ members }: OurTeamProps) {
               </p>
             </div>
 
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
-              {staff.map((member) => (
-                <TeamMemberCard key={member.id} member={member} />
-              ))}
-            </div>
+            <TeamGrid members={staff} />
           </div>
         )}
 
@@ -152,11 +85,7 @@ export default async function OurTeam({ members }: OurTeamProps) {
               </p>
             </div>
 
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
-              {teachers.map((teacher) => (
-                <TeamMemberCard key={teacher.id} member={teacher} />
-              ))}
-            </div>
+            <TeamGrid members={teachers} />
           </div>
         )}
 
