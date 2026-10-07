@@ -6,7 +6,7 @@ export interface TeamMember {
     subject_category: string[] | null;
     description: string | null;
     experience_years?: string | null;
-    education?: string | null;
+    education?: string[] | string | null;
     image_url: string | null;
     order_index?: number;
     is_active?: boolean;

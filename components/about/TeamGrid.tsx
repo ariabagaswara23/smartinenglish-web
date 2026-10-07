@@ -18,6 +18,12 @@ export function TeamGrid({ members }: TeamGridProps) {
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
                 {members.map((member) => {
                     const isTeacher = member.type === 'teacher'
+                    const educations = Array.isArray(member.education)
+                        ? member.education.filter(Boolean)
+                        : (typeof member.education === 'string' && member.education.trim())
+                            ? [member.education.trim()]
+                            : []
+                    const hasEducation = educations.length > 0
 
                     return (
                         <div
@@ -76,12 +82,20 @@ export function TeamGrid({ members }: TeamGridProps) {
                                     </p>
 
                                     {/* Education & Experience info */}
-                                    {(member.education || member.experience_years) && (
+                                    {(hasEducation || member.experience_years) && (
                                         <div className="flex flex-wrap items-center justify-center gap-1.5 mb-2.5">
-                                            {member.education && (
-                                                <span className="inline-flex items-center gap-1 text-[11px] font-medium bg-slate-100/90 text-slate-700 px-2.5 py-0.5 rounded-full border border-slate-200/80 max-w-full truncate" title={member.education}>
+                                            {hasEducation && (
+                                                <span 
+                                                    className="inline-flex items-center gap-1 text-[11px] font-medium bg-slate-100/90 text-slate-700 px-2.5 py-0.5 rounded-full border border-slate-200/80 max-w-full truncate" 
+                                                    title={educations.join(' • ')}
+                                                >
                                                     <GraduationCap className="w-3 h-3 text-slate-500 shrink-0" />
-                                                    <span className="truncate">{member.education}</span>
+                                                    <span className="truncate">{educations[0]}</span>
+                                                    {educations.length > 1 && (
+                                                        <span className="text-[10px] font-bold text-[#2546a1] shrink-0 bg-blue-100/70 px-1 rounded">
+                                                            +{educations.length - 1}
+                                                        </span>
+                                                    )}
                                                 </span>
                                             )}
                                             {member.experience_years && (

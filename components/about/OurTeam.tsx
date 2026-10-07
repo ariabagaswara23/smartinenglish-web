@@ -32,7 +32,7 @@ export default async function OurTeam({ members }: OurTeamProps) {
             </span>
           </div>
           <h2 className="text-4xl md:text-5xl font-bold text-[#0f172a] leading-tight mb-6 tracking-tight">
-            Sosok di Balik <span className="italic text-primary font-serif">SMART in ENGLISH</span>
+            Sosok di Balik<br /> <span className="italic text-primary font-serif">SMART in ENGLISH</span>
           </h2>
           <p className="text-lg text-gray-500 leading-relaxed max-w-2xl mx-auto">
             Dipandu oleh para pengajar berpengalaman dan didukung tim manajemen yang berdedikasi tinggi untuk kesuksesan belajar Anda.

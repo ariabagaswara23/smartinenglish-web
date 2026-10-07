@@ -27,7 +27,7 @@ import {
     SelectTrigger,
     SelectValue,
 } from '@/components/ui/select'
-import { Image as ImageIcon, UploadCloud, X, Loader2 } from 'lucide-react'
+import { Image as ImageIcon, UploadCloud, X, Loader2, Plus } from 'lucide-react'
 import Image from 'next/image'
 
 interface TeamFormModalProps {
@@ -45,6 +45,7 @@ export function TeamFormModal({ isOpen, onClose, memberToEdit }: TeamFormModalPr
     const [imageFile, setImageFile] = React.useState<File | null>(null)
     const [imagePreview, setImagePreview] = React.useState<string | null>(null)
     const [isUploading, setIsUploading] = React.useState(false)
+    const [eduInput, setEduInput] = React.useState('')
 
     const isEditMode = !!memberToEdit
 
@@ -63,7 +64,7 @@ export function TeamFormModal({ isOpen, onClose, memberToEdit }: TeamFormModalPr
             type: 'teacher',
             role: '',
             experience_years: '',
-            education: '',
+            education: [],
             subject_category: [],
             description: '',
             order_index: 0,
@@ -74,17 +75,24 @@ export function TeamFormModal({ isOpen, onClose, memberToEdit }: TeamFormModalPr
 
     const typeValue = watch('type')
     const subjectCategoryValue = watch('subject_category') || []
+    const educationValue = watch('education') || []
     const isActiveValue = watch('is_active')
 
     React.useEffect(() => {
         if (isOpen) {
+            setEduInput('')
             if (memberToEdit) {
+                const edus = Array.isArray(memberToEdit.education)
+                    ? memberToEdit.education.filter(Boolean)
+                    : (typeof memberToEdit.education === 'string' && memberToEdit.education.trim())
+                        ? [memberToEdit.education.trim()]
+                        : []
                 reset({
                     name: memberToEdit.name,
                     type: memberToEdit.type,
                     role: memberToEdit.role,
                     experience_years: memberToEdit.experience_years || '',
-                    education: memberToEdit.education || '',
+                    education: edus,
                     subject_category: memberToEdit.subject_category || [],
                     description: memberToEdit.description || '',
                     order_index: memberToEdit.order_index || 0,
@@ -98,7 +106,7 @@ export function TeamFormModal({ isOpen, onClose, memberToEdit }: TeamFormModalPr
                     type: 'teacher',
                     role: '',
                     experience_years: '',
-                    education: '',
+                    education: [],
                     subject_category: [],
                     description: '',
                     order_index: 0,
@@ -199,10 +207,35 @@ export function TeamFormModal({ isOpen, onClose, memberToEdit }: TeamFormModalPr
     }
 
     const onSubmit = (data: TeamFormValues) => {
-        if (data.type !== 'teacher') {
-            data.subject_category = []
+        const finalEducation = [...(data.education || [])]
+        const trimmed = eduInput.trim()
+        if (trimmed && !finalEducation.includes(trimmed)) {
+            finalEducation.push(trimmed)
         }
-        mutation.mutate(data)
+        const payload: TeamFormValues = {
+            ...data,
+            education: finalEducation,
+            subject_category: data.type === 'teacher' ? (data.subject_category || []) : [],
+        }
+        mutation.mutate(payload)
+    }
+
+    const handleAddEducation = () => {
+        const trimmed = eduInput.trim()
+        if (!trimmed) return
+        const current = [...educationValue]
+        if (!current.includes(trimmed)) {
+            setValue('education', [...current, trimmed], { shouldValidate: true })
+        }
+        setEduInput('')
+    }
+
+    const handleRemoveEducation = (index: number) => {
+        setValue(
+            'education',
+            educationValue.filter((_, i) => i !== index),
+            { shouldValidate: true }
+        )
     }
 
     const toggleSubject = (subject: string) => {
@@ -291,26 +324,69 @@ export function TeamFormModal({ isOpen, onClose, memberToEdit }: TeamFormModalPr
                         {errors.role && <p className="text-xs text-destructive">{errors.role.message}</p>}
                     </div>
 
-                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                        <div className="space-y-2">
-                            <label className="text-sm font-semibold text-black">Pendidikan Terakhir (Opsional)</label>
+                    <div className="space-y-2">
+                        <label className="text-sm font-semibold text-black">Lama Pengalaman (Opsional)</label>
+                        <Input 
+                            placeholder="Contoh: 3 Tahun / 5+ Tahun" 
+                            {...register('experience_years')} 
+                            aria-invalid={!!errors.experience_years} 
+                        />
+                        {errors.experience_years && <p className="text-xs text-destructive">{errors.experience_years.message}</p>}
+                    </div>
+
+                    <div className="space-y-2.5 p-4 rounded-xl border border-slate-200 bg-slate-50/70">
+                        <div className="flex items-center justify-between">
+                            <label className="text-sm font-semibold text-black">Riwayat Pendidikan (Opsional)</label>
+                            <span className="text-xs text-slate-500">Tekan Enter atau klik Tambah</span>
+                        </div>
+                        <div className="flex gap-2">
                             <Input 
                                 placeholder="Contoh: S1 Pendidikan Bahasa Inggris" 
-                                {...register('education')} 
-                                aria-invalid={!!errors.education} 
+                                value={eduInput}
+                                onChange={(e) => setEduInput(e.target.value)}
+                                onKeyDown={(e) => {
+                                    if (e.key === 'Enter') {
+                                        e.preventDefault()
+                                        handleAddEducation()
+                                    }
+                                }}
                             />
-                            {errors.education && <p className="text-xs text-destructive">{errors.education.message}</p>}
+                            <Button 
+                                type="button" 
+                                variant="outline" 
+                                onClick={handleAddEducation}
+                                className="shrink-0 bg-white"
+                            >
+                                <Plus className="w-4 h-4 mr-1" />
+                                Tambah
+                            </Button>
                         </div>
-
-                        <div className="space-y-2">
-                            <label className="text-sm font-semibold text-black">Lama Pengalaman (Opsional)</label>
-                            <Input 
-                                placeholder="Contoh: 3 Tahun / 5+ Tahun" 
-                                {...register('experience_years')} 
-                                aria-invalid={!!errors.experience_years} 
-                            />
-                            {errors.experience_years && <p className="text-xs text-destructive">{errors.experience_years.message}</p>}
-                        </div>
+                        {educationValue.length > 0 && (
+                            <div className="space-y-1.5 mt-2">
+                                {educationValue.map((edu, idx) => (
+                                    <div 
+                                        key={idx} 
+                                        className="flex items-center justify-between gap-2 px-3 py-2 rounded-lg bg-white border border-slate-200 text-sm text-slate-800 shadow-sm"
+                                    >
+                                        <div className="flex items-center gap-2 min-w-0">
+                                            <span className="w-5 h-5 rounded-full bg-blue-50 text-[#2546a1] text-xs font-semibold flex items-center justify-center shrink-0">
+                                                {idx + 1}
+                                            </span>
+                                            <span className="truncate">{edu}</span>
+                                        </div>
+                                        <button
+                                            type="button"
+                                            onClick={() => handleRemoveEducation(idx)}
+                                            className="text-slate-400 hover:text-destructive shrink-0 p-1 rounded hover:bg-slate-50 transition-colors"
+                                            title="Hapus"
+                                        >
+                                            <X className="w-4 h-4" />
+                                        </button>
+                                    </div>
+                                ))}
+                            </div>
+                        )}
+                        {errors.education && <p className="text-xs text-destructive">{errors.education.message}</p>}
                     </div>
 
                     {typeValue === 'teacher' && (

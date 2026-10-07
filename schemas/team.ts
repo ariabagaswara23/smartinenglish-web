@@ -10,7 +10,15 @@ export const teamFormSchema = z.object({
   type: z.enum(['teacher', 'staff']),
   role: z.string().min(2, { message: "Role must be at least 2 characters." }),
   experience_years: optionalStringSchema,
-  education: optionalStringSchema,
+  education: z.preprocess((val) => {
+    if (Array.isArray(val)) {
+      return val.map((s) => String(s).trim()).filter(Boolean);
+    }
+    if (typeof val === "string" && val.trim() !== "") {
+      return [val.trim()];
+    }
+    return [];
+  }, z.array(z.string()).default([])),
   subject_category: z.array(z.string()).optional(),
   description: z.string().optional(),
   order_index: z.coerce.number().min(0),
