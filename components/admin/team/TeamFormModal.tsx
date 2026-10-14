@@ -5,8 +5,9 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { useForm as useReactHookForm } from 'react-hook-form'
 import { teamFormSchema, TeamFormValues } from '@/schemas/team'
 import { createTeamMember, updateTeamMember } from '@/app/admin/team/actions'
-import { useMutation, useQueryClient } from '@tanstack/react-query'
+import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
 import { TeamMember } from '@/types/team'
+import { Program } from '@/types/program'
 import { toast } from '@/components/ui/toast'
 import { createClient } from '@/utils/supabase/client'
 
@@ -36,7 +37,7 @@ interface TeamFormModalProps {
     memberToEdit?: TeamMember | null
 }
 
-const SUBJECT_OPTIONS = ['English', 'Calistung', 'Bimbel', 'Matematika', 'Mengaji', 'Kimia/Fisika']
+const DEFAULT_FALLBACK_SUBJECTS = ['English', 'Calistung', 'Bimbel', 'Matematika', 'Mengaji', 'Kimia/Fisika']
 
 export function TeamFormModal({ isOpen, onClose, memberToEdit }: TeamFormModalProps) {
     const queryClient = useQueryClient()
@@ -46,6 +47,8 @@ export function TeamFormModal({ isOpen, onClose, memberToEdit }: TeamFormModalPr
     const [imagePreview, setImagePreview] = React.useState<string | null>(null)
     const [isUploading, setIsUploading] = React.useState(false)
     const [eduInput, setEduInput] = React.useState('')
+    const [isOtherChecked, setIsOtherChecked] = React.useState(false)
+    const [otherSubjectInput, setOtherSubjectInput] = React.useState('')
 
     const isEditMode = !!memberToEdit
 
@@ -78,22 +81,57 @@ export function TeamFormModal({ isOpen, onClose, memberToEdit }: TeamFormModalPr
     const educationValue = watch('education') || []
     const isActiveValue = watch('is_active')
 
+    // Mengambil daftar program secara dinamis dari tabel 'programs' (bukan sub_programs)
+    const { data: programs = [], isLoading: isLoadingPrograms } = useQuery<Pick<Program, 'id' | 'title' | 'order_index'>[]>({
+        queryKey: ['programs-subject-options'],
+        queryFn: async () => {
+            const { data, error } = await supabase
+                .from('programs')
+                .select('id, title, order_index')
+                .order('order_index', { ascending: true })
+
+            if (error) {
+                console.error('Error fetching programs for subject options:', error)
+                return []
+            }
+            return (data as Pick<Program, 'id' | 'title' | 'order_index'>[]) || []
+        },
+    })
+
+    // Program dasar dari database atau fallback default
+    const basePrograms = React.useMemo<string[]>(() => {
+        const programTitles = programs.map((p: Pick<Program, 'id' | 'title' | 'order_index'>) => p.title).filter(Boolean) as string[]
+        return programTitles.length > 0 ? programTitles : DEFAULT_FALLBACK_SUBJECTS
+    }, [programs])
+
+    // Daftar mata pelajaran custom/lainnya yang ada di subject_category
+    const otherSubjects = React.useMemo<string[]>(() => {
+        return subjectCategoryValue.filter((sub: string) => !basePrograms.includes(sub))
+    }, [subjectCategoryValue, basePrograms])
+
+    const isOtherActive = isOtherChecked || otherSubjects.length > 0
+
     React.useEffect(() => {
         if (isOpen) {
             setEduInput('')
+            setOtherSubjectInput('')
             if (memberToEdit) {
                 const edus = Array.isArray(memberToEdit.education)
                     ? memberToEdit.education.filter(Boolean)
                     : (typeof memberToEdit.education === 'string' && memberToEdit.education.trim())
                         ? [memberToEdit.education.trim()]
                         : []
+                const existingSubjects = memberToEdit.subject_category || []
+                const hasCustomSubjects = existingSubjects.some((sub: string) => !basePrograms.includes(sub))
+                setIsOtherChecked(hasCustomSubjects)
+
                 reset({
                     name: memberToEdit.name,
                     type: memberToEdit.type,
                     role: memberToEdit.role,
                     experience_years: memberToEdit.experience_years || '',
                     education: edus,
-                    subject_category: memberToEdit.subject_category || [],
+                    subject_category: existingSubjects,
                     description: memberToEdit.description || '',
                     order_index: memberToEdit.order_index || 0,
                     is_active: memberToEdit.is_active ?? true,
@@ -101,6 +139,7 @@ export function TeamFormModal({ isOpen, onClose, memberToEdit }: TeamFormModalPr
                 })
                 setImagePreview(memberToEdit.image_url || null)
             } else {
+                setIsOtherChecked(false)
                 reset({
                     name: '',
                     type: 'teacher',
@@ -117,7 +156,7 @@ export function TeamFormModal({ isOpen, onClose, memberToEdit }: TeamFormModalPr
             }
             setImageFile(null)
         }
-    }, [isOpen, memberToEdit, reset])
+    }, [isOpen, memberToEdit, basePrograms, reset])
 
     const mutation = useMutation({
         mutationFn: async (data: TeamFormValues) => {
@@ -208,14 +247,21 @@ export function TeamFormModal({ isOpen, onClose, memberToEdit }: TeamFormModalPr
 
     const onSubmit = (data: TeamFormValues) => {
         const finalEducation = [...(data.education || [])]
-        const trimmed = eduInput.trim()
-        if (trimmed && !finalEducation.includes(trimmed)) {
-            finalEducation.push(trimmed)
+        const trimmedEdu = eduInput.trim()
+        if (trimmedEdu && !finalEducation.includes(trimmedEdu)) {
+            finalEducation.push(trimmedEdu)
         }
+
+        const finalSubjects = data.type === 'teacher' ? [...(data.subject_category || [])] : []
+        const trimmedOther = otherSubjectInput.trim()
+        if (isOtherActive && trimmedOther && !finalSubjects.includes(trimmedOther)) {
+            finalSubjects.push(trimmedOther)
+        }
+
         const payload: TeamFormValues = {
             ...data,
             education: finalEducation,
-            subject_category: data.type === 'teacher' ? (data.subject_category || []) : [],
+            subject_category: finalSubjects,
         }
         mutation.mutate(payload)
     }
@@ -244,6 +290,32 @@ export function TeamFormModal({ isOpen, onClose, memberToEdit }: TeamFormModalPr
             setValue('subject_category', current.filter(s => s !== subject), { shouldValidate: true })
         } else {
             setValue('subject_category', [...current, subject], { shouldValidate: true })
+        }
+    }
+
+    const handleToggleOther = (checked: boolean) => {
+        setIsOtherChecked(checked)
+        if (!checked) {
+            setOtherSubjectInput('')
+            const kept = subjectCategoryValue.filter((sub: string) => basePrograms.includes(sub))
+            setValue('subject_category', kept, { shouldValidate: true })
+        }
+    }
+
+    const handleAddOtherSubject = () => {
+        const trimmed = otherSubjectInput.trim()
+        if (!trimmed) return
+        if (!subjectCategoryValue.includes(trimmed)) {
+            setValue('subject_category', [...subjectCategoryValue, trimmed], { shouldValidate: true })
+        }
+        setOtherSubjectInput('')
+    }
+
+    const handleRemoveOtherSubject = (subjectToRemove: string) => {
+        const updated = subjectCategoryValue.filter(s => s !== subjectToRemove)
+        setValue('subject_category', updated, { shouldValidate: true })
+        if (updated.filter((s: string) => !basePrograms.includes(s)).length === 0 && !otherSubjectInput.trim()) {
+            setIsOtherChecked(false)
         }
     }
 
@@ -392,17 +464,88 @@ export function TeamFormModal({ isOpen, onClose, memberToEdit }: TeamFormModalPr
                     {typeValue === 'teacher' && (
                         <div className="space-y-3 p-4 rounded-xl border border-slate-100 bg-slate-50">
                             <label className="text-sm font-semibold text-black">Mata Pelajaran (Wajib)</label>
-                            <div className="grid grid-cols-2 gap-3 mt-2">
-                                {SUBJECT_OPTIONS.map(subject => (
-                                    <label key={subject} className="flex items-center gap-2 cursor-pointer">
-                                        <Checkbox 
-                                            checked={subjectCategoryValue.includes(subject)}
-                                            onCheckedChange={() => toggleSubject(subject)}
-                                        />
-                                        <span className="text-sm text-slate-600">{subject}</span>
-                                    </label>
-                                ))}
-                            </div>
+                            {isLoadingPrograms ? (
+                                <div className="flex items-center gap-2 text-sm text-slate-500 py-2">
+                                    <Loader2 className="w-4 h-4 animate-spin text-slate-400" />
+                                    <span>Memuat program...</span>
+                                </div>
+                            ) : (
+                                <div className="space-y-3 mt-2">
+                                    <div className="grid grid-cols-2 gap-3">
+                                        {basePrograms.map((subject: string) => (
+                                            <label key={subject} className="flex items-center gap-2 cursor-pointer">
+                                                <Checkbox 
+                                                    checked={subjectCategoryValue.includes(subject)}
+                                                    onCheckedChange={() => toggleSubject(subject)}
+                                                />
+                                                <span className="text-sm text-slate-600">{subject}</span>
+                                            </label>
+                                        ))}
+
+                                        {/* Opsi Lainnya */}
+                                        <label className="flex items-center gap-2 cursor-pointer">
+                                            <Checkbox 
+                                                checked={isOtherActive}
+                                                onCheckedChange={(checked) => handleToggleOther(!!checked)}
+                                            />
+                                            <span className="text-sm font-medium text-slate-700">Lainnya</span>
+                                        </label>
+                                    </div>
+
+                                    {/* Input & Daftar Mata Pelajaran Lainnya */}
+                                    {isOtherActive && (
+                                        <div className="pt-3 border-t border-slate-200/80 space-y-2.5">
+                                            <label className="text-xs font-semibold text-slate-600 block">
+                                                Mata Pelajaran Lainnya
+                                            </label>
+                                            <div className="flex gap-2">
+                                                <Input
+                                                    placeholder="Contoh: Robotik, Coding..."
+                                                    value={otherSubjectInput}
+                                                    onChange={(e) => setOtherSubjectInput(e.target.value)}
+                                                    onKeyDown={(e) => {
+                                                        if (e.key === 'Enter') {
+                                                            e.preventDefault()
+                                                            handleAddOtherSubject()
+                                                        }
+                                                    }}
+                                                    className="bg-white text-sm h-9"
+                                                />
+                                                <Button 
+                                                    type="button" 
+                                                    variant="outline" 
+                                                    onClick={handleAddOtherSubject}
+                                                    className="shrink-0 bg-white h-9 px-3 text-xs"
+                                                >
+                                                    <Plus className="w-3.5 h-3.5 mr-1" />
+                                                    Tambah
+                                                </Button>
+                                            </div>
+
+                                            {otherSubjects.length > 0 && (
+                                                <div className="flex flex-wrap gap-1.5 pt-1">
+                                                    {otherSubjects.map((sub: string) => (
+                                                        <span 
+                                                            key={sub} 
+                                                            className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md text-xs font-medium bg-blue-50 text-[#2546a1] border border-blue-200 shadow-sm"
+                                                        >
+                                                            <span>{sub}</span>
+                                                            <button
+                                                                type="button"
+                                                                onClick={() => handleRemoveOtherSubject(sub)}
+                                                                className="text-blue-400 hover:text-destructive transition-colors ml-0.5"
+                                                                title="Hapus"
+                                                            >
+                                                                <X className="w-3 h-3" />
+                                                            </button>
+                                                        </span>
+                                                    ))}
+                                                </div>
+                                            )}
+                                        </div>
+                                    )}
+                                </div>
+                            )}
                             {errors.subject_category && <p className="text-xs text-destructive">{errors.subject_category.message}</p>}
                         </div>
                     )}
