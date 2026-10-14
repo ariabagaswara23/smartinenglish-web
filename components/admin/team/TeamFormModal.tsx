@@ -36,7 +36,7 @@ interface TeamFormModalProps {
     memberToEdit?: TeamMember | null
 }
 
-const SUBJECT_OPTIONS = ['English', 'Calistung', 'Bimbel', 'Matematika', 'Mengaji']
+const SUBJECT_OPTIONS = ['English', 'Calistung', 'Bimbel', 'Matematika', 'Mengaji', 'Kimia/Fisika']
 
 export function TeamFormModal({ isOpen, onClose, memberToEdit }: TeamFormModalProps) {
     const queryClient = useQueryClient()
